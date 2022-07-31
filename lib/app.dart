@@ -17,7 +17,7 @@ class App extends StatelessWidget {
       locale: const Locale('en', 'NG'),
       supportedLocales: const [Locale('en', 'NG')],
       routes: AppConfig.routes,
-      home: ClientDashboardScreen(),
+      home: const ClientDashboardScreen(),
     );
   }
 }

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tranquil_life/app/presentation/theme/colors.dart';
+import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
+
+class AppBarAction {
+  final Widget icon;
+  final Function() onPressed;
+
+  AppBarAction({required this.icon, required this.onPressed});
+}
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
-  final List<Widget>? actions;
-  final bool hideBackButton;
+  final List<AppBarAction>? actions;
+  //final bool hideBackButton;
   final bool isStatusBarDark;
   final Function()? onBackPressed;
 
@@ -12,7 +21,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     Key? key,
     this.title,
     this.actions,
-    this.hideBackButton = false,
+    //this.hideBackButton = false,
     this.isStatusBarDark = true,
     this.onBackPressed,
   }) : super(key: key);
@@ -26,24 +35,14 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         statusBarBrightness:
             isStatusBarDark ? Brightness.light : Brightness.dark,
       ),
-      leading: (Navigator.of(context).canPop() && !hideBackButton) ||
+      leading: (Navigator.of(context).canPop() /*  && !hideBackButton */) ||
               onBackPressed != null
           ? Padding(
               padding: const EdgeInsets.only(left: 8),
               child: Center(
-                child: GestureDetector(
-                  onTap: onBackPressed ?? () => Navigator.of(context).pop(),
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    ),
-                  ),
+                child: AppBarButton(
+                  onPressed: onBackPressed ?? Navigator.of(context).pop,
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
               ),
             )
@@ -53,11 +52,22 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
               padding: const EdgeInsets.only(top: 4),
               child: Text(
                 title!,
-                style: const TextStyle(fontSize: 24),
+                style: TextStyle(
+                  fontSize: 22,
+                  color: ColorPalette.primary[800],
+                ),
               ),
             )
           : null,
-      actions: actions,
+      actions: actions
+          ?.map<Widget>((e) => Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Center(
+                  child: AppBarButton(icon: e.icon, onPressed: e.onPressed),
+                ),
+              ))
+          .toList()
+        ?..add(const SizedBox(width: 4)),
     );
   }
 

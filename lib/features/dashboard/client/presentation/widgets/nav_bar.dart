@@ -3,7 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 
 class ClientNavBar extends StatefulWidget {
-  const ClientNavBar({Key? key}) : super(key: key);
+  const ClientNavBar({Key? key, required this.onPageChanged}) : super(key: key);
+
+  final Function(int? page) onPageChanged;
 
   @override
   State<ClientNavBar> createState() => _ClientNavBarState();
@@ -13,9 +15,8 @@ class _ClientNavBarState extends State<ClientNavBar> {
   int currentIndex = 0;
 
   void _onTap(int index) {
-    setState(() {
-      currentIndex = index;
-    });
+    setState(() => currentIndex = index);
+    widget.onPageChanged(index);
   }
 
   @override
@@ -29,6 +30,7 @@ class _ClientNavBarState extends State<ClientNavBar> {
           child: Padding(
             padding: const EdgeInsets.only(top: 4),
             child: SafeArea(
+              top: false,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -62,20 +64,21 @@ class _ClientNavBarState extends State<ClientNavBar> {
             ),
           ),
         ),
-        Positioned(
-          bottom: 24,
+        Transform.translate(
+          offset: const Offset(0, -24),
           child: SafeArea(
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Theme.of(context).primaryColor,
-                border: Border.all(width: 8, color: Colors.white),
-              ),
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                icon: SvgPicture.asset('assets/icons/messages.svg'),
-                onPressed: () {},
+            top: false,
+            child: GestureDetector(
+              onTap: () => widget.onPageChanged(null),
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).primaryColor,
+                  border: Border.all(width: 8, color: Colors.white),
+                ),
+                child: SvgPicture.asset('assets/icons/messages.svg'),
               ),
             ),
           ),

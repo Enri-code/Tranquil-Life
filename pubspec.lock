@@ -97,6 +97,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.6"
+  flutter_staggered_grid_view:
+    dependency: "direct main"
+    description:
+      name: flutter_staggered_grid_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.2"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -104,13 +111,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1+1"
-  flutter_switch:
-    dependency: "direct main"
-    description:
-      name: flutter_switch
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -128,6 +128,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.0"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.0"
   js:
     dependency: transitive
     description:
@@ -231,6 +238,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  swipe_to:
+    dependency: "direct main"
+    description:
+      name: swipe_to
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   term_glyph:
     dependency: transitive
     description:

@@ -50,7 +50,7 @@ abstract class MyThemeData {
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       contentPadding: EdgeInsets.all(24),
     ),

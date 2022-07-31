@@ -14,7 +14,7 @@ class UserTypeSreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/images/mountains_bg.png'),
+          Image.asset('assets/images/mountains_bg.png', fit: BoxFit.cover),
           Align(
             alignment: Alignment.bottomCenter,
             child: FractionallySizedBox(
