@@ -5,15 +5,19 @@ import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
 
 class AppBarAction {
   final Widget icon;
-  final Function() onPressed;
+  final bool isCustomButton;
+  final Function()? onPressed;
 
-  AppBarAction({required this.icon, required this.onPressed});
+  AppBarAction({
+    required this.icon,
+    required this.onPressed,
+    this.isCustomButton = true,
+  });
 }
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   final List<AppBarAction>? actions;
-  //final bool hideBackButton;
   final bool isStatusBarDark;
   final Function()? onBackPressed;
 
@@ -21,7 +25,6 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     Key? key,
     this.title,
     this.actions,
-    //this.hideBackButton = false,
     this.isStatusBarDark = true,
     this.onBackPressed,
   }) : super(key: key);
@@ -29,14 +32,14 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarIconBrightness:
             isStatusBarDark ? Brightness.dark : Brightness.light,
         statusBarBrightness:
             isStatusBarDark ? Brightness.light : Brightness.dark,
       ),
-      leading: (Navigator.of(context).canPop() /*  && !hideBackButton */) ||
-              onBackPressed != null
+      leading: (Navigator.of(context).canPop()) || onBackPressed != null
           ? Padding(
               padding: const EdgeInsets.only(left: 8),
               child: Center(
@@ -53,20 +56,23 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
               child: Text(
                 title!,
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 21,
                   color: ColorPalette.primary[800],
                 ),
               ),
             )
           : null,
-      actions: actions
-          ?.map<Widget>((e) => Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: Center(
-                  child: AppBarButton(icon: e.icon, onPressed: e.onPressed),
-                ),
-              ))
-          .toList()
+      actions: actions?.map<Widget>((e) {
+        if (e.isCustomButton) {
+          return Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: Center(
+              child: AppBarButton(icon: e.icon, onPressed: e.onPressed),
+            ),
+          );
+        }
+        return IconButton(onPressed: e.onPressed, icon: e.icon);
+      }).toList()
         ?..add(const SizedBox(width: 4)),
     );
   }

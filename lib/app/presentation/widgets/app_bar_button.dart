@@ -8,7 +8,7 @@ class AppBarButton extends StatelessWidget {
   }) : super(key: key);
 
   final Widget icon;
-  final Function() onPressed;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {

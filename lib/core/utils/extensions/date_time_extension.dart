@@ -2,7 +2,16 @@ import 'package:intl/intl.dart';
 
 extension DateTimeExtension on DateTime {
   static final _dateFormat = DateFormat.yMMMMd();
-  String get formatted => _dateFormat.format(this);
+  static final _timeFormat = DateFormat('hh:mm a');
+
+  String get folded => '$day-$month-$year';
+
+  String get formatted {
+    var now = DateTime.now();
+    var today = DateTime(now.year, now.month, now.day);
+    if (isBefore(today)) return _dateFormat.format(this);
+    return _timeFormat.format(this);
+  }
 
   String timeAgo({DateTime? other, bool numericDates = true}) {
     final difference = (other ?? DateTime.now()).difference(this);
