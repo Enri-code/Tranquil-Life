@@ -77,6 +77,7 @@ class _NoteScreenState extends State<NoteScreen> {
             children: [
               TextField(
                 maxLines: null,
+                maxLength: 150,
                 controller: _titleTextController,
                 textInputAction: TextInputAction.done,
                 style: const TextStyle(height: 1.3, fontSize: 29),

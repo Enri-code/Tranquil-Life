@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
+import 'package:tranquil_life/features/journal/presentation/screens/journal.dart';
+import 'package:tranquil_life/features/journal/presentation/screens/note_screen.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({Key? key, required this.onPageChanged}) : super(key: key);
-  final bool Function(int page) onPageChanged;
+  final void Function(int page) onPageChanged;
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -13,9 +15,7 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int currentIndex = 0;
 
-  void _onTap(int index) {
-    if (widget.onPageChanged(index)) setState(() => currentIndex = index);
-  }
+  void _onTap(int index) => setState(() => currentIndex = index);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class _NavBarState extends State<NavBar> {
         Container(
           color: Colors.grey[200],
           child: Padding(
-            padding: const EdgeInsets.only(top: 4),
+            padding: const EdgeInsets.only(top: 4, bottom: 2),
             child: SafeArea(
               top: false,
               child: Row(
@@ -34,26 +34,56 @@ class _NavBarState extends State<NavBar> {
                 children: [
                   _Item(
                     label: 'Home',
-                    icon: TranquilIcons.home,
+                    iconData: TranquilIcons.home,
                     isSelected: currentIndex == 0,
                     onTap: () => _onTap(0),
                   ),
                   _Item(
                     label: 'Wallet',
-                    icon: TranquilIcons.wallet,
+                    iconData: TranquilIcons.wallet,
                     isSelected: currentIndex == 1,
                     onTap: () => _onTap(1),
                   ),
                   const SizedBox(width: 32),
-                  _Item(
-                    label: 'Notes',
-                    icon: TranquilIcons.book_saved,
-                    isSelected: currentIndex == 3,
-                    onTap: () => _onTap(3),
+                  SpeedDial(
+                    elevation: 0,
+                    spaceBetweenChildren: 16,
+                    overlayOpacity: 0.3,
+                    overlayColor: Colors.black,
+                    childPadding: EdgeInsets.zero,
+                    backgroundColor: Colors.transparent,
+                    useRotationAnimation: false,
+                    children: [
+                      SpeedDialChild(
+                        shape: const CircleBorder(),
+                        child: const _Item(iconData: TranquilIcons.new_note),
+                        onTap: () {
+                          Navigator.of(context).pushNamed(NoteScreen.routeName);
+                        },
+                      ),
+                      SpeedDialChild(
+                        shape: const CircleBorder(),
+                        child: const _Item(iconData: TranquilIcons.view_note),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(JournalsScreen.routeName);
+                        },
+                      ),
+                    ],
+                    activeChild: const _Item(
+                      label: 'Notes',
+                      iconData: TranquilIcons.book_saved,
+                      isSelected: true,
+                    ),
+                    child: const _Item(
+                      label: 'Notes',
+                      iconData: TranquilIcons.book_saved,
+                      isSelected: false,
+                    ),
                   ),
                   _Item(
                     label: 'Profile',
-                    icon: TranquilIcons.profile,
+                    iconData: TranquilIcons.profile,
                     isSelected: currentIndex == 4,
                     onTap: () => _onTap(4),
                   ),
@@ -63,20 +93,21 @@ class _NavBarState extends State<NavBar> {
           ),
         ),
         Transform.translate(
-          offset: const Offset(0, -24),
+          offset: const Offset(0, -20),
           child: SafeArea(
             top: false,
             child: GestureDetector(
               onTap: () => widget.onPageChanged(2),
               behavior: HitTestBehavior.opaque,
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(9),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Theme.of(context).primaryColor,
-                  border: Border.all(width: 8, color: Colors.white),
+                  border: Border.all(width: 7, color: Colors.white),
                 ),
-                child: SvgPicture.asset('assets/icons/messages.svg'),
+                child: const Icon(TranquilIcons.messages,
+                    size: 32, color: Colors.white),
               ),
             ),
           ),
@@ -89,20 +120,22 @@ class _NavBarState extends State<NavBar> {
 class _Item extends StatelessWidget {
   const _Item({
     Key? key,
-    required this.icon,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
+    required this.iconData,
+    this.label,
+    this.isSelected,
+    this.onTap,
   }) : super(key: key);
 
-  final String label;
-  final IconData icon;
-  final bool isSelected;
-  final Function() onTap;
+  final String? label;
+  final IconData iconData;
+  final bool? isSelected;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    var color = isSelected ? Theme.of(context).primaryColor : Colors.grey[600];
+    var color = (isSelected ?? true)
+        ? Theme.of(context).primaryColor
+        : Colors.grey[600];
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -110,13 +143,18 @@ class _Item extends StatelessWidget {
           onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.all(4),
-            child: Icon(icon, size: 32, color: color),
+            child: Icon(iconData, size: 28, color: color),
           ),
         ),
-        Text(
-          label,
-          style: TextStyle(color: color),
-        ),
+        if (label != null)
+          Text(
+            label!,
+            style: TextStyle(
+              color: color,
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
       ],
     );
   }

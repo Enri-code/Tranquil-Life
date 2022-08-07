@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
+import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_icon_button.dart';
 import 'package:tranquil_life/core/utils/services/app_data_store.dart';
-import 'package:tranquil_life/features/dashboard/presentation/screens/questions.dart';
-import 'package:tranquil_life/features/dashboard/presentation/screens/speak_with_consultant.dart';
+import 'package:tranquil_life/features/questionnaire/presentation/screens/questions.dart';
+import 'package:tranquil_life/features/consultation/presentation/screens/speak_with_consultant.dart';
 import 'package:tranquil_life/features/dashboard/presentation/widgets/meeting_card.dart';
 import 'package:tranquil_life/features/dashboard/presentation/widgets/moods.dart';
 import 'package:tranquil_life/features/notifications/presentation/screens/notifications.dart';
@@ -24,7 +24,7 @@ class _Title extends StatelessWidget {
           children: [
             Text(
               'Hi,',
-              style: TextStyle(color: themeColor, fontSize: 24),
+              style: TextStyle(color: themeColor, fontSize: 22),
             ),
             const Spacer(),
             Row(
@@ -41,7 +41,8 @@ class _Title extends StatelessWidget {
                       ));
                     }
                   },
-                  icon: SvgPicture.asset('assets/icons/users.svg', width: 28),
+                  icon: Icon(TranquilIcons.users,
+                      size: 28, color: Theme.of(context).primaryColor),
                 ),
                 const SizedBox(width: 12),
                 GestureDetector(
@@ -53,8 +54,8 @@ class _Title extends StatelessWidget {
                     alignment: AlignmentDirectional.topEnd,
                     children: [
                       CustomIconButton(
-                        icon: SvgPicture.asset('assets/icons/bell.svg',
-                            width: 28),
+                        icon: Icon(TranquilIcons.bell,
+                            size: 28, color: Theme.of(context).primaryColor),
                       ),
                       Transform.translate(
                         offset: const Offset(8, -2),
@@ -91,7 +92,7 @@ class _Title extends StatelessWidget {
           'Enrique!',
           style: TextStyle(
             color: themeColor,
-            fontSize: 32,
+            fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -131,7 +132,7 @@ class HomeTab extends StatelessWidget {
                             ),
                             const SizedBox(height: 40),
                             const MoodsListView(),
-                            const SizedBox(height: 40),
+                            const SizedBox(height: 38),
                           ],
                         ),
                       ),
@@ -193,7 +194,7 @@ class _Meetings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(18, 18, 4, 1),
+      padding: const EdgeInsets.fromLTRB(18, 16, 4, 3),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -210,7 +211,7 @@ class _Meetings extends StatelessWidget {
               ),
               Container(
                 width: 44,
-                height: 28,
+                height: 26,
                 margin: const EdgeInsets.only(right: 14),
                 decoration: BoxDecoration(
                   color: ColorPalette.primary[800],
@@ -219,13 +220,13 @@ class _Meetings extends StatelessWidget {
                 child: const Center(
                   child: Text(
                     '4',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Expanded(
             child: Scrollbar(
               child: Padding(

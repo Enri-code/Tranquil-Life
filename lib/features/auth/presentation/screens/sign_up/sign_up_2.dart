@@ -50,134 +50,136 @@ class _ClientSignUpScreen1State extends State<SignUp2Screen>
         child: UnfocusWidget(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 32, bottom: 20),
-                  child: Text(
-                    'Register Account',
-                    style: TextStyle(fontSize: 36),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 32, bottom: 20),
+                    child: Text(
+                      'Register Account',
+                      style: TextStyle(fontSize: 36),
+                    ),
                   ),
-                ),
-                const Text(
-                  'Complete your profile',
-                  style: TextStyle(fontSize: 18),
-                ),
-                const SizedBox(height: 24),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: IntlPhoneField(
-                          initialValue: params.phone,
-                          pickerDialogStyle: PickerDialogStyle(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 16),
-                          ),
-                          autovalidateMode: AutovalidateMode.disabled,
-                          dropdownIconPosition: IconPosition.trailing,
-                          flagsButtonPadding: const EdgeInsets.only(left: 12),
-                          decoration: const InputDecoration(
-                            hintText: 'Phone number',
-                          ),
-                          onChanged: (val) {
-                            var number = val.number.startsWith('0')
-                                ? val.number.substring(1)
-                                : val.number;
-                            params.phone = '${val.countryCode}$number';
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      GestureDetector(
-                        onTap: () async {
-                          final String val = '';
-                          if (val.isEmpty) {
-                            _animCnntroller.reverse();
-                          } else {
-                            _animCnntroller.forward();
-                          }
-                          setState(() {
-                            params.companyId =
-                                _companyTextController.text = val;
-                          });
-                        },
-                        child: AbsorbPointer(
-                          child: TextFormField(
-                            autocorrect: false,
-                            keyboardType: TextInputType.name,
-                            textCapitalization: TextCapitalization.words,
-                            decoration: const InputDecoration(
-                              hintText: 'Organization',
+                  const Text(
+                    'Complete your profile',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(height: 24),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: IntlPhoneField(
+                            initialValue: params.phone,
+                            pickerDialogStyle: PickerDialogStyle(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 16),
                             ),
+                            autovalidateMode: AutovalidateMode.disabled,
+                            dropdownIconPosition: IconPosition.trailing,
+                            flagsButtonPadding: const EdgeInsets.only(left: 12),
+                            decoration: const InputDecoration(
+                              hintText: 'Phone number',
+                            ),
+                            onChanged: (val) {
+                              var number = val.number.startsWith('0')
+                                  ? val.number.substring(1)
+                                  : val.number;
+                              params.phone = '${val.countryCode}$number';
+                            },
                           ),
                         ),
-                      ),
-                      SizeTransition(
-                        sizeFactor: _animCnntroller,
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 24),
-                            TextFormField(
+                        const SizedBox(height: 8),
+                        GestureDetector(
+                          onTap: () async {
+                            final String val = '';
+                            if (val.isEmpty) {
+                              _animCnntroller.reverse();
+                            } else {
+                              _animCnntroller.forward();
+                            }
+                            setState(() {
+                              params.companyId =
+                                  _companyTextController.text = val;
+                            });
+                          },
+                          child: AbsorbPointer(
+                            child: TextFormField(
                               autocorrect: false,
                               keyboardType: TextInputType.name,
                               textCapitalization: TextCapitalization.words,
                               decoration: const InputDecoration(
-                                hintText: 'Staff ID',
+                                hintText: 'Organization',
                               ),
-                              validator: (val) {
-                                if (params.companyId.isEmpty) return null;
-                                if (val!.isEmpty) {
-                                  return 'Your staff ID is required';
-                                }
-                                return null;
-                              },
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
+                        SizeTransition(
+                          sizeFactor: _animCnntroller,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 24),
+                              TextFormField(
+                                autocorrect: false,
+                                keyboardType: TextInputType.name,
+                                textCapitalization: TextCapitalization.words,
+                                decoration: const InputDecoration(
+                                  hintText: 'Staff ID',
+                                ),
+                                validator: (val) {
+                                  if (params.companyId.isEmpty) return null;
+                                  if (val!.isEmpty) {
+                                    return 'Your staff ID is required';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                BlocConsumer<ClientAuthBloc, AuthState>(
-                  listener: (context, state) {
-                    if (state.status == OperationStatus.loading) {
-                      CustomLoader.display();
-                    } else {
-                      CustomLoader.remove();
-                      if (state.status == OperationStatus.success) {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          DashboardScreen.routeName,
-                          (_) => false,
-                        );
+                  const SizedBox(height: 20),
+                  BlocConsumer<ClientAuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state.status == OperationStatus.loading) {
+                        CustomLoader.display();
+                      } else {
+                        CustomLoader.remove();
+                        if (state.status == OperationStatus.success) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            DashboardScreen.routeName,
+                            (_) => false,
+                          );
+                        }
                       }
-                    }
-                  },
-                  builder: (context, state) {
-                    return Text(
-                      state.status == OperationStatus.error
-                          ? state.error!.message
-                          : '',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).errorColor,
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      context.read<ClientAuthBloc>().add(const SignUp());
-                    }
-                  },
-                  child: const Text('Sign Up'),
-                ),
-              ],
+                    },
+                    builder: (context, state) {
+                      return Text(
+                        state.status == OperationStatus.error
+                            ? state.error!.message
+                            : '',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).errorColor,
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        context.read<ClientAuthBloc>().add(const SignUp());
+                      }
+                    },
+                    child: const Text('Sign Up'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

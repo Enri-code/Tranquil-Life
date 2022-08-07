@@ -9,6 +9,7 @@ class JournalState extends BlocStateBase {
 
   final List<Note> notes;
 
+  @override
   JournalState copyWith({
     OperationStatus? status,
     ResolvedError? error,

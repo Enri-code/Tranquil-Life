@@ -1,5 +1,5 @@
 import 'package:tranquil_life/app/config.dart';
-import 'package:tranquil_life/features/dashboard/domain/entities/question.dart';
+import 'package:tranquil_life/features/questionnaire/domain/entities/question.dart';
 
 final questions = <Question>[
   Question(

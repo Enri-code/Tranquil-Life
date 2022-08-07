@@ -17,7 +17,7 @@ class MoodsListView extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             color: Colors.grey[100],
             borderRadius: BorderRadius.circular(12),
@@ -42,7 +42,7 @@ class MoodsListView extends StatelessWidget {
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 2, top: 2),
+                        padding: const EdgeInsets.fromLTRB(3, 3, 2, 2),
                         child: Text(moods[i]),
                       ),
                     ),

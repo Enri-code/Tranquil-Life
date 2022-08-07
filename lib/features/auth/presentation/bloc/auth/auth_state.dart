@@ -9,6 +9,7 @@ class AuthState extends BlocStateBase {
   });
   final Client? user;
 
+  @override
   AuthState copyWith({
     Client? user,
     OperationStatus? status,
@@ -25,7 +26,6 @@ class AuthState extends BlocStateBase {
   List<Object?> get props => [user, status, error];
 }
 
-///TODO
 class EmailError extends ErrorCause {
   const EmailError();
 }

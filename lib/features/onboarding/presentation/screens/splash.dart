@@ -26,7 +26,7 @@ class SplashScreen extends StatelessWidget {
                 'A safe space to talk and feel without judgement.',
                 textAlign: TextAlign.center,
                 style:
-                    TextStyle(fontSize: 24, color: Colors.white, height: 1.6),
+                    TextStyle(fontSize: 21, color: Colors.white, height: 1.6),
               ),
             ),
           ),

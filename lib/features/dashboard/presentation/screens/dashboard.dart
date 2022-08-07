@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tranquil_life/core/utils/services/app_data_store.dart';
-import 'package:tranquil_life/features/dashboard/presentation/screens/questions.dart';
-import 'package:tranquil_life/features/dashboard/presentation/screens/speak_with_consultant.dart';
+import 'package:tranquil_life/features/consultation/presentation/screens/speak_with_consultant.dart';
 import 'package:tranquil_life/features/dashboard/presentation/screens/tabs/home.dart';
 import 'package:tranquil_life/features/dashboard/presentation/widgets/nav_bar.dart';
-import 'package:tranquil_life/features/journal/presentation/screens/journal.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const routeName = 'client_dashboard';
@@ -34,7 +31,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 HomeTab(),
                 SizedBox(),
                 SizedBox(),
-                JournalsScreen(),
               ],
             ),
           ),
@@ -44,12 +40,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 case 2:
                   Navigator.of(context)
                       .pushNamed(SpeakWithConsultantScreen.routeName);
-                  return false;
-                /*  case 3:
-                  return false; */
+                  return;
+                case 3:
+                  return;
                 default:
                   setState(() => currentPage = page);
-                  return true;
+                  return;
               }
             },
           ),

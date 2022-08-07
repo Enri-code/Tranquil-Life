@@ -60,7 +60,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
                 setState(() => email = val);
                 if (val.isEmpty) {
                   setState(() => error = 'Please input your email address');
-                } else {
+                } else if (error.isNotEmpty) {
                   setState(() => error = '');
                 }
               },

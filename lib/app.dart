@@ -6,12 +6,14 @@ import 'package:tranquil_life/core/utils/helpers/app_init.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/core/utils/services/custom_loader.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
-import 'package:tranquil_life/features/dashboard/data/repos/consultant_repo.dart';
-import 'package:tranquil_life/features/dashboard/presentation/bloc/consultant/consultant_bloc.dart';
+import 'package:tranquil_life/features/consultation/data/repos/consultant_repo.dart';
+import 'package:tranquil_life/features/consultation/presentation/bloc/consultant/consultant_bloc.dart';
 import 'package:tranquil_life/features/dashboard/presentation/screens/dashboard.dart';
 import 'package:tranquil_life/features/journal/data/repos/journal_repo.dart';
 import 'package:tranquil_life/features/journal/presentation/bloc/journal/journal_bloc.dart';
 import 'package:tranquil_life/features/onboarding/presentation/screens/splash.dart';
+import 'package:tranquil_life/features/questionnaire/data/repos/questionnaire_repo.dart';
+import 'package:tranquil_life/features/questionnaire/presentation/bloc/questionnaire_bloc.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class App extends StatelessWidget {
         BlocProvider(create: (_) => ClientAuthBloc()),
         BlocProvider(create: (_) => JournalBloc(JournalRepoImpl())),
         BlocProvider(create: (_) => ConsultantBloc(ConsultantRepoImpl())),
+        BlocProvider(create: (_) => QuestionnaireBloc(QuestionnaireRepoImpl())),
       ],
       child: MaterialApp(
         title: AppConfig.appName,

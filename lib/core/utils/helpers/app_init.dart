@@ -21,6 +21,12 @@ class AppSetup {
   static goToScreen(NavigatorState navigator) {
     String nextRoute;
     if (AppData.isSignedIn) {
+      if (!AppData.isOnboardingCompleted) {
+        precacheImage(
+          const AssetImage('assets/images/mountains_bg.png'),
+          navigator.context,
+        );
+      }
       nextRoute = DashboardScreen.routeName;
     } else if (AppData.isOnboardingCompleted) {
       nextRoute = SignInScreen.routeName;

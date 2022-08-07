@@ -1,5 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 
 part 'saved_note.g.dart';

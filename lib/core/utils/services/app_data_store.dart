@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:tranquil_life/features/auth/data/models/client_model.dart';
 import 'package:tranquil_life/features/auth/domain/entities/client.dart';
 
 abstract class _Store {
@@ -33,8 +34,13 @@ abstract class AppData {
   static set hasAnsweredQuestions(bool val) =>
       _Store.set(_Keys.hasAnsweredQuestions, val);
 
-  static Client? get user => _Store.get(_Keys.user);
-  static set user(Client? val) => _Store.set(_Keys.user, val);
+  static Client? get user {
+    var val = _Store.get(_Keys.user);
+    if (val == null) return null;
+    return ClientModel.fromJson(val);
+  }
+
+  static set user(Client? val) => _Store.set(_Keys.user, val?.toJson());
 
   static bool get isSignedIn => _Store.get(
         _Keys.isSignedIn,

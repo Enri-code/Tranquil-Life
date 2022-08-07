@@ -15,13 +15,19 @@ class _OnboardScreenState extends State<OnboardScreen> {
     'Let’s connect and get you to a brighter state. What brings you to Tranquil Life?',
     'We create an all day access to Psychologists, Counsellors and Therapists.'
   ];
-
+  final _pageController = PageController();
   int page = 0;
 
   @override
   void didChangeDependencies() {
     precacheImage(const AssetImage('assets/images/onboarding/1.png'), context);
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -32,10 +38,18 @@ class _OnboardScreenState extends State<OnboardScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.55,
-            child: Center(
-              child: Image.asset(
-                'assets/images/onboarding/$page.png',
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (value) => setState(() => page = value),
+              children: List.generate(
+                _text.length,
+                (i) => Center(
+                  child: Image.asset(
+                    'assets/images/onboarding/$i.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
             ),
           ),
@@ -45,7 +59,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                 padding: const EdgeInsets.all(24),
                 child: Text(
                   _text[page],
-                  style: const TextStyle(fontSize: 24, height: 1.6),
+                  style: const TextStyle(fontSize: 21, height: 1.5),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -65,6 +79,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 16),
               SafeArea(
                 child: ElevatedButton(
                   child: page < _text.length - 1
