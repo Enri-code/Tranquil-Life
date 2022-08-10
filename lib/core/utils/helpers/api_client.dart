@@ -12,8 +12,11 @@ class ApiClient {
   static final _client = Dio(BaseOptions(baseUrl: baseUrl));
   const ApiClient();
 
-  static Future<ApiData> get(String subPath) async {
-    var result = await _client.get(subPath);
+  static Future<ApiData> get(
+    String subPath, {
+    Map<String, dynamic>? parameters,
+  }) async {
+    var result = await _client.get(subPath, queryParameters: parameters);
     return ApiData(result.data, result.statusCode);
   }
 

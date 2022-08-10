@@ -1,4 +1,4 @@
-package com.example.tranquil_life
+package com.tranquillife.client
 
 import io.flutter.embedding.android.FlutterActivity
 

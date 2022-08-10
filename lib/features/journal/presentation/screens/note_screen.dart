@@ -53,7 +53,7 @@ class _NoteScreenState extends State<NoteScreen> {
         actions: [
           if (_canSave)
             AppBarAction(
-              icon: const Icon(Icons.done, color: Colors.white),
+              child: const Icon(Icons.done, color: Colors.white),
               onPressed: () {
                 _note = Note(
                   title: _titleTextController.text,
@@ -63,7 +63,10 @@ class _NoteScreenState extends State<NoteScreen> {
               },
             ),
           AppBarAction(
-            icon: Icon(Icons.more_vert, color: ColorPalette.primary[800]),
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: Icon(Icons.more_vert, color: ColorPalette.primary[800]),
+            ),
             isCustomButton: false,
             onPressed: () => showNoteDialog(context, _note),
           ),

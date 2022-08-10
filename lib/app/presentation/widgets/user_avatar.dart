@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
+import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 
 class UserAvatar extends StatelessWidget {
-  const UserAvatar({Key? key, required this.imageUrl, this.size = 48})
-      : super(key: key);
+  const UserAvatar({
+    Key? key,
+    this.imageUrl,
+    this.size = 48,
+    this.decoration,
+  }) : super(key: key);
 
   final double size;
-  final String imageUrl;
+  final String? imageUrl;
+  final BoxDecoration? decoration;
 
   @override
   Widget build(BuildContext context) {
+    String url =
+        imageUrl ?? context.read<ClientAuthBloc>().state.user?.avatarUrl ?? '';
     return Container(
       width: size,
       height: size,
       clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey),
-      ),
+      decoration: decoration ??
+          BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            border: Border.all(color: Colors.grey),
+          ),
       child: Image.network(
-        imageUrl,
+        url,
         errorBuilder: (_, __, ___) => Icon(
           TranquilIcons.profile,
           color: Colors.grey,

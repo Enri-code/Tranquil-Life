@@ -50,7 +50,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                     actions: [
                       if (index < questionsCount - 1)
                         AppBarAction(
-                          icon: const Icon(
+                          child: const Icon(
                             Icons.arrow_forward,
                             color: Colors.white,
                           ),

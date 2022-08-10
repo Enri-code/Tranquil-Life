@@ -3,6 +3,7 @@ import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/consultant_details.dart';
+import 'package:tranquil_life/features/consultation/presentation/screens/schedule_meeting_screen.dart';
 
 class ConsultantCard extends StatelessWidget {
   const ConsultantCard({Key? key, required this.consultant}) : super(key: key);
@@ -11,66 +12,69 @@ class ConsultantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var activeColor = Colors.green; // ?? Colors.grey[300]!;
-    return SizedBox(
-      height: 164,
+    var size = MediaQuery.of(context).size;
+    var activeColor = Colors.green[400]!; // ?? Colors.grey[300]!;
+    return IntrinsicHeight(
       child: Row(
         children: [
-          Container(
-            width: 132,
-            height: 164,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: activeColor, width: 3),
-            ),
-            child: Stack(
-              fit: StackFit.expand,
-              alignment: Alignment.bottomRight,
-              children: [
-                ClipRRect(
-                  clipBehavior: Clip.hardEdge,
-                  borderRadius: BorderRadius.circular(8),
-                  child: Hero(
-                    tag: '${consultant.id}-img',
-                    transitionOnUserGestures: true,
-                    child: Image.network(
-                      consultant.avatarUrl,
-                      fit: BoxFit.fitHeight,
-                      errorBuilder: (_, __, ___) => const Icon(
-                        TranquilIcons.profile,
-                        color: Colors.grey,
-                        size: 120,
-                      ),
-                      frameBuilder: (_, img, val, ___) {
-                        if (val == null) {
-                          return const SizedBox.square(
-                            dimension: 120,
-                            child: Center(child: CircularProgressIndicator()),
-                          );
-                        }
-                        return img;
-                      },
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Transform.translate(
-                    offset: const Offset(10, 10),
-                    child: Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: activeColor,
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 200),
+            child: Container(
+              width: size.width * 0.31,
+              height: 164,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: activeColor, width: 3),
+              ),
+              child: Stack(
+                fit: StackFit.expand,
+                alignment: Alignment.bottomRight,
+                children: [
+                  ClipRRect(
+                    clipBehavior: Clip.hardEdge,
+                    borderRadius: BorderRadius.circular(8),
+                    child: Hero(
+                      tag: '${consultant.id}-img',
+                      transitionOnUserGestures: true,
+                      child: Image.network(
+                        consultant.avatarUrl,
+                        fit: BoxFit.fitHeight,
+                        errorBuilder: (_, __, ___) => const Icon(
+                          TranquilIcons.profile,
+                          color: Colors.grey,
+                          size: 120,
+                        ),
+                        frameBuilder: (_, img, val, ___) {
+                          if (val == null) {
+                            return const SizedBox.square(
+                              dimension: 120,
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          }
+                          return img;
+                        },
                       ),
                     ),
                   ),
-                ),
-              ],
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Transform.translate(
+                      offset: const Offset(10, 10),
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: activeColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               children: [
@@ -79,10 +83,19 @@ class ConsultantCard extends StatelessWidget {
                   consultant.name,
                   style: TextStyle(
                     fontSize: 20,
+                    height: 1,
                     color: ColorPalette.primary[800],
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(height: 2),
+                Align(
+                  alignment: const Alignment(-0.9, 0),
+                  child: Text(
+                    consultant.summary,
+                    style: const TextStyle(fontSize: 12.5),
+                  ),
+                ),
+                const SizedBox(height: 16),
                 _Button(
                   label: 'View Profile',
                   icon: Icon(TranquilIcons.tag_user,
@@ -99,12 +112,10 @@ class ConsultantCard extends StatelessWidget {
                   label: 'Schedule a meeting',
                   icon: Icon(TranquilIcons.calendar_tick,
                       color: Theme.of(context).primaryColor),
-                  onPressed: () {
-                    /*  Navigator.of(context).pushNamed(
-                      ConsultantDetailScreen.routeName,
-                      arguments: consultant,
-                    ); */
-                  },
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    ScheduleMeetingScreen.routeName,
+                    arguments: consultant,
+                  ),
                 ),
                 const SizedBox(height: 4),
               ],
@@ -131,7 +142,7 @@ class _Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 46,
+      height: 44,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 3,
@@ -140,7 +151,7 @@ class _Button extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           onPrimary: Colors.black,
           primary: Colors.grey[200],
-          shadowColor: Colors.black.withOpacity(0.7),
+          shadowColor: Colors.black.withOpacity(0.5),
           surfaceTintColor: Colors.white,
         ),
         onPressed: onPressed,
@@ -148,7 +159,7 @@ class _Button extends StatelessWidget {
           children: [
             const SizedBox(width: 14),
             icon,
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Flexible(
               child: FittedBox(
                 fit: BoxFit.contain,
@@ -161,7 +172,7 @@ class _Button extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: 6),
           ],
         ),
       ),

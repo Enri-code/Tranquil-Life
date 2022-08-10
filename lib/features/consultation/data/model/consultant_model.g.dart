@@ -10,6 +10,7 @@ ConsultantModel _$ConsultantModelFromJson(Map<String, dynamic> json) =>
     ConsultantModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      avatarUrl: json['avatar_url'] ?? '',
+      summary: json['summary'] as String,
       description: json['description'] as String,
+      avatarUrl: json['avatar_url'] as String? ?? '',
     );

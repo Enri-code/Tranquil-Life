@@ -37,7 +37,3 @@ void showNoteDialog(BuildContext context, Note? note) => showModalBottomSheet(
       backgroundColor: Colors.transparent,
       builder: (_) => NoteBottomSheet(note: note),
     );
-
-DateTime? dateTimeFromString(String time) {
-  return DateTime.tryParse(time);
-}

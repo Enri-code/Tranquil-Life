@@ -18,7 +18,7 @@ class SentPasswordResetEmailScreen extends StatelessWidget {
             children: [
               const Text(
                 'Check Your Inbox',
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.normal),
               ),
               const SizedBox(height: 20),
               Text(

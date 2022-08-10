@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
+import 'package:tranquil_life/app/presentation/theme/text.dart';
 import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
 
 class AppBarAction {
-  final Widget icon;
+  final Widget child;
   final bool isCustomButton;
   final Function()? onPressed;
 
   AppBarAction({
-    required this.icon,
+    required this.child,
     required this.onPressed,
     this.isCustomButton = true,
   });
@@ -17,6 +18,7 @@ class AppBarAction {
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
+  final Color? titleColor;
   final List<AppBarAction>? actions;
   final bool isStatusBarDark;
   final Function()? onBackPressed;
@@ -24,6 +26,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   const CustomAppBar({
     Key? key,
     this.title,
+    this.titleColor,
     this.actions,
     this.isStatusBarDark = true,
     this.onBackPressed,
@@ -32,7 +35,13 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      surfaceTintColor: const Color(0x00ffffff),
       backgroundColor: Colors.transparent,
+      toolbarTextStyle: TextStyle(
+        fontSize: 18,
+        color: ColorPalette.primary[800],
+        fontFamily: MyTextData.josefinFamily,
+      ),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarIconBrightness:
             isStatusBarDark ? Brightness.dark : Brightness.light,
@@ -57,21 +66,20 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 title!,
                 style: TextStyle(
                   fontSize: 21,
-                  color: ColorPalette.primary[800],
+                  color: titleColor ?? ColorPalette.primary[800],
                 ),
               ),
             )
           : null,
       actions: actions?.map<Widget>((e) {
-        if (e.isCustomButton) {
-          return Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Center(
-              child: AppBarButton(icon: e.icon, onPressed: e.onPressed),
-            ),
-          );
-        }
-        return IconButton(onPressed: e.onPressed, icon: e.icon);
+        return Padding(
+          padding: const EdgeInsets.only(right: 8),
+          child: Center(
+            child: e.isCustomButton
+                ? AppBarButton(icon: e.child, onPressed: e.onPressed)
+                : GestureDetector(onTap: e.onPressed, child: e.child),
+          ),
+        );
       }).toList()
         ?..add(const SizedBox(width: 4)),
     );

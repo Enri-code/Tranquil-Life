@@ -17,7 +17,7 @@ class JournalsScreen extends StatelessWidget {
       title: 'I never liked therapy, so I was jittery, but my first',
       description: 'Description',
       emoji: moods[0],
-      colorInt: 0xffC0E2C9,
+      hexColor: '#ffC0E2C9',
       dateUpdated: DateTime.now(),
     ),
     SavedNote(
@@ -39,7 +39,7 @@ class JournalsScreen extends StatelessWidget {
       title:
           'I never liked therapy, so I was jittery, but my first session changed everything. This is how I felt before, during, and after my first session.',
       description: 'Long description',
-      colorInt: 0xffA1D4AE,
+      hexColor: '#ffA1D4AE',
       dateUpdated: DateTime.now(),
     ),
     SavedNote(
@@ -48,7 +48,7 @@ class JournalsScreen extends StatelessWidget {
       description: 'Description',
       dateUpdated: DateTime.now().subtract(const Duration(days: 2)),
       emoji: moods[4],
-      colorInt: 0xffC0E2C9,
+      hexColor: '#ffC0E2C9',
     ),
     SavedNote(
       id: '3',
@@ -62,7 +62,7 @@ class JournalsScreen extends StatelessWidget {
           'I never liked therapy, so I was jittery, but my first session changed everything. This is how I felt before, during, and after my first session.',
       description: 'Long description',
       dateUpdated: DateTime.now().subtract(const Duration(days: 3)),
-      colorInt: 0xffC0E2C9,
+      hexColor: '#ffC0E2C9',
     ),
   ];
 

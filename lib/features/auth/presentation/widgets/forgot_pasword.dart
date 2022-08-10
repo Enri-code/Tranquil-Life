@@ -54,7 +54,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
-                hintText: "Your account's email",
+                hintText: "Your account's email address",
               ),
               onChanged: (val) {
                 setState(() => email = val);
@@ -65,7 +65,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
                 }
               },
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             SizedBox(
               height: 30,
               child: Text(
@@ -73,7 +73,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
                 style: TextStyle(color: Theme.of(context).errorColor),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             SizedBox(
               height: 56,
               child: Center(

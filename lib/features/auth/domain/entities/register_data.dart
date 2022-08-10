@@ -7,10 +7,10 @@ class RegisterData extends QueryParams {
   String lastName = '';
   String displayName = '';
   String email = '';
-  String password = '';
   String phone = '';
-  String companyId = '';
   String birthDate = '';
+  String password = '';
+  int? companyId;
 
   @override
   Map<String, dynamic> toJson() {

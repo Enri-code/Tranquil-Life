@@ -12,11 +12,20 @@ class OnboardScreen extends StatefulWidget {
 
 class _OnboardScreenState extends State<OnboardScreen> {
   static const _text = [
-    'Let’s connect and get you to a brighter state. What brings you to Tranquil Life?',
+    'Let\'s connect and get you to a brighter state. What brings you to Tranquil Life?',
     'We create an all day access to Psychologists, Counsellors and Therapists.'
   ];
   final _pageController = PageController();
+
   int page = 0;
+  @override
+  void initState() {
+    super.initState();
+    _pageController.addListener(() {
+      var nextPage = _pageController.page!.round();
+      if (nextPage != page) setState(() => page = nextPage);
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -30,6 +39,12 @@ class _OnboardScreenState extends State<OnboardScreen> {
     super.dispose();
   }
 
+  _goToPage(int page) => _pageController.animateToPage(
+        page,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutBack,
+      );
+
   @override
   Widget build(BuildContext context) {
     var color = Theme.of(context).primaryColor;
@@ -41,7 +56,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
             height: MediaQuery.of(context).size.height * 0.5,
             child: PageView(
               controller: _pageController,
-              onPageChanged: (value) => setState(() => page = value),
+              onPageChanged: _goToPage,
               children: List.generate(
                 _text.length,
                 (i) => Center(
@@ -57,10 +72,13 @@ class _OnboardScreenState extends State<OnboardScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(24),
-                child: Text(
-                  _text[page],
-                  style: const TextStyle(fontSize: 21, height: 1.5),
-                  textAlign: TextAlign.center,
+                child: SizedBox(
+                  height: 100,
+                  child: Text(
+                    _text[page],
+                    style: const TextStyle(fontSize: 21, height: 1.5),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
               Row(
@@ -79,7 +97,6 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
               SafeArea(
                 child: ElevatedButton(
                   child: page < _text.length - 1
@@ -87,7 +104,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                       : const Text('Continue'),
                   onPressed: () {
                     if (page < _text.length - 1) {
-                      setState(() => page++);
+                      _goToPage(page + 1);
                     } else {
                       AppData.isOnboardingCompleted = true;
                       Navigator.of(context).pushNamedAndRemoveUntil(

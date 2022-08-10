@@ -8,7 +8,7 @@ import 'package:tranquil_life/features/auth/domain/entities/register_data.dart';
 import 'package:tranquil_life/features/auth/domain/entities/client.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 
-class AuthRepoImpl extends AuthRepo<RegisterData, Client> {
+class AuthRepoImpl extends AuthRepo<Client, RegisterData> {
   const AuthRepoImpl();
 
   @override
@@ -59,7 +59,7 @@ class AuthRepoImpl extends AuthRepo<RegisterData, Client> {
           message: errors.fold('', (prev, next) => '$prev\n$next').trim(),
         ));
       }
-      return Right(ClientModel.fromJson(result.data));
+      return Right(ClientModel.fromJson(result.data['user']));
     } catch (e, s) {
       print(e);
       print(s);
@@ -72,20 +72,10 @@ class AuthRepoImpl extends AuthRepo<RegisterData, Client> {
   @override
   Future<Either<ResolvedError, bool>> resetPassword(String email) async {
     try {
-      var result =
-          await ApiClient.post(AuthEndPoints.passwordReset, body: email);
-      //final List<String>? errors = (result.data['errors'] as List?)?.cast();
-/*       if (errors != null) {
-        if (errors.length == 1 &&
-            errors[0] == 'The email has already been taken.') {
-          return Left(
-            ResolvedError(message: errors[0], cause: const EmailError()),
-          );
-        }
-        return Left(ResolvedError(
-          message: errors.fold('', (prev, next) => '$prev\n$next').trim(),
-        ));
-      } */
+      var result = await ApiClient.post(AuthEndPoints.passwordReset,
+          body: {'email': email});
+      print(result.data);
+      print(result.statusCode);
       return const Right(true);
     } catch (e, s) {
       print(e);
@@ -95,4 +85,23 @@ class AuthRepoImpl extends AuthRepo<RegisterData, Client> {
       ));
     }
   }
+/* 
+  @override
+  Future<Either<ResolvedError, bool>> isAuthenticated() async {
+    try {
+      var result = await ApiClient.post(AuthEndPoints.isAuthenticated);
+      print(result.data);
+      return Right(result.data != null);
+    } catch (e, s) {
+      print(e);
+      print(s);
+      return const Left(ResolvedError());
+    }
+  }
+
+  @override
+  Future<Either<ResolvedError, dynamic>> updateData() {
+    // TODO: implement updateData
+    throw UnimplementedError();
+  } */
 }

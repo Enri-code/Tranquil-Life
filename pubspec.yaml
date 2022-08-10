@@ -45,13 +45,25 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/icons/
     - assets/images/onboarding/
 
   fonts:
-    - family:  Tranquil
+    - family: Tranquil
       fonts:
         - asset: fonts/Tranquil.ttf
-        
+
+    - family: Josefin Sans
+      fonts:
+        - asset: fonts/josefin_sans/JosefinSans-Bold.ttf
+          weight: 700
+        - asset: fonts/josefin_sans/JosefinSans-SemiBold.ttf
+          weight: 600
+        - asset: fonts/josefin_sans/JosefinSans-Light.ttf
+          weight: 300
+        - asset: fonts/josefin_sans/JosefinSans-Regular.ttf
+          #weight: 400
+
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

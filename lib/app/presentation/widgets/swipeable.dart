@@ -20,6 +20,7 @@ class SwipeableWidget extends StatefulWidget {
 class _SwipeableWidgetState extends State<SwipeableWidget>
     with SingleTickerProviderStateMixin {
   late final AnimationController animator;
+  final curveAnim = CurveTween(curve: Curves.easeInBack);
 
   bool isOpen = false;
   double offset = 0, initialOffset = 0, lastOffset = 0;
@@ -29,10 +30,11 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
   void initState() {
     animator = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: 200),
     )..addListener(() {
         var toPosition = isOpen ? maxOffset : lastOffset;
-        setState(() => offset = toPosition * animator.value);
+        var val = curveAnim.animate(animator).value;
+        setState(() => offset = toPosition * val);
       });
     super.initState();
   }
@@ -44,12 +46,18 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
   }
 
   @override
+  void didUpdateWidget(covariant SwipeableWidget oldWidget) {
+    _animateTo(false);
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void dispose() {
     animator.dispose();
     super.dispose();
   }
 
-  animateTo(bool end) {
+  _animateTo(bool end) {
     isOpen = end;
     widget.onStateChanged?.call(end);
     lastOffset = offset;
@@ -72,7 +80,7 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
             child: Opacity(
               opacity: percentage.clamp(0, 1),
               child: Listener(
-                onPointerDown: (_) => animateTo(false),
+                onPointerDown: (_) => _animateTo(false),
                 behavior: HitTestBehavior.opaque,
                 child: widget.swipedWidget!,
               ),
@@ -80,7 +88,7 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
           ),
         GestureDetector(
           onTap: () {
-            if (isOpen) animateTo(false);
+            if (isOpen) _animateTo(false);
           },
           onHorizontalDragStart: (details) =>
               initialOffset = details.localPosition.dx,
@@ -102,14 +110,14 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
                 setState(() => offset = maxOffset);
               }
             } else if (isOpen) {
-              animateTo(false);
+              _animateTo(false);
             }
           },
-          onDoubleTap: () => animateTo(true),
-          onLongPress: () => animateTo(!isOpen),
-          onHorizontalDragCancel: () => animateTo(false),
+          onDoubleTap: () => _animateTo(true),
+          onLongPress: () => _animateTo(!isOpen),
+          onHorizontalDragCancel: () => _animateTo(false),
           onHorizontalDragEnd: (details) {
-            if (offset > maxOffset) animateTo(false);
+            if (offset > maxOffset) _animateTo(false);
           },
           child: Transform.translate(
             offset: Offset(offset, 0),

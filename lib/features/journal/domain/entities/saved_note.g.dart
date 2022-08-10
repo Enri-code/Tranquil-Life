@@ -10,7 +10,7 @@ Map<String, dynamic> _$SavedNoteToJson(SavedNote instance) => <String, dynamic>{
       'heading': instance.title,
       'body': instance.description,
       'emoji': instance.emoji,
-      'color_int': instance.colorInt,
+      'color_int': instance.hexColor,
       'id': instance.id,
       //'updated_at': instance.dateUpdated?.toIso8601String(),
     };

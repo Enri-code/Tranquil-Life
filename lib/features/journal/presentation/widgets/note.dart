@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
+import 'package:tranquil_life/core/utils/extensions/hex_color.dart';
 import 'package:tranquil_life/features/journal/domain/entities/saved_note.dart';
 
 class NoteWidget extends StatelessWidget {
@@ -12,7 +13,7 @@ class NoteWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(note.colorInt),
+        color: note.hexColor?.toColor() ?? const Color(0xffACD5E8),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Stack(
@@ -25,13 +26,16 @@ class NoteWidget extends StatelessWidget {
               children: [
                 Text(
                   note.title,
-                  style: const TextStyle(fontSize: 17, height: 1.4),
+                  style: const TextStyle(
+                    fontSize: 17,
+                    height: 1.4,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 26),
                 Text(
                   note.dateUpdated?.formatted ?? '',
-                  style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.w300),
+                  style: const TextStyle(fontSize: 15),
                 ),
               ],
             ),

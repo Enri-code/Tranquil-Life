@@ -23,10 +23,7 @@ class CustomIconButton extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.all(6),
-          child: icon,
-        ),
+        child: Padding(padding: const EdgeInsets.all(6), child: icon),
       ),
     );
   }

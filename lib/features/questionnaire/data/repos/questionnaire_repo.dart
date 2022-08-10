@@ -6,6 +6,7 @@ import 'package:dartz/dartz.dart';
 import 'package:tranquil_life/features/questionnaire/domain/repos/questionnaire_repo.dart';
 
 class QuestionnaireRepoImpl extends QuestionnaireRepo {
+  const QuestionnaireRepoImpl();
 /*   @override
   Future<Either<ResolvedError, bool>> hasSubmitted() async {
     //TODO:

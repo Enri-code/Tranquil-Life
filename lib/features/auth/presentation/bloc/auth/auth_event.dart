@@ -9,6 +9,10 @@ class RemoveError extends AuthEvent {
   const RemoveError();
 }
 
+class RestoreSignIn extends AuthEvent {
+  const RestoreSignIn();
+}
+
 class SignUp extends AuthEvent {
   const SignUp();
 }

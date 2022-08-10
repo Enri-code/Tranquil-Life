@@ -9,13 +9,13 @@ class Note {
   @JsonKey(name: 'body')
   final String description;
   final String? emoji;
-  final int colorInt;
+  final String? hexColor;
 
   const Note({
     this.title = '',
     this.description = '',
     this.emoji,
-    this.colorInt = 0xffACD5E8,
+    this.hexColor,
   });
 
   Map<String, dynamic> toJson() => _$NoteToJson(this);

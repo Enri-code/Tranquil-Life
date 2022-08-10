@@ -12,7 +12,7 @@ class SpeakWithConsultantScreen extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar(title: 'Speak with a consultant'),
       body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 4),
+        padding: const EdgeInsets.only(left: 16, right: 4),
         child: Column(
           children: [
             Expanded(
@@ -27,6 +27,7 @@ class SpeakWithConsultantScreen extends StatelessWidget {
                         child: ConsultantCard(
                           consultant: Consultant(
                             id: '$index',
+                            summary: 'Anxiety, self-esteem, and depression.',
                             description:
                                 'Specialist in matters relating to anxiety, self-esteem, and depression.',
                             name: 'Dr David Blaine Mckenzie',

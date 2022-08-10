@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
+import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 
 class MeetingCard extends StatelessWidget {
@@ -24,12 +25,12 @@ class MeetingCard extends StatelessWidget {
           ), //TODO
           const SizedBox(width: 8),
           Expanded(
-            child: DefaultTextStyle(
-              style: const TextStyle(fontSize: 16, color: Colors.black),
+            child: MyDefaultTextStyle(
+              style: const TextStyle(fontSize: 16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  DefaultTextStyle(
+                  MyDefaultTextStyle(
                     style: TextStyle(
                       color: ColorPalette.primary[800],
                       fontWeight: FontWeight.w600,
@@ -50,7 +51,7 @@ class MeetingCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       //TODO
-                      const Text('60:00'),
+                      const Text('60 mins'),
                       Text(
                         '19/08/2022',
                         style: TextStyle(color: ColorPalette.primary[800]),

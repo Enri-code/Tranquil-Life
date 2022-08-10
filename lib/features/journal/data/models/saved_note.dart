@@ -12,7 +12,7 @@ class SavedNoteModel extends SavedNote {
     super.title,
     super.description,
     super.emoji,
-    super.colorInt,
+    super.hexColor,
   });
 
   factory SavedNoteModel.fromJson(Map<String, dynamic> json) =>

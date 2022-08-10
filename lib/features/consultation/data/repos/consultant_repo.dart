@@ -5,13 +5,18 @@ import 'package:tranquil_life/core/utils/helpers/api_client.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
 import 'package:tranquil_life/features/consultation/domain/repos/consultant_repo.dart';
 
+//TODO
 class ConsultantRepoImpl extends ConsultantRepo {
+  const ConsultantRepoImpl();
   @override
   Future<Either<ResolvedError, List<Consultant>>> getAll() async {
     try {
       var result = await ApiClient.get(ConsultantEndPoints.getAll);
+      print(result.data);
       return const Right([]);
-    } catch (_) {
+    } catch (e, s) {
+      print(e);
+      print(s);
       return const Left(ResolvedError());
     }
   }

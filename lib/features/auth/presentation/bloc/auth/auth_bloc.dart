@@ -19,6 +19,7 @@ abstract class AuthBloc<P extends QueryParams>
     extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(const AuthState()) {
     on<RemoveError>(_resetError);
+    on<RestoreSignIn>(_restoreSignIn);
     on<SignUp>(_signUp);
     on<SignIn>(_signIn);
     on<SignOut>(_signOut);
@@ -26,21 +27,32 @@ abstract class AuthBloc<P extends QueryParams>
   }
 
   P get params;
-  AuthRepo get repo;
+  AuthRepo<Client, QueryParams> get repo;
 
   _resetError(RemoveError event, Emitter<AuthState> emit) =>
       emit(state.copyWith(status: OperationStatus.initial, error: null));
+  _restoreSignIn(RestoreSignIn event, Emitter<AuthState> emit) =>
+      emit(state.copyWith(
+        error: null,
+        user: AppData.user,
+        status: OperationStatus.initial,
+        authStatus: AuthStatus.signedIn,
+      ));
 
   _signUp(SignUp event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: OperationStatus.loading));
     var res = await repo.register(params);
     emit(res.fold(
       (l) => state.copyWith(status: OperationStatus.error, error: l),
-      (r) => state.copyWith(
-        status: OperationStatus.success,
-        user: AppData.user = r,
-        error: null,
-      ),
+      (r) {
+        AppData.user = r;
+        return state.copyWith(
+          status: OperationStatus.success,
+          authStatus: AuthStatus.signedIn,
+          user: r,
+          error: null,
+        );
+      },
     ));
   }
 
@@ -49,20 +61,26 @@ abstract class AuthBloc<P extends QueryParams>
     var res = await repo.signIn(event.email, event.password);
     emit(res.fold(
       (l) => state.copyWith(status: OperationStatus.error, error: l),
-      (r) => state.copyWith(
-        status: OperationStatus.success,
-        user: AppData.user = r,
-        error: null,
-      ),
+      (r) {
+        AppData.user = r;
+        return state.copyWith(
+          status: OperationStatus.success,
+          authStatus: AuthStatus.signedIn,
+          user: r,
+          error: null,
+        );
+      },
     ));
   }
 
   _signOut(SignOut event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: OperationStatus.loading));
     await signOutCase();
+    AppData.user = null;
     emit(state.copyWith(
       status: OperationStatus.success,
-      user: AppData.user = null,
+      authStatus: AuthStatus.signedOut,
+      user: null,
       error: null,
     ));
   }

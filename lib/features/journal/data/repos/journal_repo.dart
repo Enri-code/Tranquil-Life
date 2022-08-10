@@ -9,6 +9,7 @@ import 'package:tranquil_life/features/journal/domain/entities/saved_note.dart';
 import 'package:tranquil_life/features/journal/domain/repos/journal_repo.dart';
 
 class JournalRepoImpl extends JournalRepo {
+  const JournalRepoImpl();
   @override
   Future<Either<ResolvedError, List<SavedNote>>> getAll() async {
     try {

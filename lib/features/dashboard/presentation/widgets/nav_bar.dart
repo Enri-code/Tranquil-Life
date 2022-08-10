@@ -15,7 +15,10 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int currentIndex = 0;
 
-  void _onTap(int index) => setState(() => currentIndex = index);
+  void _onTap(int index) {
+    widget.onPageChanged(index);
+    setState(() => currentIndex = index);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,17 +60,14 @@ class _NavBarState extends State<NavBar> {
                       SpeedDialChild(
                         shape: const CircleBorder(),
                         child: const _Item(iconData: TranquilIcons.new_note),
-                        onTap: () {
-                          Navigator.of(context).pushNamed(NoteScreen.routeName);
-                        },
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(NoteScreen.routeName),
                       ),
                       SpeedDialChild(
                         shape: const CircleBorder(),
                         child: const _Item(iconData: TranquilIcons.view_note),
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(JournalsScreen.routeName);
-                        },
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(JournalsScreen.routeName),
                       ),
                     ],
                     activeChild: const _Item(
@@ -85,7 +85,7 @@ class _NavBarState extends State<NavBar> {
                     label: 'Profile',
                     iconData: TranquilIcons.profile,
                     isSelected: currentIndex == 4,
-                    onTap: () => _onTap(4),
+                    onTap: () => _onTap(2),
                   ),
                 ],
               ),
@@ -97,7 +97,7 @@ class _NavBarState extends State<NavBar> {
           child: SafeArea(
             top: false,
             child: GestureDetector(
-              onTap: () => widget.onPageChanged(2),
+              onTap: () => widget.onPageChanged(3),
               behavior: HitTestBehavior.opaque,
               child: Container(
                 padding: const EdgeInsets.all(9),

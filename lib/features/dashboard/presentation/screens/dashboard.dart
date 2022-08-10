@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/speak_with_consultant.dart';
 import 'package:tranquil_life/features/dashboard/presentation/screens/tabs/home.dart';
 import 'package:tranquil_life/features/dashboard/presentation/widgets/nav_bar.dart';
+import 'package:tranquil_life/features/dashboard/presentation/screens/tabs/profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const routeName = 'client_dashboard';
@@ -23,25 +24,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
         alignment: Alignment.bottomCenter,
         children: [
           Positioned.fill(
-            bottom: 94,
+            bottom: MediaQuery.of(context).padding.bottom + 62,
             child: IndexedStack(
               index: currentPage,
               sizing: StackFit.expand,
               children: const [
                 HomeTab(),
                 SizedBox(),
-                SizedBox(),
+                ProfileScreen(),
               ],
             ),
           ),
           NavBar(
             onPageChanged: (page) {
               switch (page) {
-                case 2:
+                case 3:
                   Navigator.of(context)
                       .pushNamed(SpeakWithConsultantScreen.routeName);
-                  return;
-                case 3:
                   return;
                 default:
                   setState(() => currentPage = page);

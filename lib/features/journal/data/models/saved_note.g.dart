@@ -13,5 +13,5 @@ SavedNoteModel _$SavedNoteModelFromJson(Map<String, dynamic> json) =>
       title: json['heading'] as String? ?? '',
       description: json['body'] as String? ?? '',
       emoji: json['emoji'] as String?,
-      colorInt: json['color_int'] as int? ?? 0xffACD5E8,
+      hexColor: json['color'] as String?,
     );

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tranquil_life">
+    package="com.tranquillife.client">
    <application
-        android:label="tranquil_life"
+        android:label="Tranquil Life"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

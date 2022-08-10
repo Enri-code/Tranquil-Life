@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
+import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/app/presentation/widgets/swipeable.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/features/notifications/domain/entities/notification.dart';
@@ -40,7 +41,7 @@ class NotificationCard extends StatelessWidget {
         alignment: AlignmentDirectional.topEnd,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
             margin: const EdgeInsets.symmetric(vertical: 12),
             decoration: BoxDecoration(
               color: Colors.grey[100],
@@ -59,14 +60,10 @@ class NotificationCard extends StatelessWidget {
                   imageUrl:
                       'https://media-exp1.licdn.com/dms/image/C4D03AQG9RwdZxoR3LA/profile-displayphoto-shrink_800_800/0/1641042314872?e=1664409600&v=beta&t=3i2pGW6GJaM47SVvonYStK24fA_OJO3nMbHq8JcFfZk',
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 14),
                 Expanded(
-                  child: DefaultTextStyle(
-                    style: const TextStyle(
-                      fontSize: 12.5,
-                      height: 1.4,
-                      color: Colors.black,
-                    ),
+                  child: MyDefaultTextStyle(
+                    style: const TextStyle(fontSize: 12.5, height: 1.4),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
@@ -108,7 +105,7 @@ class _DeleteIcon extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: ColorPalette.secondary[300],
+        color: ColorPalette.blue,
         borderRadius: BorderRadius.circular(8),
       ),
       child: const Icon(TranquilIcons.trash, size: 26, color: Colors.white),
