@@ -86,7 +86,6 @@ class _Title extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 4),
         Text(
           'Enrique!',
           style: TextStyle(
@@ -272,7 +271,7 @@ class _Meetings extends StatelessWidget {
                 child: const Center(
                   child: Text(
                     '4',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(color: Colors.white, fontSize: 19),
                   ),
                 ),
               ),

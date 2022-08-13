@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/core/constants/moods.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
@@ -112,25 +115,90 @@ class JournalsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-                child: SafeArea(
-                  child: StaggeredGrid.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 14,
-                    children: List.generate(
-                      _notes.length,
-                      (i) => _gridBuilder(context, _notes[i]),
+            child: Stack(
+              fit: StackFit.expand,
+              alignment: Alignment.bottomCenter,
+              children: [
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 66),
+                    child: SafeArea(
+                      child: StaggeredGrid.count(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 14,
+                        children: List.generate(
+                          _notes.length,
+                          (i) => _gridBuilder(context, _notes[i]),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+                Positioned(
+                  bottom: 6,
+                  child: SafeArea(
+                    child: SpeedDial(
+                      elevation: 0,
+                      overlayOpacity: 0.3,
+                      spaceBetweenChildren: 16,
+                      overlayColor: Colors.black,
+                      children: [
+                        SpeedDialChild(
+                          child: const _DialChild(icon: TranquilIcons.new_note),
+                          onTap: () {},
+                        ),
+                        SpeedDialChild(
+                          child: const _DialChild(
+                            icon: CupertinoIcons.share_solid,
+                          ),
+                          onTap: () {},
+                        ),
+                        SpeedDialChild(
+                          child: const _DialChild(icon: TranquilIcons.trash),
+                          onTap: () {},
+                        ),
+                      ],
+                      activeChild: const _Dial(icon: Icons.close),
+                      child: const _Dial(icon: TranquilIcons.menu),
+                    ),
+                  ),
+                ),
+              ],
             ),
           )
         ],
       ),
+    );
+  }
+}
+
+class _Dial extends StatelessWidget {
+  const _Dial({Key? key, required this.icon}) : super(key: key);
+  final IconData icon;
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      backgroundColor: Colors.black,
+      foregroundColor: Colors.white,
+      onPressed: null,
+      child: Icon(icon, size: 30),
+    );
+  }
+}
+
+class _DialChild extends StatelessWidget {
+  const _DialChild({Key? key, required this.icon}) : super(key: key);
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      elevation: 0,
+      backgroundColor: Theme.of(context).primaryColor,
+      foregroundColor: Colors.white,
+      onPressed: null,
+      child: Icon(icon),
     );
   }
 }

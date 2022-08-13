@@ -7,7 +7,13 @@ abstract class ConsultantEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetConsultants extends ConsultantEvent {}
+class GetConsultants extends ConsultantEvent {
+  const GetConsultants();
+}
+
+class BookConsultation extends ConsultantEvent {
+  const BookConsultation();
+}
 
 class RateConsultant extends ConsultantEvent {
   final String id;

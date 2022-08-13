@@ -84,7 +84,7 @@ class _NavBarState extends State<NavBar> {
                   _Item(
                     label: 'Profile',
                     iconData: TranquilIcons.profile,
-                    isSelected: currentIndex == 4,
+                    isSelected: currentIndex == 2,
                     onTap: () => _onTap(2),
                   ),
                 ],
@@ -136,26 +136,26 @@ class _Item extends StatelessWidget {
     var color = (isSelected ?? true)
         ? Theme.of(context).primaryColor
         : Colors.grey[600];
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Padding(
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
             padding: const EdgeInsets.all(4),
             child: Icon(iconData, size: 28, color: color),
           ),
-        ),
-        if (label != null)
-          Text(
-            label!,
-            style: TextStyle(
-              color: color,
-              fontSize: 14,
-              fontWeight: FontWeight.normal,
+          if (label != null)
+            Text(
+              label!,
+              style: TextStyle(
+                color: color,
+                fontSize: 14,
+                fontWeight: FontWeight.normal,
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }

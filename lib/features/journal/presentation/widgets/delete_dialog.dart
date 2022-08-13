@@ -11,10 +11,9 @@ class DeleteNoteDialog extends StatelessWidget {
     return ConfirmDialog(
       title: 'Delete Note?',
       body: 'This note will be permanently deleted.',
-      noDialog: const DialogOption('Cancel'),
       yesDialog: DialogOption(
         'Delete',
-        () {},//TODO
+        () {}, //TODO
       ),
     );
   }

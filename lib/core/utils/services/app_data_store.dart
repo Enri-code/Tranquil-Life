@@ -10,7 +10,6 @@ abstract class _Store {
       _box!.get(key) ?? defaultValue;
 
   static Future set(String key, dynamic value) => _box!.put(key, value);
-  //static Future delete(String key) => _box.delete(key);
   static Future deleteAll(List<String> keys) => _box!.deleteAll(keys);
 }
 
@@ -18,6 +17,7 @@ abstract class _Keys {
   static const user = 'user';
   static const isSignedIn = 'isSignedIn';
   static const isOnboardingCompleted = 'isOnboardingCompleted';
+  static const hasReadMeetingAbsenceMessage = 'hasReadMeetingAbsenceMessage';
   static const hasAnsweredQuestions = 'hasAnsweredQuestions';
 }
 
@@ -33,6 +33,11 @@ abstract class AppData {
       _Store.get(_Keys.hasAnsweredQuestions, defaultValue: false)!;
   static set hasAnsweredQuestions(bool val) =>
       _Store.set(_Keys.hasAnsweredQuestions, val);
+
+  static bool get hasReadMeetingAbsenceMessage =>
+      _Store.get(_Keys.hasReadMeetingAbsenceMessage, defaultValue: false)!;
+  static set hasReadMeetingAbsenceMessage(bool val) =>
+      _Store.set(_Keys.hasReadMeetingAbsenceMessage, val);
 
   static Client? get user {
     var val = _Store.get(_Keys.user);

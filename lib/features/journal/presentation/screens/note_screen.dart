@@ -1,16 +1,18 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tranquil_life/app/presentation/theme/colors.dart';
+import 'package:flutter/services.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
+import 'package:tranquil_life/core/utils/extensions/hex_color.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 import 'package:tranquil_life/features/journal/domain/entities/saved_note.dart';
 
 class NoteScreen extends StatefulWidget {
-  /// argument can be a [Note]
+  /// argument can be a [Note]?
   static const routeName = 'note_screen';
   const NoteScreen({Key? key}) : super(key: key);
 
@@ -23,17 +25,16 @@ class _NoteScreenState extends State<NoteScreen> {
   final _bodyTextController = TextEditingController();
   final _nowDate = DateTime.now();
 
-  late Note? _note;
+  late Note _note;
   bool _canSave = false;
   late String heroPrefix;
 
   @override
   void didChangeDependencies() {
-    _note = ModalRoute.of(context)?.settings.arguments as Note?;
+    _note = ModalRoute.of(context)?.settings.arguments as Note? ?? Note();
     heroPrefix = _note is SavedNote ? 'saved' : 'home';
-    //_note ??= Note(title: '', description: '', dateUpdated: DateTime.now());
-    _titleTextController.text = _note?.title ?? '';
-    _bodyTextController.text = _note?.description ?? '';
+    _titleTextController.text = _note.title;
+    _bodyTextController.text = _note.description;
     super.didChangeDependencies();
   }
 
@@ -49,27 +50,31 @@ class _NoteScreenState extends State<NoteScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Note',
-        //onBackPressed: () {},
         actions: [
           if (_canSave)
             AppBarAction(
               child: const Icon(Icons.done, color: Colors.white),
               onPressed: () {
-                _note = Note(
-                  title: _titleTextController.text,
-                  description: _bodyTextController.text,
-                  emoji: _note?.emoji,
-                );
+                _note.title = _titleTextController.text;
+                _note.description = _bodyTextController.text;
+                setState(() => _canSave = false);
+              },
+            )
+          else
+            AppBarAction(
+              child: const Padding(
+                padding: EdgeInsets.all(1),
+                child: Icon(
+                  CupertinoIcons.list_bullet,
+                  color: Colors.white,
+                  size: 22,
+                ),
+              ),
+              onPressed: () async {
+                var newColor = await showNoteDialog(context, _note);
+                _note.hexColor = newColor?.value.toHex();
               },
             ),
-          AppBarAction(
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: Icon(Icons.more_vert, color: ColorPalette.primary[800]),
-            ),
-            isCustomButton: false,
-            onPressed: () => showNoteDialog(context, _note),
-          ),
         ],
       ),
       body: UnfocusWidget(
@@ -80,10 +85,12 @@ class _NoteScreenState extends State<NoteScreen> {
             children: [
               TextField(
                 maxLines: null,
-                maxLength: 150,
+                maxLength: _titleTextController.text.length < 100 ? null : 150,
                 controller: _titleTextController,
                 textInputAction: TextInputAction.done,
                 style: const TextStyle(height: 1.3, fontSize: 29),
+                maxLengthEnforcement:
+                    MaxLengthEnforcement.truncateAfterCompositionEnds,
                 decoration: const InputDecoration(
                   filled: false,
                   hintText: 'Title...',
@@ -112,11 +119,11 @@ class _NoteScreenState extends State<NoteScreen> {
                             ),
                           ),
                           const Spacer(),
-                          if (_note?.emoji != null)
+                          if (_note.emoji != null)
                             Hero(
-                              tag: '$heroPrefix-${_note!.emoji!}',
+                              tag: '$heroPrefix-${_note.emoji!}',
                               child: Text(
-                                _note!.emoji!,
+                                _note.emoji!,
                                 style: Platform.isIOS
                                     ? const TextStyle(fontSize: 48)
                                     : const TextStyle(fontSize: 40),
@@ -140,10 +147,8 @@ class _NoteScreenState extends State<NoteScreen> {
                             enabledBorder: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(vertical: 16),
                           ),
-                          onChanged: (val) => setState(() {
-                            _canSave = val.isNotEmpty &&
-                                _titleTextController.text.isNotEmpty;
-                          }),
+                          onChanged: (val) => setState(() =>
+                              _canSave = _titleTextController.text.isNotEmpty),
                         ),
                       ),
                     ],

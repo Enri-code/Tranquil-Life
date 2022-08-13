@@ -39,12 +39,10 @@ class _ConsultantDetailScreenState extends State<ConsultantDetailScreen> {
     return Scaffold(
       body: Hero(
         tag: doneAnimating ? '' : '${consultant.id}-img',
-        createRectTween: (r1, r2) {
-          return RectTween(
-            begin: Rect.fromLTRB(r2!.left, r1!.top, r2.right * 0.5, r1.bottom),
-            end: r2,
-          );
-        },
+        createRectTween: (r1, r2) => RectTween(
+          begin: Rect.fromLTRB(r2!.left, r1!.top, r2.right * 0.5, r1.bottom),
+          end: r2,
+        ),
         flightShuttleBuilder: _imageToPageBuilder,
         child: _PageBody(consultant: consultant),
       ),
@@ -54,7 +52,6 @@ class _ConsultantDetailScreenState extends State<ConsultantDetailScreen> {
 
 class _PageBody extends StatelessWidget {
   const _PageBody({Key? key, required this.consultant}) : super(key: key);
-
   final Consultant consultant;
 
   @override
@@ -151,10 +148,13 @@ class _PageBody extends StatelessWidget {
                     SizedBox(
                       height: 48,
                       child: ElevatedButton(
-                        onPressed: () => Navigator.of(context).pushNamed(
-                          ScheduleMeetingScreen.routeName,
-                          arguments: consultant,
-                        ),
+                        onPressed: () => Navigator.of(context)
+                            .pushNamed(
+                              ScheduleMeetingScreen.routeName,
+                              arguments: consultant,
+                            )
+                            .whenComplete(() => setStatusBarBrightness(
+                                false, const Duration(milliseconds: 400))),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: const [

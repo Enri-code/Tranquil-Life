@@ -91,7 +91,7 @@ class ConsultantCard extends StatelessWidget {
                 Align(
                   alignment: const Alignment(-0.9, 0),
                   child: Text(
-                    consultant.summary,
+                    consultant.specialties,
                     style: const TextStyle(fontSize: 12.5),
                   ),
                 ),

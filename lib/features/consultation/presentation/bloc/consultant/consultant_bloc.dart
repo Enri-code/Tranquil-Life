@@ -13,9 +13,12 @@ class ConsultantBloc extends Bloc<ConsultantEvent, ConsultantState> {
   ConsultantBloc(this._repo) : super(const ConsultantState()) {
     on(_getConsultants);
     on(_rateConsultants);
+    on(_bookConsultation);
   }
   final ConsultantRepo _repo;
 
   _getConsultants(GetConsultants event, Emitter<ConsultantState> emit) async {}
   _rateConsultants(RateConsultant event, Emitter<ConsultantState> emit) async {}
+  _bookConsultation(
+      BookConsultation event, Emitter<ConsultantState> emit) async {}
 }

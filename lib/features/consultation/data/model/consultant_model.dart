@@ -8,7 +8,7 @@ class ConsultantModel extends Consultant {
   const ConsultantModel({
     required super.id,
     required super.name,
-    required super.summary,
+    required super.specialties,
     required super.description,
     super.avatarUrl,
   });

@@ -4,7 +4,10 @@ extension DateTimeExtension on DateTime {
   static final _dateFormat = DateFormat.yMMMMd();
   static final _timeFormat = DateFormat('hh:mm a');
 
-  String get folded => '$day-$month-$year';
+  String get folded {
+    _toPaddedString(int val) => val.toString().padLeft(2, '0');
+    return '${_toPaddedString(day)}-${_toPaddedString(month)}-$year';
+  }
 
   String get formatted {
     var now = DateTime.now();

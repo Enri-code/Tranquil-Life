@@ -5,18 +5,13 @@ part 'note.g.dart';
 @JsonSerializable(createToJson: true)
 class Note {
   @JsonKey(name: 'heading')
-  final String title;
+  String title;
   @JsonKey(name: 'body')
-  final String description;
-  final String? emoji;
-  final String? hexColor;
+  String description;
+  String? emoji;
+  String? hexColor;
 
-  const Note({
-    this.title = '',
-    this.description = '',
-    this.emoji,
-    this.hexColor,
-  });
+  Note({this.title = '', this.description = '', this.emoji, this.hexColor});
 
   Map<String, dynamic> toJson() => _$NoteToJson(this);
 }

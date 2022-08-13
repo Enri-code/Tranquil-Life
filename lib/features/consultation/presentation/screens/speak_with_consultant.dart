@@ -27,7 +27,8 @@ class SpeakWithConsultantScreen extends StatelessWidget {
                         child: ConsultantCard(
                           consultant: Consultant(
                             id: '$index',
-                            summary: 'Anxiety, self-esteem, and depression.',
+                            specialties:
+                                'Anxiety, self-esteem, and depression.',
                             description:
                                 'Specialist in matters relating to anxiety, self-esteem, and depression.',
                             name: 'Dr David Blaine Mckenzie',

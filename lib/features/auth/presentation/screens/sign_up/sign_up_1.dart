@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
-import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
-import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/auth/domain/entities/register_data.dart';
@@ -142,7 +139,11 @@ class _ClientSignUpScreen1State extends State<SignUp1Screen> {
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: GestureDetector(
                     onTap: () async {
-                      var val = await showPickerForDate(context);
+                      var val = await showCustomDatePicker(
+                        context,
+                        minDateFromNow: DateTime(-100, 0, 0),
+                        maxDateFromNow: DateTime(-16, 0, 0),
+                      );
                       _dateTextController.text =
                           val?.formatted ?? _dateTextController.text;
                       params.birthDate = val?.folded ?? params.birthDate;

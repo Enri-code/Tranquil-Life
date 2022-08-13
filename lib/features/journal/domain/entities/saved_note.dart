@@ -5,7 +5,7 @@ part 'saved_note.g.dart';
 
 @JsonSerializable(createToJson: true)
 class SavedNote extends Note {
-  const SavedNote({
+  SavedNote({
     required this.id,
     required this.dateUpdated,
     super.title,

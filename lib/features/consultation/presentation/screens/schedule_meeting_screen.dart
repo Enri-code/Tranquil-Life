@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
+import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
+import 'package:tranquil_life/core/utils/services/app_data_store.dart';
+import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
+import 'package:tranquil_life/features/consultation/presentation/bloc/consultant/consultant_bloc.dart';
+import 'package:tranquil_life/features/consultation/presentation/widgets/meeting_absence_warning_dialog.dart';
 
 part '../widgets/schedule_meeting_widgets.dart';
 
@@ -18,6 +24,8 @@ class ScheduleMeetingScreen extends StatefulWidget {
 
 class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
   late Consultant consultant;
+  String? date;
+  // String? time;
 
   @override
   void didChangeDependencies() {
@@ -55,11 +63,18 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
                     surfaceTintColor: Colors.white,
                     shadowColor: Colors.black.withOpacity(0.5),
                   ),
-                  onPressed: () {},
-                  child: const _CardInfo(
+                  onPressed: () async {
+                    var chosenDate = await showCustomDatePicker(
+                      context,
+                      minDateFromNow: DateTime(0, 0),
+                      maxDateFromNow: DateTime(0),
+                    );
+                    setState(() => date = chosenDate?.folded);
+                  },
+                  child: _CardInfo(
                     icon: Icons.calendar_today,
                     title: 'Date',
-                    info: '05-08-2022',
+                    info: date ?? 'Select a date',
                   ),
                 ),
               ),
@@ -79,9 +94,21 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
               ),
               const SizedBox(height: 40),
               ElevatedButton(
-                onPressed: () {
-                  //Icons.warning,
-                },
+                onPressed: date == null /*  || time == null */
+                    ? null
+                    : () {
+                        if (!AppData.hasReadMeetingAbsenceMessage) {
+                          showDialog(
+                            context: context,
+                            barrierColor: const Color(0x9D000000),
+                            builder: (_) => const MeetingAbsenceWarningDialog(),
+                          );
+                          return;
+                        }
+                        context
+                            .read<ConsultantBloc>()
+                            .add(const BookConsultation());
+                      },
                 child: const Text('Confirm Booking'),
               ),
             ],

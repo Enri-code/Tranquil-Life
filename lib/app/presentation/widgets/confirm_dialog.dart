@@ -14,7 +14,7 @@ class ConfirmDialog extends StatelessWidget {
     this.title,
     this.body,
     this.yesDialog,
-    this.noDialog,
+    this.noDialog = const DialogOption('Cancel'),
   })  : assert(title != null || body != null),
         super(key: key);
 
@@ -31,7 +31,7 @@ class ConfirmDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: MyDefaultTextStyle(
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+        style: const TextStyle(fontSize: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,13 +42,21 @@ class ConfirmDialog extends StatelessWidget {
                 child: Text(
                   title!,
                   style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.normal),
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             if (body != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
-                child: Text(body!, style: const TextStyle(height: 1.3)),
+                child: Text(
+                  body!,
+                  style: const TextStyle(
+                    height: 1.3,
+                    color: Color.fromARGB(255, 82, 82, 82),
+                  ),
+                ),
               ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

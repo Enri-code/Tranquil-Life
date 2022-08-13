@@ -1,11 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/core/constants/note_colors.dart';
+import 'package:tranquil_life/core/utils/extensions/hex_color.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
+import 'package:tranquil_life/features/journal/presentation/widgets/delete_dialog.dart';
+import 'package:tranquil_life/features/journal/presentation/widgets/share_note_sheet.dart';
 
-class NoteBottomSheet extends StatelessWidget {
-  const NoteBottomSheet({Key? key, this.note}) : super(key: key);
-  final Note? note;
+class NoteBottomSheet extends StatefulWidget {
+  const NoteBottomSheet(this.note, {Key? key}) : super(key: key);
+  final Note note;
+
+  @override
+  State<NoteBottomSheet> createState() => _NoteBottomSheetState();
+}
+
+class _NoteBottomSheetState extends State<NoteBottomSheet> {
+  Color? selectedColor;
+
+  @override
+  void initState() {
+    selectedColor = widget.note.hexColor?.toColor();
+    super.initState();
+  }
+
+  _onChooseColor(Color? color) {
+    setState(() => selectedColor = color);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +44,30 @@ class NoteBottomSheet extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 6),
               child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children: List.generate(
-                  colors.length,
-                  (index) => Container(
-                    width: 31,
-                    height: 31,
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: colors[index],
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    GestureDetector(
+                      onTap: () => _onChooseColor(null),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 7),
+                        child: Icon(Icons.cancel_outlined, size: 30),
+                      ),
                     ),
-                  ),
-                ),
-              ),
+                    ...List.generate(
+                      colors.length,
+                      (index) {
+                        var color = colors[index];
+                        return GestureDetector(
+                          onTap: () => _onChooseColor(color),
+                          child: _ColorCircle(
+                            color,
+                            isSelected: color == selectedColor,
+                          ),
+                        );
+                      },
+                    ),
+                  ]),
             ),
           ),
           const SizedBox(height: 8),
@@ -48,18 +77,66 @@ class NoteBottomSheet extends StatelessWidget {
               _Option(
                 label: 'Share note with a consultant',
                 icon: const Icon(CupertinoIcons.share),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  return showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (_) => ShareNoteBottomSheet(widget.note),
+                  );
+                },
               ),
               const SizedBox(height: 4),
               _Option(
                 label: 'Delete note',
                 icon: const Icon(CupertinoIcons.delete),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  return showDialog(
+                    context: context,
+                    builder: (_) => Dialog(
+                      child: DeleteNoteDialog(note: widget.note),
+                    ),
+                  );
+                },
               ),
             ],
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ColorCircle extends StatelessWidget {
+  const _ColorCircle(this.color, {Key? key, required this.isSelected})
+      : super(key: key);
+
+  final Color color;
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        AnimatedContainer(
+          width: 30,
+          height: 30,
+          duration: const Duration(milliseconds: 200),
+          margin: const EdgeInsets.symmetric(horizontal: 7),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: color,
+            border: isSelected ? Border.all(color: Colors.black) : null,
+          ),
+        ),
+        AnimatedOpacity(
+          opacity: isSelected ? 1 : 0,
+          duration: const Duration(milliseconds: 200),
+          child: const Icon(Icons.check, color: Colors.white),
+        ),
+      ],
     );
   }
 }
