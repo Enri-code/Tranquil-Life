@@ -49,12 +49,16 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             isStatusBarDark ? Brightness.light : Brightness.dark,
       ),
       leading: (Navigator.of(context).canPop()) || onBackPressed != null
-          ? Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Center(
-                child: AppBarButton(
-                  onPressed: onBackPressed ?? Navigator.of(context).pop,
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+          ? Center(
+              child: AppBarButton(
+                onPressed: onBackPressed ?? Navigator.of(context).pop,
+                icon: const Padding(
+                  padding: EdgeInsets.all(2),
+                  child: Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
               ),
             )

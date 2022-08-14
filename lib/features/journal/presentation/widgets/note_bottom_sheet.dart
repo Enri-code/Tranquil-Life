@@ -7,8 +7,11 @@ import 'package:tranquil_life/features/journal/presentation/widgets/delete_dialo
 import 'package:tranquil_life/features/journal/presentation/widgets/share_note_sheet.dart';
 
 class NoteBottomSheet extends StatefulWidget {
-  const NoteBottomSheet(this.note, {Key? key}) : super(key: key);
+  const NoteBottomSheet(this.note, {Key? key, this.onColorChanged})
+      : super(key: key);
+
   final Note note;
+  final Function(Color?)? onColorChanged;
 
   @override
   State<NoteBottomSheet> createState() => _NoteBottomSheetState();
@@ -25,6 +28,7 @@ class _NoteBottomSheetState extends State<NoteBottomSheet> {
 
   _onChooseColor(Color? color) {
     setState(() => selectedColor = color);
+    widget.onColorChanged?.call(color);
   }
 
   @override

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
@@ -10,6 +11,7 @@ import 'package:tranquil_life/core/utils/extensions/hex_color.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 import 'package:tranquil_life/features/journal/domain/entities/saved_note.dart';
+import 'package:tranquil_life/features/journal/presentation/bloc/note/note_bloc.dart';
 
 class NoteScreen extends StatefulWidget {
   /// argument can be a [Note]?
@@ -25,14 +27,15 @@ class _NoteScreenState extends State<NoteScreen> {
   final _bodyTextController = TextEditingController();
   final _nowDate = DateTime.now();
 
-  late Note _note;
   bool _canSave = false;
-  late String heroPrefix;
+
+  late Note _note;
+  late bool isAlreadySaved;
 
   @override
   void didChangeDependencies() {
     _note = ModalRoute.of(context)?.settings.arguments as Note? ?? Note();
-    heroPrefix = _note is SavedNote ? 'saved' : 'home';
+    isAlreadySaved = _note is SavedNote;
     _titleTextController.text = _note.title;
     _bodyTextController.text = _note.description;
     super.didChangeDependencies();
@@ -70,10 +73,18 @@ class _NoteScreenState extends State<NoteScreen> {
                   size: 22,
                 ),
               ),
-              onPressed: () async {
-                var newColor = await showNoteDialog(context, _note);
-                _note.hexColor = newColor?.value.toHex();
-              },
+              onPressed: () async => showNoteDialog(
+                context,
+                _note,
+                onColorChanged: (color) {
+                  _note.hexColor = color?.toHex();
+                  if (isAlreadySaved) {
+                    context
+                        .read<NoteBloc>()
+                        .add(UpdateNote(_note as SavedNote));
+                  }
+                },
+              ),
             ),
         ],
       ),
@@ -121,7 +132,8 @@ class _NoteScreenState extends State<NoteScreen> {
                           const Spacer(),
                           if (_note.emoji != null)
                             Hero(
-                              tag: '$heroPrefix-${_note.emoji!}',
+                              tag:
+                                  '${isAlreadySaved ? 'saved' : 'home'}-${_note.emoji!}',
                               child: Text(
                                 _note.emoji!,
                                 style: Platform.isIOS

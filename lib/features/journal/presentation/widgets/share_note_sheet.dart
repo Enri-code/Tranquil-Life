@@ -30,15 +30,20 @@ class ShareNoteBottomSheet extends StatelessWidget {
                 child: Text('Share this note with a consultant'),
               ),
               const SizedBox(height: 12),
-              Column(
-                children: List.generate(
-                  2,
-                  (index) => const _ConsultantWidget(
-                    Consultant(
-                      id: '0',
-                      name: 'Dr. David blaine Mckenzie',
-                      avatarUrl:
-                          'https://media-exp1.licdn.com/dms/image/C4D03AQG9RwdZxoR3LA/profile-displayphoto-shrink_800_800/0/1641042314872?e=1664409600&v=beta&t=3i2pGW6GJaM47SVvonYStK24fA_OJO3nMbHq8JcFfZk',
+              Flexible(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(
+                      8,
+                      (index) => const _ConsultantWidget(
+                        Consultant(
+                          id: '0',
+                          name: 'Dr. David blaine Mckenzie',
+                          avatarUrl:
+                              'https://media-exp1.licdn.com/dms/image/C4D03AQG9RwdZxoR3LA/profile-displayphoto-shrink_800_800/0/1641042314872?e=1664409600&v=beta&t=3i2pGW6GJaM47SVvonYStK24fA_OJO3nMbHq8JcFfZk',
+                        ),
+                      ),
                     ),
                   ),
                 ),

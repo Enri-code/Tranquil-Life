@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tranquil_life/features/chat/presentation/screens/chat_screen.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/speak_with_consultant.dart';
 import 'package:tranquil_life/features/dashboard/presentation/screens/tabs/home.dart';
 import 'package:tranquil_life/features/dashboard/presentation/widgets/nav_bar.dart';
@@ -39,8 +40,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             onPageChanged: (page) {
               switch (page) {
                 case 3:
-                  Navigator.of(context)
-                      .pushNamed(SpeakWithConsultantScreen.routeName);
+                  if (true) //TODO in a meeting
+                  {
+                    Navigator.of(context).pushNamed(ChatScreen.routeName);
+                  } else {
+                    Navigator.of(context)
+                        .pushNamed(SpeakWithConsultantScreen.routeName);
+                  }
                   return;
                 default:
                   setState(() => currentPage = page);

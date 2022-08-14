@@ -7,7 +7,7 @@ import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 import 'package:tranquil_life/features/journal/presentation/widgets/note_bottom_sheet.dart';
 
 void setStatusBarBrightness(bool dark, [Duration? delayedTime]) async {
-  if (delayedTime != null) await Future.delayed(delayedTime);
+  await Future.delayed(delayedTime ?? const Duration(milliseconds: 50));
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarIconBrightness: dark ? Brightness.dark : Brightness.light,
     statusBarBrightness: dark ? Brightness.light : Brightness.dark,
@@ -17,10 +17,7 @@ void setStatusBarBrightness(bool dark, [Duration? delayedTime]) async {
 Future<DateTime?> showCustomDatePicker(BuildContext context,
     {required DateTime minDateFromNow, required DateTime maxDateFromNow}) {
   var now = DateTime.now();
-/*
-  var min = DateTime(now.year - 100, now.month, now.day);
-  var max = DateTime(now.year - 16, now.month, now.day);
-*/
+
   var min = DateTime(
     now.year + minDateFromNow.year,
     now.month + minDateFromNow.month,
@@ -50,9 +47,10 @@ Future<DateTime?> showCustomDatePicker(BuildContext context,
   );
 }
 
-Future<Color?> showNoteDialog(BuildContext context, Note note) =>
+Future<Color?> showNoteDialog(BuildContext context, Note note,
+        {Function(Color?)? onColorChanged}) =>
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (_) => NoteBottomSheet(note),
+      builder: (_) => NoteBottomSheet(note, onColorChanged: onColorChanged),
     );

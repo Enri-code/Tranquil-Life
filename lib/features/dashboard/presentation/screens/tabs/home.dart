@@ -24,7 +24,11 @@ class _Title extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Hi,', style: TextStyle(color: themeColor, fontSize: 22)),
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text('Hi,',
+                  style: TextStyle(color: themeColor, fontSize: 22)),
+            ),
             const Spacer(),
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -118,17 +122,18 @@ class HomeTab extends StatelessWidget {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(22, 12, 22, 0),
+                        padding: const EdgeInsets.fromLTRB(22, 8, 22, 0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const _Title(),
                             const SizedBox(height: 24),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.42,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.425,
                               child: const _Meetings(),
                             ),
-                            const SizedBox(height: 40),
+                            const SizedBox(height: 32),
                             const MoodsListView(),
                             const SizedBox(height: 28),
                           ],
@@ -204,6 +209,8 @@ class _AppBarState extends State<_AppBar> {
         const Spacer(),
         PopupMenuButton(
           icon: const Icon(Icons.more_vert),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           itemBuilder: (_) => [
             const PopupMenuItem(value: 0, child: Text('Our blog')),
           ],

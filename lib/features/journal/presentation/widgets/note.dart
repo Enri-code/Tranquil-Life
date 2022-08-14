@@ -8,14 +8,13 @@ import 'package:tranquil_life/features/journal/domain/entities/saved_note.dart';
 class NoteWidget extends StatelessWidget {
   const NoteWidget({Key? key, required this.note}) : super(key: key);
   final SavedNote note;
-  static const _defaultNoteColor = Color.fromARGB(255, 253, 253, 253);
+  static const _defaultNoteColor = Color(0xFFFDFDFD);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: note.hexColor?.toColor() ??
-            _defaultNoteColor /* const Color(0xffACD5E8) */,
+        color: note.hexColor?.toColor() ?? _defaultNoteColor,
         borderRadius: BorderRadius.circular(8),
         boxShadow: const [
           BoxShadow(

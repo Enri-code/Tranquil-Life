@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
@@ -7,6 +8,7 @@ import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/core/constants/moods.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/journal/domain/entities/saved_note.dart';
+import 'package:tranquil_life/features/journal/presentation/bloc/note/note_bloc.dart';
 import 'package:tranquil_life/features/journal/presentation/screens/note_screen.dart';
 import 'package:tranquil_life/features/journal/presentation/widgets/note.dart';
 
@@ -69,11 +71,7 @@ class JournalsScreen extends StatelessWidget {
     ),
   ];
 
-  static Widget _gridBuilder(BuildContext context, SavedNote note) {
-    final noteWidget = NoteWidget(note: note);
-/*     if (note.title.length > 60) {
-      return StaggeredGridTile.fit(crossAxisCellCount: 2, child: noteWidget);
-    } */
+  Widget _gridBuilder(BuildContext context, SavedNote note) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(NoteScreen.routeName, arguments: note);
@@ -82,7 +80,10 @@ class JournalsScreen extends StatelessWidget {
       child: ConstrainedBox(
         constraints:
             BoxConstraints(minHeight: MediaQuery.of(context).size.width * 0.3),
-        child: noteWidget,
+        child: BlocBuilder<NoteBloc, NoteState>(
+          buildWhen: (_, current) => current.affectedNote == note,
+          builder: (context, state) => NoteWidget(note: note),
+        ),
       ),
     );
   }
@@ -141,12 +142,14 @@ class JournalsScreen extends StatelessWidget {
                     child: SpeedDial(
                       elevation: 0,
                       overlayOpacity: 0.3,
-                      spaceBetweenChildren: 16,
+                      spaceBetweenChildren: 12,
                       overlayColor: Colors.black,
+                      backgroundColor: Theme.of(context).primaryColor,
                       children: [
                         SpeedDialChild(
                           child: const _DialChild(icon: TranquilIcons.new_note),
-                          onTap: () {},
+                          onTap: () => Navigator.of(context)
+                              .pushNamed(NoteScreen.routeName),
                         ),
                         SpeedDialChild(
                           child: const _DialChild(

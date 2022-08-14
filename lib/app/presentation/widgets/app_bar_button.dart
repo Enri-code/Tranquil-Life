@@ -5,9 +5,11 @@ class AppBarButton extends StatelessWidget {
     Key? key,
     required this.icon,
     required this.onPressed,
+    this.backgroundColor,
   }) : super(key: key);
 
   final Widget icon;
+  final Color? backgroundColor;
   final Function()? onPressed;
 
   @override
@@ -17,8 +19,8 @@ class AppBarButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(9),
+          color: backgroundColor ?? Theme.of(context).primaryColor,
         ),
         child: icon,
       ),

@@ -25,7 +25,7 @@ class ScheduleMeetingScreen extends StatefulWidget {
 class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
   late Consultant consultant;
   String? date;
-  // String? time;
+  String? time;
 
   @override
   void didChangeDependencies() {
@@ -45,11 +45,14 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
             children: [
               const _DayTimePicker(),
               const SizedBox(height: 32),
-              const Align(
-                alignment: Alignment.bottomLeft,
-                child: _TimePickerWidget(),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: _TimePickerWidget(
+                  date: date,
+                  onTimeChosen: (chosenTime) =>
+                      setState(() => time = chosenTime),
+                ),
               ),
-              const SizedBox(height: 32),
               SizedBox(
                 height: 80,
                 child: ElevatedButton(
@@ -94,7 +97,7 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
               ),
               const SizedBox(height: 40),
               ElevatedButton(
-                onPressed: date == null /*  || time == null */
+                onPressed: date == null || time == null
                     ? null
                     : () {
                         if (!AppData.hasReadMeetingAbsenceMessage) {
@@ -120,7 +123,14 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
 }
 
 class _TimePickerWidget extends StatefulWidget {
-  const _TimePickerWidget({Key? key}) : super(key: key);
+  const _TimePickerWidget({
+    Key? key,
+    required this.date,
+    required this.onTimeChosen,
+  }) : super(key: key);
+
+  final String? date;
+  final Function(String time) onTimeChosen;
 
   @override
   State<_TimePickerWidget> createState() => _TimePickerWidgetState();
@@ -131,21 +141,36 @@ class _TimePickerWidgetState extends State<_TimePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return MyDefaultTextStyle(
-      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-      child: Wrap(
-        spacing: 20,
-        runSpacing: 20,
-        children: List.generate(
-          12,
-          (i) => GestureDetector(
-            onTap: () => setState(() => selectedIndex = i),
-            child: _TimeWidget(
-              text: '06:00 PM',
-              isSelected: selectedIndex == i,
-            ),
-          ),
-        ),
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 250),
+      alignment: Alignment.centerLeft,
+      child: MyDefaultTextStyle(
+        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        child: widget.date == null
+            ? const SizedBox(height: 16)
+            : Padding(
+                padding: const EdgeInsets.only(bottom: 32),
+                child: Wrap(
+                  spacing: 20,
+                  runSpacing: 20,
+                  children: List.generate(
+                    12,
+                    (i) {
+                      var time = '06:00 PM';
+                      return GestureDetector(
+                        onTap: () {
+                          widget.onTimeChosen(time);
+                          setState(() => selectedIndex = i);
+                        },
+                        child: _TimeWidget(
+                          text: time,
+                          isSelected: selectedIndex == i,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
       ),
     );
   }

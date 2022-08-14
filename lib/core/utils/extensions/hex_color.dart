@@ -2,14 +2,15 @@ import 'package:flutter/painting.dart';
 
 extension ToColorExt on String {
   Color toColor() {
-    String colorString;
-    colorString = this;
-    if (colorString.contains('#')) colorString = replaceFirst('#', '');
-    if (colorString.length == 6) colorString = 'ff$colorString';
-    return Color(int.parse('0x$colorString'));
+    String colorString = replaceFirst('#', '').padLeft(8, 'ff');
+    return Color(int.parse(colorString, radix: 16));
   }
 }
 
-extension FromColorValueExt on int {
-  String toHex() => '#${toString().substring(4)}';
+extension FromColorValueExt on Color {
+  String toHex() {
+    var hex = value.toRadixString(16);
+    if (hex.length > 6) hex = hex.substring(hex.length - 6);
+    return '#$hex';
+  }
 }

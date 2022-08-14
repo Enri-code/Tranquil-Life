@@ -4,7 +4,7 @@ import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/core/constants/questions.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
-import 'package:tranquil_life/core/utils/services/custom_loader.dart';
+import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/features/questionnaire/domain/entities/question.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/speak_with_consultant.dart';
 import 'package:tranquil_life/features/questionnaire/presentation/bloc/questionnaire_bloc.dart';

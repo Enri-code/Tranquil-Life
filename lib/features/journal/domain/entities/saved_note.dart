@@ -19,9 +19,13 @@ class SavedNote extends Note {
   final DateTime? dateUpdated;
 
   @override
+  operator ==(dynamic other) => other is SavedNote && other.id == id;
+
+  @override
   Map<String, dynamic> toJson() => _$SavedNoteToJson(this);
+
+  @override
+  int get hashCode => super.hashCode & id.hashCode;
 }
 
-DateTime? dateTimeFromString(String time) {
-  return DateTime.tryParse(time);
-}
+DateTime? dateTimeFromString(String time) => DateTime.tryParse(time);

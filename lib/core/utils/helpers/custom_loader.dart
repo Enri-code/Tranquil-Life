@@ -9,18 +9,20 @@ class CustomLoader {
     if (_isDialogOpen) return;
     showDialog(
       context: _navigator.context,
-      builder: (_) => WillPopScope(
-        child: const Center(child: CircularProgressIndicator()),
-        onWillPop: () {
-          _isDialogOpen = false;
-          return Future.value(false);
-        },
-      ),
+      builder: (_) => widget,
       barrierDismissible: false,
       useSafeArea: true,
     );
     _isDialogOpen = true;
   }
+
+  static Widget get widget => WillPopScope(
+        child: const Center(child: CircularProgressIndicator()),
+        onWillPop: () {
+          _isDialogOpen = false;
+          return Future.value(false);
+        },
+      );
 
   static void remove() {
     if (_isDialogOpen) {

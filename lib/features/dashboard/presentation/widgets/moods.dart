@@ -15,7 +15,7 @@ class MoodsListView extends StatelessWidget {
           'How are you feeling today?',
           style: TextStyle(fontSize: 20),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
