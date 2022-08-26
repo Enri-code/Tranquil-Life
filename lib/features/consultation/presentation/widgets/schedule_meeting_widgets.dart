@@ -51,7 +51,7 @@ class _TimeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: kThemeAnimationDuration,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: isSelected ? Theme.of(context).primaryColor : Colors.white,
@@ -86,7 +86,7 @@ class _DayTimeWidget extends StatelessWidget {
     return AnimatedContainer(
       height: 80,
       clipBehavior: Clip.hardEdge,
-      duration: const Duration(milliseconds: 250),
+      duration: kThemeAnimationDuration,
       decoration: BoxDecoration(
         color: isSelected ? Theme.of(context).primaryColor : Colors.white,
         borderRadius: BorderRadius.circular(8),

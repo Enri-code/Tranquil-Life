@@ -41,7 +41,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
 
   _goToPage(int page) => _pageController.animateToPage(
         page,
-        duration: const Duration(milliseconds: 300),
+        duration: kTabScrollDuration,
         curve: Curves.easeOutBack,
       );
 
@@ -49,75 +49,92 @@ class _OnboardScreenState extends State<OnboardScreen> {
   Widget build(BuildContext context) {
     var color = Theme.of(context).primaryColor;
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.5,
-            child: PageView(
-              controller: _pageController,
-              onPageChanged: _goToPage,
-              children: List.generate(
-                _text.length,
-                (i) => Center(
-                  child: Image.asset(
-                    'assets/images/onboarding/$i.png',
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(24),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 7,
+              child: Align(
+                alignment: const Alignment(0, -0.3),
                 child: SizedBox(
-                  height: 100,
-                  child: Text(
-                    _text[page],
-                    style: const TextStyle(fontSize: 21, height: 1.5),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: List.generate(
-                  _text.length,
-                  (i) => AnimatedContainer(
-                    duration: kThemeAnimationDuration,
-                    width: page == i ? 40 : 12,
-                    height: 12,
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: page == i ? color : color.withOpacity(0.5),
+                  height: MediaQuery.of(context).size.height * 0.45,
+                  child: PageView(
+                    controller: _pageController,
+                    onPageChanged: _goToPage,
+                    clipBehavior: Clip.none,
+                    children: List.generate(
+                      _text.length,
+                      (i) => Center(
+                        child: Image.asset(
+                          'assets/images/onboarding/$i.png',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-              SafeArea(
-                child: ElevatedButton(
-                  child: page < _text.length - 1
-                      ? const Text('Next')
-                      : const Text('Continue'),
-                  onPressed: () {
-                    if (page < _text.length - 1) {
-                      _goToPage(page + 1);
-                    } else {
-                      AppData.isOnboardingCompleted = true;
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        SignInScreen.routeName,
-                        (route) => false,
-                      );
-                    }
-                  },
-                ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: SizedBox(
+                      height: 80,
+                      child: Text(
+                        _text[page],
+                        style: const TextStyle(height: 1.5),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(
+                      _text.length,
+                      (i) => AnimatedContainer(
+                        duration: kThemeAnimationDuration,
+                        width: page == i ? 40 : 12,
+                        height: 12,
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: page == i ? color : color.withOpacity(0.5),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  SafeArea(
+                    top: false,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: ElevatedButton(
+                        child: page < _text.length - 1
+                            ? const Text('Next')
+                            : const Text('Continue'),
+                        onPressed: () {
+                          if (page < _text.length - 1) {
+                            _goToPage(page + 1);
+                          } else {
+                            AppData.isOnboardingCompleted = true;
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              SignInScreen.routeName,
+                              (route) => false,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

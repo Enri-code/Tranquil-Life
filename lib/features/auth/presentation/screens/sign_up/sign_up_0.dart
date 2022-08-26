@@ -45,7 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     var params = context.read<ClientAuthBloc>().params;
-    return AuthBGWidget(
+    return CustomBGWidget(
       title: 'Sign Up',
       child: CustomScrollView(
         physics: const NeverScrollableScrollPhysics(),

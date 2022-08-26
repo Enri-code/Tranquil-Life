@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
@@ -33,7 +34,7 @@ class _ClientSignUpScreen1State extends State<SignUp2Screen> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthBGWidget(
+    return CustomBGWidget(
       title: 'Sign Up',
       child: Column(
         children: [
@@ -129,13 +130,15 @@ class _OrganizationSection extends StatefulWidget {
 
 class _OrganizationSectionState extends State<_OrganizationSection>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _animCnntroller;
+  static const _noneValue = 0;
 
-  static const noneValue = 0;
+  late final AnimationController _animCnntroller;
 
   @override
   void initState() {
-    if (context.read<PartnerBloc>().state.partners == null) {
+    final partnersState = context.read<PartnerBloc>().state;
+    if (partnersState.partners == null &&
+        partnersState.status != OperationStatus.loading) {
       context.read<PartnerBloc>().add(const GetPartnersEvent());
     }
     super.initState();
@@ -145,7 +148,7 @@ class _OrganizationSectionState extends State<_OrganizationSection>
   void didChangeDependencies() {
     _animCnntroller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 200),
+      duration: kThemeAnimationDuration,
     );
     super.didChangeDependencies();
   }
@@ -162,29 +165,28 @@ class _OrganizationSectionState extends State<_OrganizationSection>
       children: [
         BlocBuilder<PartnerBloc, PartnerState>(
           builder: (context, state) {
-            return DropdownButtonFormField<int>(
+            return DropdownButtonFormField2<int>(
+              itemHeight: 56,
+              buttonHeight: 38,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.all(14),
+                errorStyle: authScreensErrorStyle,
+              ),
+              dropdownDecoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+              ),
               hint: state.partners != null
-                  ? const Text('Organization')
-                  : const Text('Getting orgamizations'),
+                  ? const Text('Select organization')
+                  : const Text('Getting organizations...'),
               items: state.partners
-                      ?.map(
-                        (e) => DropdownMenuItem(
-                          value: e.id,
-                          child: _OrganizationItemWidget(partner: e),
-                        ),
-                      )
+                      ?.map((e) => DropdownMenuItem(
+                            value: e.id,
+                            child: _OrganizationItemWidget(partner: e),
+                          ))
                       .toList() ??
                   [],
-              decoration:
-                  const InputDecoration(errorStyle: authScreensErrorStyle),
-              onTap: () {
-                if (state.partners == null &&
-                    state.status != OperationStatus.loading) {
-                  context.read<PartnerBloc>().add(const GetPartnersEvent());
-                }
-              },
               onChanged: (val) {
-                if (val == noneValue) {
+                if (val == _noneValue) {
                   _animCnntroller.reverse();
                 } else {
                   _animCnntroller.forward();
@@ -209,7 +211,7 @@ class _OrganizationSectionState extends State<_OrganizationSection>
                 textCapitalization: TextCapitalization.words,
                 decoration: const InputDecoration(hintText: 'Staff ID'),
                 validator: (val) {
-                  if ((widget.params.companyId ?? noneValue) == noneValue) {
+                  if ((widget.params.companyId ?? _noneValue) == _noneValue) {
                     return null;
                   }
                   if (val!.isEmpty) return 'Your staff ID is required';
@@ -235,20 +237,18 @@ class _OrganizationItemWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: SizedBox.square(
-            dimension: 40,
-            child: Image.network(
-              partner.logoUrl,
-              fit: BoxFit.contain,
-              errorBuilder: (_, __, ___) => const Icon(Icons.business),
-            ),
+        SizedBox.square(
+          dimension: 38,
+          child: Image.network(
+            partner.logoUrl,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => const Icon(Icons.business),
           ),
         ),
+        const SizedBox(width: 24),
         Text(
           partner.name,
-          style: TextStyle(fontSize: 24, color: Colors.grey[700]!),
+          style: TextStyle(fontSize: 20, color: Colors.grey[500]!),
         ),
       ],
     );

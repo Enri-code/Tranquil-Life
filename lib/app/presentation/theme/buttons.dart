@@ -9,12 +9,11 @@ abstract class MyButtonTheme {
   static final elevatedButtonTheme = ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
     fixedSize: const Size(380, 60),
-    primary: ColorPalette.primary[800],
     onPrimary: Colors.white,
     textStyle: const TextStyle(
       fontFamily: MyTextData.josefinFamily,
       fontWeight: FontWeight.normal,
-      fontSize: 20,
+      fontSize: 18,
     ),
     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -31,7 +30,7 @@ abstract class MyButtonTheme {
   static const inputDecorationTheme = InputDecorationTheme(
     filled: true,
     fillColor: Color(0xffF1F1F1),
-    hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+    hintStyle: TextStyle(color: Colors.grey, height: 1.2),
     errorStyle: TextStyle(fontSize: 14, color: Color.fromARGB(255, 241, 0, 0)),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(16)),

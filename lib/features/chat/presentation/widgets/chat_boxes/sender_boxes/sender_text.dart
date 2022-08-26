@@ -24,7 +24,13 @@ class SenderChatText extends StatelessWidget {
                 0.82,
               )!,
             ),
-          Text(message.text, style: const TextStyle(color: Colors.white)),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: Text(
+              message.data,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
         ],
       ),
     );

@@ -7,11 +7,20 @@ import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 import 'package:tranquil_life/features/journal/presentation/widgets/note_bottom_sheet.dart';
 
 void setStatusBarBrightness(bool dark, [Duration? delayedTime]) async {
-  await Future.delayed(delayedTime ?? const Duration(milliseconds: 50));
+  await Future.delayed(delayedTime ?? const Duration(milliseconds: 300));
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarIconBrightness: dark ? Brightness.dark : Brightness.light,
     statusBarBrightness: dark ? Brightness.light : Brightness.dark,
   ));
+}
+
+String formatDurationToTimerString(int milliseconds) {
+  String twoDigits(int n) => n.toString().padLeft(2, '0');
+  final duration = Duration(milliseconds: milliseconds);
+  final hours = duration.inHours > 0 ? '${twoDigits(duration.inHours)}:' : '';
+  final mins = twoDigits(duration.inMinutes.remainder(60));
+  final secs = twoDigits(duration.inSeconds.remainder(60));
+  return "$hours$mins:$secs";
 }
 
 Future<DateTime?> showCustomDatePicker(BuildContext context,

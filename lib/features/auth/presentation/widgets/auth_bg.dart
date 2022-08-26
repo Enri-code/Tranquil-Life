@@ -3,8 +3,8 @@ import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 
-class AuthBGWidget extends StatelessWidget {
-  const AuthBGWidget({Key? key, required this.child, this.title})
+class CustomBGWidget extends StatelessWidget {
+  const CustomBGWidget({Key? key, required this.child, this.title})
       : super(key: key);
 
   final Widget child;
@@ -19,12 +19,17 @@ class AuthBGWidget extends StatelessWidget {
           Image.asset(
             'assets/images/mountains_bg.png',
             fit: BoxFit.cover,
-            color: Colors.black54,
-            colorBlendMode: BlendMode.overlay,
+            color: Colors.black45,
+            colorBlendMode: BlendMode.darken,
           ),
           Column(
             children: [
-              CustomAppBar(title: title, titleColor: Colors.white),
+              if (title != null)
+                CustomAppBar(
+                  title: title,
+                  titleColor: Colors.white,
+                  // isStatusBarDark: false,
+                ),
               Expanded(
                 child: SafeArea(
                   top: false,
@@ -44,11 +49,5 @@ class AuthBGWidget extends StatelessWidget {
         ],
       ),
     );
-    /*  return Image.asset(
-      'assets/images/mountains_bg.png',
-      fit: BoxFit.cover,
-      color: Colors.black38,
-      colorBlendMode: BlendMode.overlay,
-    ); */
   }
 }

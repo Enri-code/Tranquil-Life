@@ -44,7 +44,7 @@ class _ClientSignUpScreen1State extends State<SignUp1Screen> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthBGWidget(
+    return CustomBGWidget(
       title: 'Sign Up',
       child: Column(
         children: [
@@ -118,9 +118,7 @@ class _ClientSignUpScreen1State extends State<SignUp1Screen> {
                           context: context,
                           builder: (_) => const FractionallySizedBox(
                             widthFactor: 0.9,
-                            child: Dialog(
-                              child: _UsernameInfoDialog(),
-                            ),
+                            child: Dialog(child: _UsernameInfoDialog()),
                           ),
                         ),
                         icon: const Icon(Icons.info_outline),

@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:tranquil_life/core/constants/moods.dart';
-import 'package:tranquil_life/features/journal/domain/entities/note.dart';
-import 'package:tranquil_life/features/journal/presentation/screens/note_screen.dart';
+part of 'package:tranquil_life/features/dashboard/presentation/screens/tabs/home.dart';
 
-class MoodsListView extends StatelessWidget {
-  const MoodsListView({Key? key}) : super(key: key);
+class _MoodsListView extends StatelessWidget {
+  const _MoodsListView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

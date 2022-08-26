@@ -45,7 +45,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
             ),
             const SizedBox(height: 14),
             const Text(
-              'We will send you a link to\nreset your password.',
+              'A password reset link will be sent to your mail.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18, height: 1.3),
             ),

@@ -29,9 +29,7 @@ class EditProfileScreen extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.grey[100],
-                borderRadius: const BorderRadius.horizontal(
-                  left: Radius.circular(8),
-                ),
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
           ),

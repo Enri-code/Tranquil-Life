@@ -14,11 +14,11 @@ class RepliedChatBox extends StatelessWidget {
     switch (message.type) {
       case MessageType.image:
       case MessageType.video:
-      case MessageType.voicenote:
+      case MessageType.voiceNote:
       default:
         return Text(
-          message.text,
-          style: const TextStyle(color: Colors.white),
+          message.data,
+          style: const TextStyle(color: Colors.white70),
         );
     }
   }

@@ -64,7 +64,7 @@ class App extends StatelessWidget {
           locale: const Locale('en', 'NG'),
           supportedLocales: const [Locale('en', 'NG')],
           routes: AppConfig.routes,
-          home: Builder(builder: (context) {
+          home: Builder(builder: (_) {
             AppSetup.init(_navigatorKey.currentState!);
             CustomLoader.init(_navigatorKey.currentState!);
             return const SplashScreen();

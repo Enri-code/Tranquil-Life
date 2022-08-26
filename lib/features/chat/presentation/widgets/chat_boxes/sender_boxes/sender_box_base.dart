@@ -5,7 +5,7 @@ class SenderChatBoxBase extends StatelessWidget {
   const SenderChatBoxBase({
     Key? key,
     required this.child,
-    this.padding = 12,
+    this.padding = 5,
     this.time,
   }) : super(key: key);
 

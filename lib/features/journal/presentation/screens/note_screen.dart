@@ -65,13 +65,10 @@ class _NoteScreenState extends State<NoteScreen> {
             )
           else
             AppBarAction(
-              child: const Padding(
-                padding: EdgeInsets.all(1),
-                child: Icon(
-                  CupertinoIcons.list_bullet,
-                  color: Colors.white,
-                  size: 22,
-                ),
+              isCustomButton: false,
+              child: Icon(
+                Icons.more_vert,
+                color: Theme.of(context).primaryColor,
               ),
               onPressed: () async => showNoteDialog(
                 context,

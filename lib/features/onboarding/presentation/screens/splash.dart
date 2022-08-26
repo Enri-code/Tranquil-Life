@@ -17,16 +17,18 @@ class SplashScreen extends StatelessWidget {
               child: Image.asset('assets/images/logo.png', fit: BoxFit.contain),
             ),
           ),
-          const Positioned(
-            bottom: 48,
+          Positioned(
             left: 50,
             right: 50,
+            bottom: 48,
             child: Center(
               child: Text(
                 'A safe space to talk and feel without judgement.',
                 textAlign: TextAlign.center,
-                style:
-                    TextStyle(fontSize: 22, color: Colors.white, height: 1.5),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(color: Colors.white, height: 1.5),
               ),
             ),
           ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 
@@ -44,7 +43,7 @@ class _ImageFullViewState extends State<ImageFullView> {
                   : null,
               imageProvider: data.image,
               loadingBuilder: (_, __) =>
-                  data.placeHolder ?? CustomLoader.widget,
+                  data.placeHolder ?? CustomLoader.widget(),
             ),
             const Positioned(top: 0, left: 0, right: 0, child: CustomAppBar()),
           ],

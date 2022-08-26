@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/text.dart';
 import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
@@ -20,7 +19,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   final Color? titleColor;
   final List<AppBarAction>? actions;
-  final bool isStatusBarDark;
+  //final bool? isStatusBarDark;
   final Function()? onBackPressed;
 
   const CustomAppBar({
@@ -28,7 +27,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     this.title,
     this.titleColor,
     this.actions,
-    this.isStatusBarDark = true,
+    //this.isStatusBarDark,
     this.onBackPressed,
   }) : super(key: key);
 
@@ -42,12 +41,14 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         color: ColorPalette.primary[800],
         fontFamily: MyTextData.josefinFamily,
       ),
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarIconBrightness:
-            isStatusBarDark ? Brightness.dark : Brightness.light,
-        statusBarBrightness:
-            isStatusBarDark ? Brightness.light : Brightness.dark,
-      ),
+      /* systemOverlayStyle: isStatusBarDark == null
+          ? null
+          : SystemUiOverlayStyle(
+              statusBarIconBrightness:
+                  isStatusBarDark! ? Brightness.dark : Brightness.light,
+              statusBarBrightness:
+                  isStatusBarDark! ? Brightness.light : Brightness.dark,
+            ), */
       leading: (Navigator.of(context).canPop()) || onBackPressed != null
           ? Center(
               child: AppBarButton(

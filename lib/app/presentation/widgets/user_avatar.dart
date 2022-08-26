@@ -50,7 +50,7 @@ class UserAvatar extends StatelessWidget {
             crossFadeState: val == null
                 ? CrossFadeState.showFirst
                 : CrossFadeState.showSecond,
-            duration: const Duration(milliseconds: 200),
+            duration: kThemeAnimationDuration,
           );
         },
       ),

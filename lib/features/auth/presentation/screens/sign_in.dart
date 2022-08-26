@@ -31,7 +31,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthBGWidget(
+    return CustomBGWidget(
       title: 'Sign In',
       child: CustomScrollView(
         slivers: [
@@ -58,8 +58,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: BlocListener<ClientAuthBloc, AuthState>(
+                          listenWhen: (_, __) => !isModalOpen,
                           listener: (context, state) {
-                            if (isModalOpen) return;
                             if (state.status == OperationStatus.loading) {
                               CustomLoader.display();
                             } else {
@@ -198,11 +198,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       GestureDetector(
                         onTap: () => Navigator.of(context)
                             .pushNamed(SignUpScreen.routeName),
-                        child: Text(
+                        child: const Text(
                           'Sign up',
-                          style: TextStyle(
-                            color: ColorPalette.yellow,
-                          ),
+                          style: TextStyle(color: ColorPalette.yellow),
                         ),
                       ),
                     ],

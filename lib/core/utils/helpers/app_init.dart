@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:tranquil_life/core/constants/constants.dart';
 import 'package:tranquil_life/core/utils/services/app_data_store.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
@@ -10,9 +11,10 @@ import 'package:tranquil_life/features/onboarding/presentation/screens/onboard.d
 
 class AppSetup {
   static init(NavigatorState navigator) async {
-    var dataInit = Hive.initFlutter().whenComplete(() => AppData.init());
+    chatBoxMaxWidth = MediaQuery.of(navigator.context).size.width * 0.65;
+
     await Future.wait([
-      dataInit,
+      Hive.initFlutter().whenComplete(() => AppData.init()),
       Future.delayed(const Duration(milliseconds: 2500)),
     ]);
     goToScreen(navigator);

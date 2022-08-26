@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
+import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
+import 'package:tranquil_life/features/profile/presentation/screens/edit_profile.dart';
 import 'package:tranquil_life/features/settings/presentation/screens/settings.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -28,15 +30,33 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 8),
-                UserAvatar(
-                  size: 120,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      width: 2,
-                      color: Theme.of(context).primaryColor,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    UserAvatar(
+                      size: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          width: 2,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 8),
+                    const Text('Edit Profile'),
+                    const SizedBox(width: 6),
+                    AppBarButton(
+                      icon: const Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 22,
+                      ),
+                      onPressed: () => Navigator.of(context)
+                          .pushNamed(EditProfileScreen.routeName),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 26),
                 const Text(
@@ -44,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 28),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 6),
                 const Text(
                   'San Francisco, CA',
                   textAlign: TextAlign.center,

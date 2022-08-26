@@ -5,10 +5,11 @@ class ReplyMessage extends Message {
 
   const ReplyMessage({
     required super.id,
-    required super.text,
+    required super.data,
     required this.repliedMessage,
-    super.fromYou = true,
-    super.isSent = true,
+    super.type,
+    super.fromYou,
+    super.isSent,
     super.timeSent,
   });
 }

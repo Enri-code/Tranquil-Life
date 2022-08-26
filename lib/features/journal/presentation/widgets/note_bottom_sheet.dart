@@ -127,7 +127,7 @@ class _ColorCircle extends StatelessWidget {
         AnimatedContainer(
           width: 30,
           height: 30,
-          duration: const Duration(milliseconds: 200),
+          duration: kThemeAnimationDuration,
           margin: const EdgeInsets.symmetric(horizontal: 7),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -137,7 +137,7 @@ class _ColorCircle extends StatelessWidget {
         ),
         AnimatedOpacity(
           opacity: isSelected ? 1 : 0,
-          duration: const Duration(milliseconds: 200),
+          duration: kThemeAnimationDuration,
           child: const Icon(Icons.check, color: Colors.white),
         ),
       ],

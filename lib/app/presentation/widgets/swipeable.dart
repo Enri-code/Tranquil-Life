@@ -30,7 +30,7 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
   void initState() {
     animator = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 200),
+      duration: kThemeAnimationDuration,
     )..addListener(() {
         var toPosition = isOpen ? maxOffset : lastOffset;
         var val = curveAnim.animate(animator).value;

@@ -142,8 +142,7 @@ class _PageBody extends StatelessWidget {
                               ScheduleMeetingScreen.routeName,
                               arguments: consultant,
                             )
-                            .whenComplete(() => setStatusBarBrightness(
-                                false, const Duration(milliseconds: 400))),
+                            .whenComplete(() => setStatusBarBrightness(false)),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: const [
