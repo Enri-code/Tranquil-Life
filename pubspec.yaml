@@ -15,8 +15,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+  audio_session: ^0.1.10
   camera: ^0.10.0+1
   dartz: ^0.10.1
+  device_info_plus: ^4.1.2
   dio: ^4.0.6
   dotted_line: ^3.1.0
   dropdown_button2: ^1.7.2
@@ -30,18 +32,22 @@ dependencies:
   flutter_speed_dial: ^6.0.0
   hive_flutter: ^1.1.0
   
-  # image_cropper: ^2.0.2
-  # image_picker: ^0.8.5+3
+  file_picker:
+  image_picker: ^0.8.5+3
+  image_cropper: ^2.0.2
 
   intl: ^0.17.0
   intl_phone_field: ^3.1.0
   json_annotation: ^4.6.0
+  permission_handler: ^10.0.0
   photo_view: ^0.14.0
+  scrollable_positioned_list: ^0.3.2
+  uuid: ^3.0.6
 
   audio_waveforms: ^0.1.4
-  # flutter_sound: ^9.2.13
+  flutter_sound: ^9.2.13
   
-  better_player: ^0.0.83
+  better_player: ^0.0.83 
   video_thumbnail: ^0.5.2
 
   #local_auth: ^2.1.1

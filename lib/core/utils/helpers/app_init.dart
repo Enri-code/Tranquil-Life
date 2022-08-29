@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,10 +13,23 @@ import 'package:tranquil_life/features/onboarding/presentation/screens/onboard.d
 
 class AppSetup {
   static init(NavigatorState navigator) async {
-    chatBoxMaxWidth = MediaQuery.of(navigator.context).size.width * 0.65;
-
+    chatBoxMaxWidth = MediaQuery.of(navigator.context).size.width * 0.7;
+    if (Platform.isAndroid) {
+      deviceInfoPlugin.androidInfo.then((value) {
+        androidVersion = num.parse(value.version.release ?? '0');
+      }).catchError((_) {
+        androidVersion = 0;
+      });
+    }
     await Future.wait([
-      Hive.initFlutter().whenComplete(() => AppData.init()),
+      Hive.initFlutter().whenComplete(() => AppData.init().then((_) {
+            if (!AppData.isOnboardingCompleted) {
+              precacheImage(
+                const AssetImage('assets/images/onboarding/0.png'),
+                navigator.context,
+              );
+            }
+          })),
       Future.delayed(const Duration(milliseconds: 2500)),
     ]);
     goToScreen(navigator);
@@ -23,12 +38,6 @@ class AppSetup {
   static goToScreen(NavigatorState navigator) {
     late final String nextRoute;
     if (AppData.isSignedIn) {
-      if (!AppData.isOnboardingCompleted) {
-        precacheImage(
-          const AssetImage('assets/images/mountains_bg.png'),
-          navigator.context,
-        );
-      }
       navigator.context.read<ClientAuthBloc>().add(const RestoreSignIn());
       return;
     } else if (AppData.isOnboardingCompleted) {

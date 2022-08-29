@@ -10,37 +10,43 @@ class _TitleBar extends StatelessWidget {
       child: Row(
         children: [
           const SizedBox(width: 8),
-          AppBarButton(
-            backgroundColor: Colors.white,
-            icon: Padding(
-              padding: const EdgeInsets.all(1),
-              child: Icon(
-                Icons.arrow_back_ios_new,
-                color: Theme.of(context).primaryColor,
-                size: 20,
+          Hero(
+            tag: 'back_button',
+            child: AppBarButton(
+              backgroundColor: Colors.white,
+              icon: Padding(
+                padding: const EdgeInsets.all(1),
+                child: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Theme.of(context).primaryColor,
+                  size: 20,
+                ),
               ),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-            onPressed: () => Navigator.of(context).pop(),
           ),
-          const SizedBox(width: 10),
-          const UserAvatar(
-            size: 46,
-            imageUrl: '',
+          const SizedBox(width: 8),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 2),
+            child: UserAvatar(
+              size: 44,
+              imageUrl: '',
+            ),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  'Dr.Charles Richard',
-                  style: TextStyle(
+                  context.read<ChatBloc>().therapistName,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                     fontSize: 17,
                   ),
                 ),
-                Text(
+                const Text(
                   '60:00',
                   style: TextStyle(
                     color: ColorPalette.yellow,

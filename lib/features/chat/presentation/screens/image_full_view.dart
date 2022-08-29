@@ -22,6 +22,7 @@ class ImageFullView extends StatefulWidget {
 
 class _ImageFullViewState extends State<ImageFullView> {
   late ImageFullViewData data;
+
   @override
   void didChangeDependencies() {
     data = ModalRoute.of(context)!.settings.arguments as ImageFullViewData;
@@ -31,22 +32,20 @@ class _ImageFullViewState extends State<ImageFullView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(),
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Stack(
-          children: [
-            PhotoView(
-              minScale: PhotoViewComputedScale.contained,
-              maxScale: PhotoViewComputedScale.covered * 2,
-              heroAttributes: data.heroTag != null
-                  ? PhotoViewHeroAttributes(tag: data.heroTag!)
-                  : null,
-              imageProvider: data.image,
-              loadingBuilder: (_, __) =>
-                  data.placeHolder ?? CustomLoader.widget(),
-            ),
-            const Positioned(top: 0, left: 0, right: 0, child: CustomAppBar()),
-          ],
+        child: ClipRect(
+          child: PhotoView(
+            minScale: PhotoViewComputedScale.contained,
+            maxScale: PhotoViewComputedScale.covered * 2,
+            heroAttributes: data.heroTag != null
+                ? PhotoViewHeroAttributes(tag: data.heroTag!)
+                : null,
+            imageProvider: data.image,
+            loadingBuilder: (_, __) =>
+                data.placeHolder ?? CustomLoader.widget(),
+          ),
         ),
       ),
     );

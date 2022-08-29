@@ -47,5 +47,7 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Tranquil Life requires permission to your microphone to record voice notes and videos.</string>
 	</dict>
 </plist>

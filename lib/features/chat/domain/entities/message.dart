@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 enum MessageType { text, image, video, voiceNote }
 
-class Message {
+class Message extends Equatable {
   final int id;
   final bool fromYou;
   final bool isSent;
@@ -14,6 +16,9 @@ class Message {
     this.type = MessageType.text,
     this.fromYou = true,
     this.isSent = true,
-    this.timeSent,
+    this.timeSent = '8 PM',
   });
+
+  @override
+  List<Object> get props => [id, fromYou];
 }

@@ -14,96 +14,110 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        actions: [
-          AppBarAction(
-            child: const Icon(Icons.settings, color: Colors.white),
-            onPressed: () =>
-                Navigator.of(context).pushNamed(SettingsScreen.routeName),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Center(
-            child: Column(
-              children: [
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    UserAvatar(
-                      size: 120,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          width: 2,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    const Text('Edit Profile'),
-                    const SizedBox(width: 6),
-                    AppBarButton(
-                      icon: const Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                        size: 22,
-                      ),
-                      onPressed: () => Navigator.of(context)
-                          .pushNamed(EditProfileScreen.routeName),
-                    ),
-                  ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: AppBarButton(
+                  icon: const Icon(Icons.settings, color: Colors.white),
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed(SettingsScreen.routeName),
                 ),
-                const SizedBox(height: 26),
-                const Text(
-                  'Frank Martial (Franko)',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 28),
-                ),
-                const SizedBox(height: 6),
-                const Text(
-                  'San Francisco, CA',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, color: Color(0xFF6E6E6E)),
-                ),
-                const SizedBox(height: 32),
-                _Button(
-                  icon: TranquilIcons.card,
-                  title: 'Transaction history',
-                  onPreessed: () {},
-                ),
-                const SizedBox(height: 20),
-                _Button(
-                  icon: TranquilIcons.wallet,
-                  title: 'Wallet',
-                  onPreessed: () {},
-                ),
-                const SizedBox(height: 20),
-                _Button(
-                  icon: TranquilIcons.message_time,
-                  title: 'Chat history',
-                  onPreessed: () {},
-                ),
-                const SizedBox(height: 20),
-                _Button(
-                  icon: CupertinoIcons.phone_fill,
-                  title: 'Scheduled meetings',
-                  onPreessed: () {},
-                ),
-                const SizedBox(height: 20),
-                _Button(
-                  icon: Icons.favorite_rounded,
-                  title: 'Favorite consultants',
-                  onPreessed: () {},
-                ),
-                const SizedBox(height: 24),
-              ],
+              ),
             ),
-          ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 4,
+                  ),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            UserAvatar(
+                              size: 120,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  width: 2,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            const Text('Edit Profile'),
+                            const SizedBox(width: 6),
+                            AppBarButton(
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 22,
+                              ),
+                              onPressed: () => Navigator.of(context)
+                                  .pushNamed(EditProfileScreen.routeName),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 26),
+                        const Text(
+                          'Frank Martial (Franko)',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 28),
+                        ),
+                        const SizedBox(height: 6),
+                        const Text(
+                          'San Francisco, CA',
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(fontSize: 20, color: Color(0xFF6E6E6E)),
+                        ),
+                        const SizedBox(height: 32),
+                        _Button(
+                          icon: TranquilIcons.card,
+                          title: 'Transaction history',
+                          onPreessed: () {},
+                        ),
+                        const SizedBox(height: 20),
+                        _Button(
+                          icon: TranquilIcons.wallet,
+                          title: 'Wallet',
+                          onPreessed: () {},
+                        ),
+                        const SizedBox(height: 20),
+                        _Button(
+                          icon: TranquilIcons.message_time,
+                          title: 'Chat history',
+                          onPreessed: () {},
+                        ),
+                        const SizedBox(height: 20),
+                        _Button(
+                          icon: CupertinoIcons.phone_fill,
+                          title: 'Scheduled meetings',
+                          onPreessed: () {},
+                        ),
+                        const SizedBox(height: 20),
+                        _Button(
+                          icon: Icons.favorite_rounded,
+                          title: 'Favorite consultants',
+                          onPreessed: () {},
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -16,8 +16,8 @@ class CustomBGWidget extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/mountains_bg.png',
+          const Image(
+            image: AssetImage('assets/images/mountains_bg.png'),
             fit: BoxFit.cover,
             color: Colors.black45,
             colorBlendMode: BlendMode.darken,

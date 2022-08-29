@@ -28,6 +28,10 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     setStatusBarBrightness(true);
+    precacheImage(
+      const AssetImage('assets/images/mountains_bg.png'),
+      context,
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => ClientAuthBloc()),

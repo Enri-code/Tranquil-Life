@@ -1,19 +1,36 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
+import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
+import 'package:tranquil_life/core/constants/constants.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/features/chat/data/samples.dart';
 import 'package:tranquil_life/features/chat/domain/entities/message.dart';
-import 'package:tranquil_life/features/chat/domain/entities/reply.dart';
-import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender_boxes/sender_image.dart';
-import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender_boxes/sender_text.dart';
-import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender_boxes/sender_video.dart';
-import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender_boxes/sender_voice_note.dart';
+import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/receiver/image.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/receiver/text.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/receiver/video.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/receiver/voice_note.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender/image.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender/text.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender/video.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender/voice_note.dart';
 
 part '../widgets/chat_more_options.dart';
 part '../widgets/chat_app_bar.dart';
+part '../widgets/input_bar.dart';
 
 class ChatScreen extends StatefulWidget {
   static const routeName = 'chat_screen';
@@ -24,28 +41,39 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final scrollController = ItemScrollController();
+
+  @override
+  void initState() {
+    setStatusBarBrightness(false);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    setStatusBarBrightness(false);
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/chat_bg.png',
+          const Image(
+            image: AssetImage('assets/images/chat_bg.png'),
+            fit: BoxFit.cover,
             color: Colors.black26,
             colorBlendMode: BlendMode.darken,
-            fit: BoxFit.cover,
           ),
           SafeArea(
             bottom: false,
             child: Padding(
               padding: const EdgeInsets.all(4),
-              child: Column(
-                children: const [
-                  _TitleBar(),
-                  Expanded(child: _Messages()),
-                ],
+              child: BlocProvider(
+                create: (_) => ChatBloc(scrollController: scrollController),
+                child: Column(
+                  children: const [
+                    _TitleBar(),
+                    Expanded(child: _Messages()),
+                    SafeArea(top: false, child: _InputBar()),
+                  ],
+                ),
               ),
             ),
           ),
@@ -55,60 +83,17 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-class _Messages extends StatelessWidget {
+class _Messages extends StatefulWidget {
   const _Messages({Key? key}) : super(key: key);
 
-  static const _textMessage = Message(
-    id: 0,
-    data: 'Hi, I have been some issues for a while and I need help.',
-  );
-  static final _messages = [
-    _textMessage,
-    ReplyMessage(
-      id: 0,
-      data: 'https://www.pexels.com/video/3195394/download/',
-      repliedMessage: _textMessage,
-    ),
-    ReplyMessage(
-      id: 0,
-      data: 'https://www.pexels.com/video/3195394/download/',
-      repliedMessage: _textMessage,
-      type: MessageType.video,
-    ),
-    Message(
-      id: 0,
-      data: 'https://www.pexels.com/video/3195394/download/',
-      type: MessageType.video,
-    ),
-    const ReplyMessage(
-      id: 0,
-      data: 'https://sounds-mp3.com/mp3/0001961.mp3',
-      repliedMessage: _textMessage,
-      type: MessageType.voiceNote,
-    ),
-    const Message(
-      id: 0,
-      data: 'https://sounds-mp3.com/mp3/0001961.mp3',
-      type: MessageType.voiceNote,
-    ),
-    const ReplyMessage(
-      id: 0,
-      type: MessageType.image,
-      repliedMessage: _textMessage,
-      data:
-          'https://media-exp1.licdn.com/dms/image/C4D03AQG9RwdZxoR3LA/profile-displayphoto-shrink_800_800/0/1641042314872?e=1664409600&v=beta&t=3i2pGW6GJaM47SVvonYStK24fA_OJO3nMbHq8JcFfZk',
-    ),
-    const Message(
-      id: 0,
-      type: MessageType.image,
-      data:
-          'https://media-exp1.licdn.com/dms/image/C4D03AQG9RwdZxoR3LA/profile-displayphoto-shrink_800_800/0/1641042314872?e=1664409600&v=beta&t=3i2pGW6GJaM47SVvonYStK24fA_OJO3nMbHq8JcFfZk',
-    ),
-    const Message(
-      id: 0,
-      data: 'Hi, I have been some issues.',
-    ),
-  ];
+  @override
+  State<_Messages> createState() => _MessagesState();
+}
+
+class _MessagesState extends State<_Messages>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController animController;
+  late final Animation<double> highlightAnim;
 
   Widget _chatBoxBuilder(Message message) {
     if (message.fromYou) {
@@ -125,25 +110,71 @@ class _Messages extends StatelessWidget {
     } else {
       switch (message.type) {
         case MessageType.image:
+          return ReceiverChatImage(message);
         case MessageType.video:
+          return ReceiverChatVideo(message);
         case MessageType.voiceNote:
+          return ReceiverChatVoiceNote(message);
         default:
-          return SenderChatText(message);
+          return ReceiverChatText(message);
       }
     }
   }
 
   @override
+  void initState() {
+    animController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..animateTo(1, duration: Duration.zero);
+
+    highlightAnim = animController.drive(TweenSequence([
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 0.8),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 0.2),
+    ]));
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    animController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _messages.length,
-      padding: EdgeInsets.fromLTRB(
-        16,
-        0,
-        16,
-        MediaQuery.of(context).viewPadding.bottom,
+    return UnfocusWidget(
+      child: BlocConsumer<ChatBloc, ChatState>(
+        listener: (_, __) => animController.forward(from: 0),
+        builder: (context, state) => ScrollablePositionedList.builder(
+          reverse: true,
+          itemCount: messages.length,
+          physics: const BouncingScrollPhysics(),
+          itemScrollController: context.read<ChatBloc>().scrollController,
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewPadding.bottom,
+          ),
+          itemBuilder: (_, index) {
+            final child = Padding(
+              key: ValueKey(index),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: _chatBoxBuilder(messages[index]),
+            );
+            if (index != state.chatIndex) return child;
+            return AnimatedBuilder(
+              animation: highlightAnim,
+              builder: (context, _) {
+                final value = highlightAnim.value * 0.3;
+                return Container(
+                  color: Theme.of(context).primaryColor.withOpacity(value),
+                  child: child,
+                );
+              },
+            );
+          },
+        ),
       ),
-      itemBuilder: (_, index) => _chatBoxBuilder(_messages[index]),
     );
   }
 }

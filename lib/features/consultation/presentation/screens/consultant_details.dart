@@ -22,6 +22,7 @@ class _ConsultantDetailScreenState extends State<ConsultantDetailScreen> {
 
   @override
   void didChangeDependencies() {
+    setStatusBarBrightness(false);
     consultant = ModalRoute.of(context)!.settings.arguments as Consultant;
     super.didChangeDependencies();
   }
@@ -35,7 +36,6 @@ class _ConsultantDetailScreenState extends State<ConsultantDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    setStatusBarBrightness(false);
     return Scaffold(
       body: Hero(
         tag: doneAnimating ? '' : '${consultant.id}-img',

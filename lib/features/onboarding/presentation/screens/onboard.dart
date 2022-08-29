@@ -65,8 +65,8 @@ class _OnboardScreenState extends State<OnboardScreen> {
                     children: List.generate(
                       _text.length,
                       (i) => Center(
-                        child: Image.asset(
-                          'assets/images/onboarding/$i.png',
+                        child: Image(
+                          image: AssetImage('assets/images/onboarding/$i.png'),
                           fit: BoxFit.contain,
                         ),
                       ),

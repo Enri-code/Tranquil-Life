@@ -10,7 +10,7 @@ import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dar
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_up/sign_up_1.dart';
 import 'package:tranquil_life/features/auth/presentation/styles.dart';
-import 'package:tranquil_life/features/auth/presentation/widgets/auth_bg.dart';
+import 'package:tranquil_life/app/presentation/widgets/mountain_bg.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const routeName = 'client_sign_up';

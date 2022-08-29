@@ -19,8 +19,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int currentPage = 0;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     setStatusBarBrightness(true);
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(const AssetImage('assets/images/chat_bg.png'), context);
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,

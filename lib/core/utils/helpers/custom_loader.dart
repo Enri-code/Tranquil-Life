@@ -16,10 +16,8 @@ class CustomLoader {
     _isDialogOpen = true;
   }
 
-  static Widget widget([Color? color]) => Center(
-          child: CircularProgressIndicator(
-        color: color,
-      ));
+  static Widget widget([Color? color]) =>
+      Center(child: CircularProgressIndicator(color: color));
 
   static void remove() {
     if (_isDialogOpen) {

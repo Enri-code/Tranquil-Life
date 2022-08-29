@@ -4,6 +4,7 @@ import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_up/sign_up_0.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/chat_screen.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/image_full_view.dart';
+import 'package:tranquil_life/features/chat/presentation/screens/video_player_page.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/consultant_details.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/schedule_meeting_screen.dart';
 import 'package:tranquil_life/features/dashboard/presentation/screens/dashboard.dart';
@@ -31,6 +32,7 @@ abstract class AppConfig {
     ScheduleMeetingScreen.routeName: (_) => const ScheduleMeetingScreen(),
     ChatScreen.routeName: (_) => const ChatScreen(),
     ImageFullView.routeName: (_) => const ImageFullView(),
+    VideoPlayerScreen.routeName: (_) => const VideoPlayerScreen(),
     NotificationScreen.routeName: (_) => const NotificationScreen(),
     JournalsScreen.routeName: (_) => const JournalsScreen(),
     NoteScreen.routeName: (_) => const NoteScreen(),
