@@ -1,5 +1,5 @@
-name: Tranquil Life
-description: A therapeutic tele-counseling platform.
+name: tranquil_life
+description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
