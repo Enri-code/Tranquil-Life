@@ -5,7 +5,7 @@ import 'package:tranquil_life/app/presentation/theme/text.dart';
 
 abstract class MyThemeData {
   static final theme = ThemeData.from(
-    colorScheme: const ColorScheme.light(primary: ColorPalette.primary),
+    colorScheme: const ColorScheme.light(primary: ColorPalette.green),
     textTheme: MyTextData.textTheme,
   ).copyWith(
     visualDensity: VisualDensity.compact,

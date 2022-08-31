@@ -1,15 +1,14 @@
-class Consultant {
-  final String id;
-  final String name;
+import 'package:tranquil_life/features/auth/domain/entities/user.dart';
+
+class Consultant extends User {
   final String specialties;
   final String description;
-  final String avatarUrl;
 
   const Consultant({
-    required this.id,
-    required this.name,
+    required super.id,
+    required super.displayName,
     this.specialties = '',
     this.description = '',
-    this.avatarUrl = '',
+    super.avatarUrl = '',
   });
 }

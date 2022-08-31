@@ -11,6 +11,7 @@ import 'package:tranquil_life/features/questionnaire/presentation/bloc/questionn
 import 'package:tranquil_life/features/questionnaire/presentation/widgets/question_bottom_sheet.dart';
 
 class QuestionsScreen extends StatefulWidget {
+  static const routeName = 'questionnaire_screen';
   const QuestionsScreen({Key? key}) : super(key: key);
 
   @override
@@ -21,13 +22,15 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   var index = 0;
   var questionsCount = questions.length;
 
-  _onOptionTap(bool canContinue, Option option) {
-    questions[index].answer = option;
+  _onOptionTap(bool canContinue, Option option) async {
+    setState(() => questions[index].answer = option);
+    final questionnaireBloc = context.read<QuestionnaireBloc>();
     if (canContinue) {
+      await Future.delayed(kThemeChangeDuration);
       if (index < questions.length - 1) {
         setState(() => ++index);
       } else {
-        context.read<QuestionnaireBloc>().add(Submit(questions));
+        questionnaireBloc.add(Submit(questions));
       }
     }
   }
@@ -111,8 +114,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                     Text(
                       questions[index].title,
                       style: const TextStyle(
-                        fontSize: 19,
                         height: 1.3,
+                        fontSize: 19,
                         color: Colors.black,
                       ),
                     ),
@@ -127,6 +130,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                               var option = questions[index].options[i];
                               return OptionWidget(
                                 option,
+                                isSelected: questions[index].answer == option,
                                 onTap: (val) => _onOptionTap(val, option),
                               );
                             },

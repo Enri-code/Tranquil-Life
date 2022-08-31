@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sent_reset_email.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_up/sign_up_0.dart';
+import 'package:tranquil_life/features/calls/presentation/screens/call_page.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/chat_screen.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/image_full_view.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/video_player_page.dart';
@@ -14,6 +15,7 @@ import 'package:tranquil_life/features/journal/presentation/screens/note_screen.
 import 'package:tranquil_life/features/notifications/presentation/screens/notifications.dart';
 import 'package:tranquil_life/features/onboarding/presentation/screens/onboard.dart';
 import 'package:tranquil_life/features/profile/presentation/screens/edit_profile.dart';
+import 'package:tranquil_life/features/questionnaire/presentation/screens/questions.dart';
 import 'package:tranquil_life/features/settings/presentation/screens/settings.dart';
 
 abstract class AppConfig {
@@ -26,11 +28,13 @@ abstract class AppConfig {
     SentPasswordResetEmailScreen.routeName: (_) =>
         const SentPasswordResetEmailScreen(),
     DashboardScreen.routeName: (_) => const DashboardScreen(),
+    QuestionsScreen.routeName: (_) => const QuestionsScreen(),
     SpeakWithConsultantScreen.routeName: (_) =>
         const SpeakWithConsultantScreen(),
     ConsultantDetailScreen.routeName: (_) => const ConsultantDetailScreen(),
     ScheduleMeetingScreen.routeName: (_) => const ScheduleMeetingScreen(),
     ChatScreen.routeName: (_) => const ChatScreen(),
+    CallScreen.routeName: (_) => const CallScreen(),
     ImageFullView.routeName: (_) => const ImageFullView(),
     VideoPlayerScreen.routeName: (_) => const VideoPlayerScreen(),
     NotificationScreen.routeName: (_) => const NotificationScreen(),

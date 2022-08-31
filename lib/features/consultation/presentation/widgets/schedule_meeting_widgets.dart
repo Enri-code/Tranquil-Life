@@ -19,7 +19,7 @@ class _CardInfo extends StatelessWidget {
         Icon(icon, color: Theme.of(context).primaryColor, size: 34),
         const SizedBox(width: 24),
         MyDefaultTextStyle(
-          style: TextStyle(fontSize: 16, color: ColorPalette.primary[800]),
+          style: TextStyle(fontSize: 16, color: ColorPalette.green[800]),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,

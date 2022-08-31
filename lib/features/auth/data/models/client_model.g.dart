@@ -11,6 +11,8 @@ ClientModel _$ClientModelFromJson(Map<String, dynamic> json) => ClientModel(
       firstName: json['f_name'] as String,
       lastName: json['l_name'] as String,
       avatarUrl: json['avatar_url'] as String,
+      token: json['token'] as String,
+      id: json['id'] as int,
       displayName: json['display_name'] as String,
       phoneNumber: json['phone'] as String,
       birthDate:

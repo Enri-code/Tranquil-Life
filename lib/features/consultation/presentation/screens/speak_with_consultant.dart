@@ -26,12 +26,12 @@ class SpeakWithConsultantScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         child: ConsultantCard(
                           consultant: Consultant(
-                            id: '$index',
+                            id: index,
                             specialties:
                                 'Anxiety, self-esteem, and depression.',
                             description:
                                 'Specialist in matters relating to anxiety, self-esteem, and depression.',
-                            name: 'Dr David Blaine Mckenzie',
+                            displayName: 'Dr David Blaine Mckenzie',
                             avatarUrl:
                                 'https://media-exp1.licdn.com/dms/image/C4D03AQG9RwdZxoR3LA/profile-displayphoto-shrink_800_800/0/1641042314872?e=1664409600&v=beta&t=3i2pGW6GJaM47SVvonYStK24fA_OJO3nMbHq8JcFfZk',
                           ),

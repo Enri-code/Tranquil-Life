@@ -14,15 +14,6 @@ void setStatusBarBrightness(bool dark, [Duration? delayedTime]) async {
   ));
 }
 
-String formatDurationToTimerString(int milliseconds) {
-  String twoDigits(int n) => n.toString().padLeft(2, '0');
-  final duration = Duration(milliseconds: milliseconds);
-  final hours = duration.inHours > 0 ? '${twoDigits(duration.inHours)}:' : '';
-  final mins = twoDigits(duration.inMinutes.remainder(60));
-  final secs = twoDigits(duration.inSeconds.remainder(60));
-  return "$hours$mins:$secs";
-}
-
 Future<DateTime?> showCustomDatePicker(BuildContext context,
     {required DateTime minDateFromNow, required DateTime maxDateFromNow}) {
   var now = DateTime.now();

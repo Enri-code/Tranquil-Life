@@ -10,7 +10,7 @@ class ReceiverReplyBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepliedChatBox(
       message,
-      backgroundColor: Color.lerp(Colors.black, Colors.white, 0.82)!,
+      backgroundColor: const Color(0xffE1DFDF),
     );
   }
 }

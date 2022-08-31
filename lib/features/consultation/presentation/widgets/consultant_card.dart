@@ -37,7 +37,7 @@ class ConsultantCard extends StatelessWidget {
                       tag: '${consultant.id}-img',
                       transitionOnUserGestures: true,
                       child: Image.network(
-                        consultant.avatarUrl,
+                        consultant.avatarUrl!,
                         fit: BoxFit.fitHeight,
                         errorBuilder: (_, __, ___) => const Icon(
                           TranquilIcons.profile,
@@ -80,11 +80,11 @@ class ConsultantCard extends StatelessWidget {
               children: [
                 const SizedBox(height: 4),
                 Text(
-                  consultant.name,
+                  consultant.displayName,
                   style: TextStyle(
                     fontSize: 20,
                     height: 1,
-                    color: ColorPalette.primary[800],
+                    color: ColorPalette.green[800],
                   ),
                 ),
                 const SizedBox(height: 2),

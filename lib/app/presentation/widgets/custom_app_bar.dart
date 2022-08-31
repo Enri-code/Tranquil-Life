@@ -38,7 +38,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       toolbarTextStyle: TextStyle(
         fontSize: 18,
-        color: ColorPalette.primary[800],
+        color: ColorPalette.green[800],
         fontFamily: MyTextData.josefinFamily,
       ),
       /* systemOverlayStyle: isStatusBarDark == null
@@ -74,7 +74,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 title!,
                 style: TextStyle(
                   fontSize: 21,
-                  color: titleColor ?? ColorPalette.primary[800],
+                  color: titleColor ?? ColorPalette.green[800],
                 ),
               ),
             )

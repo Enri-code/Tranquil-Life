@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
@@ -18,7 +17,7 @@ class AddPictureSheet extends StatelessWidget {
       child: SafeArea(
         child: MyDefaultTextStyle(
           style: TextStyle(
-            color: ColorPalette.primary[800],
+            color: ColorPalette.green[800],
             fontWeight: FontWeight.w600,
           ),
           child: Column(
@@ -81,11 +80,7 @@ class _Button extends StatelessWidget {
           child: Row(
             children: [
               if (iconData != null)
-                Icon(
-                  iconData,
-                  color: Theme.of(context).primaryColor,
-                  size: 28,
-                ),
+                Icon(iconData, color: Theme.of(context).primaryColor, size: 28),
               if (child != null) child!,
               const SizedBox(width: 24),
               Text(title),

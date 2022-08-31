@@ -1,20 +1,21 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:tranquil_life/features/auth/domain/entities/user.dart';
 
 part 'client.g.dart';
 
 @JsonSerializable(createToJson: true)
-class Client {
+class Client extends User {
   const Client({
+    required super.id,
     required this.email,
     required this.firstName,
     required this.lastName,
-    required this.avatarUrl,
-    required this.displayName,
     required this.phoneNumber,
-    this.birthDate,
-    /*this.gender,
-    this.location, */
+    required super.displayName,
     required this.isVerified,
+    required this.token,
+    super.avatarUrl,
+    this.birthDate,
   });
 
   @JsonKey(name: 'f_name')
@@ -22,15 +23,12 @@ class Client {
   @JsonKey(name: 'l_name')
   final String lastName;
   final String email;
-  @JsonKey()
-  final String? avatarUrl;
-  final String displayName;
+
   @JsonKey(name: 'phone')
   final String phoneNumber;
   final String? birthDate;
 
-/*  final String? gender;
-  final String? location; */
+  final String token;
 
   @JsonKey(name: 'email_verified_at', fromJson: isVerifiedFromJson)
   final bool isVerified;

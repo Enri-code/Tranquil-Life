@@ -21,13 +21,10 @@ abstract class MediaService {
     return _cropImage(File(pickedFile.path));
   }
 
-  static Future<File?> selectAudio() {
-    return _selectFile(type: FileType.audio);
-  }
+  static Future<File?> selectAudio() => _selectFile(type: FileType.audio);
 
-  static Future<File?> selectDocument() {
-    return _selectFile(type: FileType.any);
-  }
+  static Future<File?> selectDocument([List<String>? allowedExtensions]) =>
+      _selectFile(type: FileType.any, allowedExtensions: allowedExtensions);
 
   static Future<File?> _selectFile({
     FileType type = FileType.any,

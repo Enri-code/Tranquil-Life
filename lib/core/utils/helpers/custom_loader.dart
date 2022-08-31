@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class CustomLoader {
   static bool _isDialogOpen = false;
   static late NavigatorState _navigator;
+
   static init(NavigatorState navigator) => _navigator = navigator;
 
   static void display() {

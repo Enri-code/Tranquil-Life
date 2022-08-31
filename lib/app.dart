@@ -10,6 +10,7 @@ import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dar
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/partner/partner_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
+import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
 import 'package:tranquil_life/features/consultation/data/repos/consultant_repo.dart';
 import 'package:tranquil_life/features/consultation/presentation/bloc/consultant/consultant_bloc.dart';
 import 'package:tranquil_life/features/dashboard/presentation/screens/dashboard.dart';
@@ -36,9 +37,10 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => ClientAuthBloc()),
         BlocProvider(create: (_) => PartnerBloc(const PartnersRepoImpl())),
+        BlocProvider(create: (_) => ConsultantBloc(const ConsultantRepoImpl())),
         BlocProvider(create: (_) => JournalBloc(const JournalRepoImpl())),
         BlocProvider(create: (_) => NoteBloc()),
-        BlocProvider(create: (_) => ConsultantBloc(const ConsultantRepoImpl())),
+        BlocProvider(create: (_) => ChatBloc()),
         BlocProvider(
           create: (_) => QuestionnaireBloc(const QuestionnaireRepoImpl()),
         ),

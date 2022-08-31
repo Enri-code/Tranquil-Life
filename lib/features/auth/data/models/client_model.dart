@@ -10,6 +10,8 @@ class ClientModel extends Client {
     required super.firstName,
     required super.lastName,
     required super.avatarUrl,
+    required super.token,
+    required super.id,
     required super.displayName,
     required super.phoneNumber,
     required super.isVerified,

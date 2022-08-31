@@ -1,21 +1,20 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:audio_session/audio_session.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sound/flutter_sound.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
+import 'package:tranquil_life/app/presentation/widgets/back_button_white.dart';
+import 'package:tranquil_life/app/presentation/widgets/swipeable.dart';
 import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
-import 'package:tranquil_life/core/constants/constants.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/core/utils/services/time_formatter.dart';
+import 'package:tranquil_life/features/calls/presentation/screens/call_page.dart';
+import 'package:tranquil_life/features/chat/data/audio_recorder.dart';
 import 'package:tranquil_life/features/chat/data/samples.dart';
 import 'package:tranquil_life/features/chat/domain/entities/message.dart';
 import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
@@ -27,8 +26,8 @@ import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/send
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender/text.dart';
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender/video.dart';
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender/voice_note.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_more_options.dart';
 
-part '../widgets/chat_more_options.dart';
 part '../widgets/chat_app_bar.dart';
 part '../widgets/input_bar.dart';
 
@@ -41,8 +40,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final scrollController = ItemScrollController();
-
   @override
   void initState() {
     setStatusBarBrightness(false);
@@ -66,7 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Padding(
               padding: const EdgeInsets.all(4),
               child: BlocProvider(
-                create: (_) => ChatBloc(scrollController: scrollController),
+                create: (_) => ChatBloc(),
                 child: Column(
                   children: const [
                     _TitleBar(),
@@ -127,12 +124,10 @@ class _MessagesState extends State<_Messages>
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     )..animateTo(1, duration: Duration.zero);
-
     highlightAnim = animController.drive(TweenSequence([
       TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 0.8),
       TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 0.2),
     ]));
-
     super.initState();
   }
 
@@ -145,36 +140,52 @@ class _MessagesState extends State<_Messages>
   @override
   Widget build(BuildContext context) {
     return UnfocusWidget(
-      child: BlocConsumer<ChatBloc, ChatState>(
-        listener: (_, __) => animController.forward(from: 0),
-        builder: (context, state) => ScrollablePositionedList.builder(
-          reverse: true,
-          itemCount: messages.length,
-          physics: const BouncingScrollPhysics(),
-          itemScrollController: context.read<ChatBloc>().scrollController,
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewPadding.bottom,
+      child: Builder(builder: (context) {
+        if (messages.isEmpty) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: Text(
+                'No messages here yet.\nTalk to your consultant! 👋',
+                style: TextStyle(color: Colors.white, height: 1.5),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
+        return BlocConsumer<ChatBloc, ChatState>(
+          listener: (_, __) => animController.forward(from: 0),
+          builder: (context, state) => ScrollablePositionedList.builder(
+            reverse: true,
+            itemCount: messages.length,
+            physics: const BouncingScrollPhysics(),
+            itemScrollController: context.read<ChatBloc>().scrollController,
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewPadding.bottom,
+            ),
+            itemBuilder: (_, index) {
+              final child = Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _chatBoxBuilder(messages[index]),
+              );
+              if (index != state.chatIndex) {
+                return SizedBox(key: ValueKey(index), child: child);
+              }
+              return AnimatedBuilder(
+                key: ValueKey(index),
+                animation: highlightAnim,
+                builder: (context, _) {
+                  final value = highlightAnim.value * 0.3;
+                  return Container(
+                    color: Theme.of(context).primaryColor.withOpacity(value),
+                    child: child,
+                  );
+                },
+              );
+            },
           ),
-          itemBuilder: (_, index) {
-            final child = Padding(
-              key: ValueKey(index),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _chatBoxBuilder(messages[index]),
-            );
-            if (index != state.chatIndex) return child;
-            return AnimatedBuilder(
-              animation: highlightAnim,
-              builder: (context, _) {
-                final value = highlightAnim.value * 0.3;
-                return Container(
-                  color: Theme.of(context).primaryColor.withOpacity(value),
-                  child: child,
-                );
-              },
-            );
-          },
-        ),
-      ),
+        );
+      }),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/core/utils/services/validators.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
@@ -90,7 +91,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
                   },
                   builder: (context, state) {
                     if (state.status == OperationStatus.loading) {
-                      return const CircularProgressIndicator();
+                      return CustomLoader.widget();
                     }
                     return ElevatedButton(
                       onPressed: email.isEmpty ? null : _continue,

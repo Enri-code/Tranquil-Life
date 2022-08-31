@@ -4,11 +4,11 @@ import 'package:tranquil_life/app/presentation/theme/text.dart';
 
 abstract class MyButtonTheme {
   static final textButtonTheme = TextButtonThemeData(
-    style: TextButton.styleFrom(primary: ColorPalette.primary[800]),
+    style: TextButton.styleFrom(primary: ColorPalette.green[800]),
   );
   static final elevatedButtonTheme = ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-    fixedSize: const Size(380, 60),
+    fixedSize: const Size(380, 56),
     onPrimary: Colors.white,
     textStyle: const TextStyle(
       fontFamily: MyTextData.josefinFamily,
@@ -21,7 +21,7 @@ abstract class MyButtonTheme {
 
   static final outlinedButtonTheme = OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-    fixedSize: const Size(380, 60),
+    fixedSize: const Size(380, 56),
     padding: const EdgeInsets.all(12),
     side: const BorderSide(width: 2),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

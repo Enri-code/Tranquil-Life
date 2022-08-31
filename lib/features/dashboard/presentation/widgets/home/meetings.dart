@@ -13,7 +13,7 @@ class _MeetingsState extends State<_Meetings> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(18, 16, 4, 3),
+      padding: const EdgeInsets.fromLTRB(16, 16, 8, 3),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -33,7 +33,7 @@ class _MeetingsState extends State<_Meetings> {
                 height: 26,
                 margin: const EdgeInsets.only(right: 14),
                 decoration: BoxDecoration(
-                  color: ColorPalette.primary[800],
+                  color: ColorPalette.green[800],
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: Center(
@@ -50,13 +50,13 @@ class _MeetingsState extends State<_Meetings> {
             child: Builder(builder: (context) {
               if (meetingsCount == null) {
                 return Padding(
-                  padding: const EdgeInsets.only(right: 14),
+                  padding: const EdgeInsets.only(right: 10),
                   child: CustomLoader.widget(),
                 );
               }
               if (meetingsCount == 0) {
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 6, 14, 8),
+                  padding: const EdgeInsets.fromLTRB(0, 6, 10, 8),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -82,7 +82,7 @@ class _MeetingsState extends State<_Meetings> {
               }
               return Scrollbar(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 14),
+                  padding: const EdgeInsets.only(right: 10),
                   child: ListView.builder(
                     itemCount: meetingsCount,
                     padding: EdgeInsets.zero,
@@ -91,7 +91,12 @@ class _MeetingsState extends State<_Meetings> {
                       child: GestureDetector(
                         onTap: () => showDialog(
                           context: context,
-                          builder: (_) => const _MeetingDialog(),
+                          builder: (_) => _MeetingDialog(
+                            consultant: Consultant(
+                              id: 0,
+                              displayName: 'Dr Rique Blashq',
+                            ),
+                          ),
                         ),
                         child: const MeetingCard(),
                       ),
@@ -108,7 +113,8 @@ class _MeetingsState extends State<_Meetings> {
 }
 
 class _MeetingDialog extends StatelessWidget {
-  const _MeetingDialog({Key? key}) : super(key: key);
+  const _MeetingDialog({Key? key, required this.consultant}) : super(key: key);
+  final Consultant consultant;
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +132,9 @@ class _MeetingDialog extends StatelessWidget {
                 showModalBottomSheet(
                   context: context,
                   backgroundColor: Colors.transparent,
-                  builder: (_) => _RescheduleMeetingBottomSheet(),
+                  builder: (_) => _RescheduleMeetingBottomSheet(
+                    consultant: consultant,
+                  ),
                 );
               },
             ),

@@ -32,7 +32,7 @@ class MeetingCard extends StatelessWidget {
                 children: [
                   MyDefaultTextStyle(
                     style: TextStyle(
-                      color: ColorPalette.primary[800],
+                      color: ColorPalette.green[800],
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
@@ -54,7 +54,7 @@ class MeetingCard extends StatelessWidget {
                       const Text('60 mins'),
                       Text(
                         '19/08/2022',
-                        style: TextStyle(color: ColorPalette.primary[800]),
+                        style: TextStyle(color: ColorPalette.green[800]),
                       ),
                     ],
                   ),

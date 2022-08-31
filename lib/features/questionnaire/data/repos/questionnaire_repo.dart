@@ -23,11 +23,9 @@ class QuestionnaireRepoImpl extends QuestionnaireRepo {
         QuestionnaireEndPoints.submit,
         body: data,
       );
-      print(result.data);
       if (result.data is List) return const Right(null);
       throw Exception();
     } catch (_) {
-      print(_);
       return const Left(ResolvedError());
     }
   }

@@ -38,8 +38,8 @@ class ShareNoteBottomSheet extends StatelessWidget {
                       8,
                       (index) => const _ConsultantWidget(
                         Consultant(
-                          id: '0',
-                          name: 'Dr. David blaine Mckenzie',
+                          id: 0,
+                          displayName: 'Dr. David blaine Mckenzie',
                           avatarUrl:
                               'https://media-exp1.licdn.com/dms/image/C4D03AQG9RwdZxoR3LA/profile-displayphoto-shrink_800_800/0/1641042314872?e=1664409600&v=beta&t=3i2pGW6GJaM47SVvonYStK24fA_OJO3nMbHq8JcFfZk',
                         ),
@@ -70,10 +70,11 @@ class _ConsultantWidget extends StatelessWidget {
           builder: (_) => Dialog(
             child: ConfirmDialog(
               title: 'Are you sure?',
-              body: '${consultant.name} will get access to this note.',
+              bodyText:
+                  '${consultant.displayName} will get access to this note.',
               yesDialog: DialogOption(
                 'Share',
-                () {
+                onPressed: () {
                   //TODO
                   Navigator.of(context).pop();
                 },
@@ -93,10 +94,10 @@ class _ConsultantWidget extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(
-                    consultant.name,
+                    consultant.displayName,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color: ColorPalette.primary[800],
+                      color: ColorPalette.green[800],
                     ),
                   ),
                 ),

@@ -31,11 +31,14 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwipeableWidget(
-      swipedWidget: GestureDetector(
-        onTap: () {
-          //TODO
-        },
-        child: const _DeleteIcon(),
+      swipedWidget: Align(
+        alignment: Alignment.centerRight,
+        child: GestureDetector(
+          onTap: () {
+            //TODO
+          },
+          child: const _DeleteIcon(),
+        ),
       ),
       child: Stack(
         alignment: AlignmentDirectional.topEnd,

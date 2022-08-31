@@ -17,7 +17,19 @@ part 'auth_state.dart';
 
 abstract class AuthBloc<P extends QueryParams>
     extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(const AuthState()) {
+  AuthBloc()
+      : super(const AuthState(
+          user: Client(
+            id: 0,
+            email: 'test@gmail.com',
+            firstName: 'FirstName',
+            lastName: 'LastName',
+            displayName: 'Name Of User',
+            phoneNumber: '09069184604',
+            isVerified: false,
+            token: '',
+          ),
+        )) {
     on<RemoveError>(_resetError);
     on<RestoreSignIn>(_restoreSignIn);
     on<SignUp>(_signUp);

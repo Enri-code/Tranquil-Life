@@ -29,7 +29,7 @@ class _AppBarState extends State<_AppBar> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if (!(context.watch<ClientAuthBloc>().state.user?.isVerified ?? false))
+        if (context.watch<ClientAuthBloc>().state.user!.isVerified)
           Container(
             margin: const EdgeInsets.only(left: 16),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -45,7 +45,7 @@ class _AppBarState extends State<_AppBar> {
                   TextSpan(
                     text: 'verify your account.',
                     style: const TextStyle(
-                      color: Colors.red,
+                      color: ColorPalette.red,
                       fontSize: 16,
                       decoration: TextDecoration.underline,
                     ),
@@ -111,9 +111,7 @@ class _TitleState extends State<_Title> {
                           .pushNamed(SpeakWithConsultantScreen.routeName);
                     } else {
                       Navigator.of(context)
-                          .push(MaterialPageRoute(
-                            builder: (_) => const QuestionsScreen(),
-                          ))
+                          .pushNamed(QuestionsScreen.routeName)
                           .whenComplete(() => setStatusBarBrightness(true));
                     }
                   },
@@ -139,7 +137,7 @@ class _TitleState extends State<_Title> {
                           child: Container(
                             padding: const EdgeInsets.all(2.6),
                             decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: ColorPalette.red,
                               shape: BoxShape.circle,
                               border:
                                   Border.all(color: Colors.white, width: 2.2),

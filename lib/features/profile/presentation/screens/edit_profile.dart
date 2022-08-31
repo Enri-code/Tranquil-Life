@@ -3,7 +3,7 @@ import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
-import 'package:tranquil_life/features/profile/presentation/widgets/add_picture_bottom_sheet.dart';
+import 'package:tranquil_life/features/profile/presentation/widgets/picture_bottom_sheet.dart';
 
 class EditProfileScreen extends StatelessWidget {
   static const routeName = 'edit_profile_screen';
@@ -126,7 +126,7 @@ class _Button extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           decoration: BoxDecoration(
-            color: ColorPalette.primary[200],
+            color: ColorPalette.green[200],
             borderRadius: const BorderRadius.all(Radius.circular(4)),
           ),
           child: Row(

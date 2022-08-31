@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/features/questionnaire/domain/entities/question.dart';
 
-class QuestionBottomSheet extends StatelessWidget {
+class QuestionBottomSheet extends StatefulWidget {
   const QuestionBottomSheet(this.question, {Key? key}) : super(key: key);
   final Question question;
+
+  @override
+  State<QuestionBottomSheet> createState() => _QuestionBottomSheetState();
+}
+
+class _QuestionBottomSheetState extends State<QuestionBottomSheet> {
+  void _onSelect(Option option) async {
+    setState(() => widget.question.answer = option);
+    final navigator = Navigator.of(context);
+    await Future.delayed(kThemeAnimationDuration);
+    navigator.pop(true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +38,7 @@ class QuestionBottomSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            question.title,
+            widget.question.title,
             style: const TextStyle(fontSize: 18),
           ),
           const SizedBox(height: 20),
@@ -35,15 +48,13 @@ class QuestionBottomSheet extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: List.generate(
-                    question.options.length,
+                    widget.question.options.length,
                     (i) {
-                      var option = question.options[i];
+                      var option = widget.question.options[i];
                       return OptionWidget(
                         option,
-                        onTap: (_) {
-                          question.answer = option;
-                          Navigator.of(context).pop(true);
-                        },
+                        isSelected: widget.question.answer == option,
+                        onTap: (_) => _onSelect(option),
                       );
                     },
                   ),
@@ -58,7 +69,14 @@ class QuestionBottomSheet extends StatelessWidget {
 }
 
 class OptionWidget extends StatelessWidget {
-  const OptionWidget(this.option, {Key? key, this.onTap}) : super(key: key);
+  const OptionWidget(
+    this.option, {
+    Key? key,
+    this.onTap,
+    this.isSelected = false,
+  }) : super(key: key);
+
+  final bool isSelected;
   final Option option;
   final Function(bool canContinue)? onTap;
 
@@ -69,6 +87,10 @@ class OptionWidget extends StatelessWidget {
       child: SizedBox(
         height: 52,
         child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary:
+                isSelected ? ColorPalette.blue : Theme.of(context).primaryColor,
+          ),
           onPressed: () {
             if (option.subQuestion != null) {
               showModalBottomSheet<bool>(

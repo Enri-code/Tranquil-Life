@@ -7,7 +7,7 @@ part 'consultant_model.g.dart';
 class ConsultantModel extends Consultant {
   const ConsultantModel({
     required super.id,
-    required super.name,
+    required super.displayName,
     required super.specialties,
     required super.description,
     super.avatarUrl,

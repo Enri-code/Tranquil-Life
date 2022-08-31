@@ -5,7 +5,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:tranquil_life/core/constants/constants.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/features/chat/data/audio_player.dart';
 import 'package:tranquil_life/features/chat/domain/entities/message.dart';
 
 class VoiceNoteLayout extends StatefulWidget {
@@ -21,15 +21,14 @@ class _VoiceNoteLayoutState extends State<VoiceNoteLayout>
     with SingleTickerProviderStateMixin {
   static final audioWidgetSize = Size(chatBoxMaxWidth - 82, 48);
 
-  final playerController = PlayerController();
+  final audioPlayer = AudioWavePlayer();
+
   late final AnimationController playAnimController;
+  StreamSubscription? _playStateStreamSub;
 
   bool loadingAudio = true;
-  double durationPercent = 0;
-  String durationText = '---:---';
-  StreamSubscription? durationStream, playStateStream;
 
-  Future _prepareAudio() async {
+  Future _preparePlayer() async {
     late final String path;
     if (widget.message.isSent) {
       var file = await DefaultCacheManager().getSingleFile(widget.message.data);
@@ -37,23 +36,14 @@ class _VoiceNoteLayoutState extends State<VoiceNoteLayout>
     } else {
       path = widget.message.data;
     }
-    await playerController.preparePlayer(path);
-    playStateStream = playerController.onPlayerStateChanged.listen((event) {
+    await audioPlayer.init(path);
+    setState(() => loadingAudio = false);
+    _playStateStreamSub = audioPlayer.onStateChanged.listen((event) {
       if (event == PlayerState.paused) {
         playAnimController.reverse();
       } else if (event == PlayerState.playing) {
         playAnimController.forward();
       }
-    });
-    durationStream = playerController.onCurrentDurationChanged.listen((event) {
-      setState(() {
-        durationPercent = event / playerController.maxDuration;
-        durationText = formatDurationToTimerString(event);
-      });
-    });
-    setState(() {
-      loadingAudio = false;
-      durationText = formatDurationToTimerString(playerController.maxDuration);
     });
   }
 
@@ -64,15 +54,14 @@ class _VoiceNoteLayoutState extends State<VoiceNoteLayout>
       vsync: this,
       duration: kThemeAnimationDuration,
     );
-    _prepareAudio();
+    _preparePlayer();
   }
 
   @override
   void dispose() {
-    durationStream?.cancel();
-    playStateStream?.cancel();
-    playerController.dispose();
+    audioPlayer.dispose();
     playAnimController.dispose();
+    _playStateStreamSub?.cancel();
     super.dispose();
   }
 
@@ -116,10 +105,9 @@ class _VoiceNoteLayoutState extends State<VoiceNoteLayout>
                     GestureDetector(
                       onTap: () {
                         if (playAnimController.isDismissed) {
-                          playerController.startPlayer(
-                              finishMode: FinishMode.pause);
+                          audioPlayer.play();
                         } else {
-                          playerController.pausePlayer();
+                          audioPlayer.pause();
                         }
                       },
                       child: AnimatedIcon(
@@ -139,7 +127,7 @@ class _VoiceNoteLayoutState extends State<VoiceNoteLayout>
                             density: 0.4,
                             size: audioWidgetSize,
                             enableSeekGesture: false,
-                            playerController: playerController,
+                            playerController: audioPlayer.controller,
                             playerWaveStyle: PlayerWaveStyle(
                               waveThickness: 1.4,
                               liveWaveColor: widget.message.fromYou
@@ -152,13 +140,17 @@ class _VoiceNoteLayoutState extends State<VoiceNoteLayout>
                           ),
                           if (androidVersion == null || androidVersion! > 8.1)
                             Positioned.fill(
-                              child: _Slider(
-                                value: durationPercent,
-                                fromYou: widget.message.fromYou,
-                                onValueChanged: (val) {
-                                  final dur =
-                                      val * playerController.maxDuration;
-                                  playerController.seekTo(dur.round());
+                              child: StreamBuilder<double>(
+                                initialData: 0,
+                                stream: audioPlayer.onDurationPercent,
+                                builder: (context, snapshot) {
+                                  return _Slider(
+                                    value: snapshot.data!,
+                                    fromYou: widget.message.fromYou,
+                                    onValueChanged: (val) {
+                                      audioPlayer.seekToPercent(val);
+                                    },
+                                  );
                                 },
                               ),
                             ),
@@ -171,12 +163,18 @@ class _VoiceNoteLayoutState extends State<VoiceNoteLayout>
             ),
           ),
           const SizedBox(width: 8),
-          Text(
-            durationText,
-            style: TextStyle(
-              fontSize: 12,
-              color: widget.message.fromYou ? Colors.white : Colors.black,
-            ),
+          StreamBuilder<String>(
+            initialData: '---:---',
+            stream: audioPlayer.onDurationText,
+            builder: (context, snapshot) {
+              return Text(
+                snapshot.data!,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: widget.message.fromYou ? Colors.white : Colors.black,
+                ),
+              );
+            },
           ),
           const SizedBox(width: 4),
         ],

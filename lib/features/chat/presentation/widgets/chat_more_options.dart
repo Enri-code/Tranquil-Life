@@ -1,9 +1,22 @@
-part of '../screens/chat_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tranquil_life/app/presentation/theme/colors.dart';
+import 'package:tranquil_life/app/presentation/widgets/confirm_dialog.dart';
+import 'package:tranquil_life/app/presentation/widgets/info_dialog.dart';
+import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
+import 'package:tranquil_life/features/auth/domain/entities/client.dart';
+import 'package:tranquil_life/features/auth/domain/entities/user.dart';
+import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
+import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
+import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
+import 'package:tranquil_life/features/questionnaire/presentation/screens/questions.dart';
 
-class _MoreOptions extends StatelessWidget {
-  const _MoreOptions({
-    Key? key,
-  }) : super(key: key);
+part 'package:tranquil_life/features/chat/presentation/widgets/chat_more_options/view_participant.dart';
+part 'package:tranquil_life/features/chat/presentation/widgets/chat_more_options/send_invite.dart';
+part 'package:tranquil_life/features/chat/presentation/widgets/chat_more_options/end_session.dart';
+
+class MoreOptions extends StatelessWidget {
+  const MoreOptions({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,22 +26,31 @@ class _MoreOptions extends StatelessWidget {
       itemBuilder: (_) => [
         const PopupMenuItem(value: 0, child: Text('Invite participant')),
         const PopupMenuItem(value: 1, child: Text('View participants')),
-        const PopupMenuItem(
-          value: 2,
-          child: Text('Health questionnaire'),
-        ),
+        const PopupMenuItem(value: 2, child: Text('Health questionnaire')),
         const PopupMenuItem(value: 3, child: Text('End session')),
       ],
       onSelected: (int val) {
-        //TODO
         switch (val) {
           case 0:
+            showDialog(
+              context: context,
+              builder: (_) => const Dialog(child: _SendInviteDialog()),
+            );
             break;
           case 1:
+            showDialog(
+              context: context,
+              builder: (_) => const _ViewParticipantsDialog(),
+            );
             break;
           case 2:
+            Navigator.of(context).pushNamed(QuestionsScreen.routeName);
             break;
           case 3:
+            showDialog(
+              context: context,
+              builder: (_) => const Dialog(child: _EndSessionDialog()),
+            );
             break;
         }
       },

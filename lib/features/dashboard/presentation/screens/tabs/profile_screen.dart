@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
-import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/features/profile/presentation/screens/edit_profile.dart';
 import 'package:tranquil_life/features/settings/presentation/screens/settings.dart';
@@ -20,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
-                padding: const EdgeInsets.only(right: 16),
+                padding: const EdgeInsets.only(right: 12, top: 8),
                 child: AppBarButton(
                   icon: const Icon(Icons.settings, color: Colors.white),
                   onPressed: () =>
@@ -147,7 +146,7 @@ class _Button extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           onPrimary: Colors.black,
-          primary: ColorPalette.primary[200],
+          primary: ColorPalette.green[200],
           shadowColor: Colors.black.withOpacity(0.5),
           surfaceTintColor: Colors.white,
         ),

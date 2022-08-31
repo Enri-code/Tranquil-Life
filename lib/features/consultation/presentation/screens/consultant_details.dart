@@ -61,7 +61,7 @@ class _PageBody extends StatelessWidget {
       child: Stack(
         children: [
           Image.network(
-            consultant.avatarUrl,
+            consultant.avatarUrl!,
             fit: BoxFit.cover,
             height: MediaQuery.of(context).size.height - 432,
             width: double.infinity,
@@ -93,7 +93,7 @@ class _PageBody extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      consultant.name,
+                      consultant.displayName,
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w600,
@@ -107,7 +107,7 @@ class _PageBody extends StatelessWidget {
                     const SizedBox(height: 16),
                     MyDefaultTextStyle(
                       style: TextStyle(
-                        color: ColorPalette.primary[800]!,
+                        color: ColorPalette.green[800]!,
                         fontSize: 16,
                       ),
                       child: SingleChildScrollView(
@@ -189,7 +189,7 @@ class _InfoCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: ColorPalette.primary[800]!),
+        border: Border.all(color: ColorPalette.green[800]!),
       ),
       child: Row(
         children: [
@@ -197,7 +197,7 @@ class _InfoCard extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: ColorPalette.primary[800]!,
+              color: ColorPalette.green[800]!,
             ),
             child: Icon(
               icon,

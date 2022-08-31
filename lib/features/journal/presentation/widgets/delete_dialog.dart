@@ -10,10 +10,10 @@ class DeleteNoteDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConfirmDialog(
       title: 'Delete Note?',
-      body: 'This note will be permanently deleted.',
+      bodyText: 'This note will be permanently deleted.',
       yesDialog: DialogOption(
         'Delete',
-        () {}, //TODO
+        onPressed: () {}, //TODO
       ),
     );
   }

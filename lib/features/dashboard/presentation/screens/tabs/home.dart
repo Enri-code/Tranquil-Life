@@ -9,6 +9,8 @@ import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/core/utils/services/app_data_store.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
+import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
+import 'package:tranquil_life/features/consultation/presentation/screens/schedule_meeting_screen.dart';
 import 'package:tranquil_life/features/dashboard/presentation/widgets/home/meeting_card.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 import 'package:tranquil_life/features/journal/presentation/screens/note_screen.dart';

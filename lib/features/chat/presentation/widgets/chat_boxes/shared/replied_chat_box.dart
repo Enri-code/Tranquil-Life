@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/core/utils/services/time_formatter.dart';
 import 'package:tranquil_life/features/chat/data/samples.dart';
 import 'package:tranquil_life/features/chat/domain/entities/message.dart';
 import 'package:tranquil_life/features/chat/domain/entities/reply.dart';
@@ -112,7 +112,7 @@ class _MediaReplyWidgetState extends State<_MediaReplyWidget> {
     }
     await playerController.preparePlayer(path);
     setState(() {
-      duration = formatDurationToTimerString(playerController.maxDuration);
+      duration = TimeFormatter.toTimerString(playerController.maxDuration);
     });
   }
 
@@ -230,12 +230,12 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      fromYou ? 'You' : context.read<ChatBloc>().therapistName,
+      fromYou ? 'You' : context.watch<ChatBloc>().state.consultant!.displayName,
       style: TextStyle(
         color: Color.lerp(
-          fromYou ? Colors.white : Colors.black,
+          Colors.white,
           Theme.of(context).primaryColor,
-          0.35,
+          fromYou ? 0.35 : 1,
         )!,
       ),
     );

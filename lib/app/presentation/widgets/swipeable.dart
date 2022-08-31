@@ -5,11 +5,16 @@ class SwipeableWidget extends StatefulWidget {
     Key? key,
     required this.child,
     this.swipedWidget,
+    this.maxOffset,
+    this.enabled = true,
+    this.resetOnRelease = false,
     this.onStateChanged,
   }) : super(key: key);
 
-  final Widget child;
+  final bool resetOnRelease, enabled;
+  final double? maxOffset;
   final Widget? swipedWidget;
+  final Widget child;
 
   final Function(bool isOpen)? onStateChanged;
 
@@ -28,10 +33,8 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
 
   @override
   void initState() {
-    animator = AnimationController(
-      vsync: this,
-      duration: kThemeAnimationDuration,
-    )..addListener(() {
+    animator = AnimationController(vsync: this, duration: kTabScrollDuration)
+      ..addListener(() {
         var toPosition = isOpen ? maxOffset : lastOffset;
         var val = curveAnim.animate(animator).value;
         setState(() => offset = toPosition * val);
@@ -42,12 +45,12 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    maxOffset = -MediaQuery.of(context).size.width * 0.15;
+    maxOffset = -(widget.maxOffset ?? MediaQuery.of(context).size.width * 0.15);
   }
 
   @override
   void didUpdateWidget(covariant SwipeableWidget oldWidget) {
-    _animateTo(false);
+    if (!widget.resetOnRelease) _animateTo(false);
     super.didUpdateWidget(oldWidget);
   }
 
@@ -57,28 +60,34 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
     super.dispose();
   }
 
-  _animateTo(bool end) {
+  Future _animateTo(bool end) async {
     isOpen = end;
-    widget.onStateChanged?.call(end);
     lastOffset = offset;
+    widget.onStateChanged?.call(end);
+    if (widget.resetOnRelease && end) {
+      animator.reset();
+      await animator.animateTo(1, curve: Curves.linear);
+      await animator.animateTo(0, curve: Curves.linear);
+      return;
+    }
     if (end) {
-      animator.forward(from: 0);
+      await animator.forward(from: 0);
     } else {
-      animator.reverse(from: 1);
+      await animator.reverse(from: 1);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var percentage = offset / maxOffset;
+    final percentage = offset / maxOffset;
     return Stack(
-      alignment: Alignment.centerRight,
+      alignment: Alignment.center,
       children: [
         if (widget.swipedWidget != null)
           Transform.scale(
             scale: percentage * 0.3 + 0.7,
             child: Opacity(
-              opacity: percentage.clamp(0, 1),
+              opacity: Curves.easeIn.transform(percentage.clamp(0, 1)),
               child: Listener(
                 onPointerDown: (_) => _animateTo(false),
                 behavior: HitTestBehavior.opaque,
@@ -86,44 +95,44 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
               ),
             ),
           ),
-        GestureDetector(
-          onTap: () {
-            if (isOpen) _animateTo(false);
-          },
-          onHorizontalDragStart: (details) =>
-              initialOffset = details.localPosition.dx,
-          onHorizontalDragUpdate: (details) {
-            if (details.localPosition.dx < initialOffset) {
-              if (offset > maxOffset) {
-                if (isOpen) {
-                  isOpen = false;
-                  widget.onStateChanged?.call(false);
+        if (widget.enabled)
+          GestureDetector(
+            onTap: () {
+              if (isOpen && !widget.resetOnRelease) _animateTo(false);
+            },
+            onHorizontalDragStart: (details) =>
+                initialOffset = details.localPosition.dx,
+            onHorizontalDragUpdate: (details) {
+              if (details.localPosition.dx < initialOffset) {
+                if (offset > maxOffset) {
+                  setState(() {
+                    offset = details.localPosition.dx - initialOffset;
+                  });
+                } else {
+                  setState(() => offset = maxOffset);
                 }
-                setState(() {
-                  offset = details.localPosition.dx - initialOffset;
-                });
-              } else {
-                if (!isOpen) {
-                  isOpen = true;
-                  widget.onStateChanged?.call(true);
-                }
-                setState(() => offset = maxOffset);
+              } else if (isOpen) {
+                _animateTo(false);
               }
-            } else if (isOpen) {
-              _animateTo(false);
-            }
-          },
-          onDoubleTap: () => _animateTo(true),
-          onLongPress: () => _animateTo(!isOpen),
-          onHorizontalDragCancel: () => _animateTo(false),
-          onHorizontalDragEnd: (details) {
-            if (offset > maxOffset) _animateTo(false);
-          },
-          child: Transform.translate(
-            offset: Offset(offset, 0),
-            child: widget.child,
-          ),
-        ),
+            },
+            onDoubleTap: () => _animateTo(true),
+            onLongPress: () => _animateTo(!isOpen),
+            onHorizontalDragCancel: () => _animateTo(false),
+            onHorizontalDragEnd: (details) {
+              if (offset > maxOffset || widget.resetOnRelease) {
+                _animateTo(false);
+              }
+              if (offset <= maxOffset) {
+                widget.onStateChanged?.call(isOpen = true);
+              }
+            },
+            child: Transform.translate(
+              offset: Offset(offset, 0),
+              child: widget.child,
+            ),
+          )
+        else
+          widget.child,
       ],
     );
   }

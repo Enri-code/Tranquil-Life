@@ -8,81 +8,31 @@ class _InputBar extends StatefulWidget {
 }
 
 class _InputBarState extends State<_InputBar> {
-  static final sessionConfig = AudioSessionConfiguration(
-    avAudioSessionCategory: AVAudioSessionCategory.record,
-    avAudioSessionCategoryOptions:
-        AVAudioSessionCategoryOptions.allowBluetooth |
-            AVAudioSessionCategoryOptions.defaultToSpeaker,
-    avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-    avAudioSessionRouteSharingPolicy:
-        AVAudioSessionRouteSharingPolicy.defaultPolicy,
-    avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-    androidAudioAttributes: const AndroidAudioAttributes(
-      contentType: AndroidAudioContentType.speech,
-      flags: AndroidAudioFlags.none,
-      usage: AndroidAudioUsage.voiceCommunication,
-    ),
-    androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-    androidWillPauseWhenDucked: true,
-  );
-
   final textController = TextEditingController();
-  final recordingController = FlutterSoundRecorder();
+  final recorder = AudioRecorder();
 
-  bool micMode = true, recording = false;
+  bool micMode = true, isRecording = false;
+  bool get showMic => micMode && !isRecording;
 
-  String filePath = '${uidGenerator.v4()}.aac', durationText = '00:00';
-
-  StreamSubscription? durationStreamSub;
-
-  Future _initRecorder() async {
-    if (!kIsWeb) await Permission.microphone.request();
-    recordingController.openRecorder().then((value) {
-      return recordingController
-          .setSubscriptionDuration(const Duration(milliseconds: 500));
-    });
-    AudioSession.instance.then((value) => value.configure(sessionConfig));
-  }
-
-  Future _startRecording() async {
-    setState(() => recording = true);
-    await recordingController.startRecorder(
-      codec: Codec.aacMP4,
-      toFile: filePath,
-    );
-    durationText = '00:00';
-    durationStreamSub = recordingController.onProgress?.listen((event) {
-      setState(() => durationText = formatDurationToTimerString(
-            event.duration.inMilliseconds,
-          ));
-    });
-  }
-
-  Future<File?> _stopRecording() async {
-    final path = await recordingController.stopRecorder();
-    textController.clear();
-    durationStreamSub?.cancel();
-    setState(() => recording = false);
-    if (path == null) return null;
-    return File(path);
-  }
+  StreamSubscription? _isRecordingStreamSub;
 
   Future _sendRecording() async {
-    filePath = '${uidGenerator.v4()}.aac';
-    final file = await _stopRecording();
+    final file = await recorder.stop();
   }
 
   @override
   void initState() {
-    _initRecorder();
+    recorder.init();
+    _isRecordingStreamSub = recorder.omRecordingState
+        .listen((event) => setState(() => isRecording = event));
     super.initState();
   }
 
   @override
   void dispose() {
+    _isRecordingStreamSub?.cancel();
     textController.dispose();
-    durationStreamSub?.cancel();
-    recordingController.closeRecorder();
+    recorder.dispose();
     super.dispose();
   }
 
@@ -102,31 +52,50 @@ class _InputBarState extends State<_InputBar> {
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 7),
-              child: IconButton(
-                onPressed: () => showModalBottomSheet(
-                  context: context,
-                  backgroundColor: Colors.transparent,
-                  builder: (_) => const _AttachmentSheet(),
+              child: AnimatedCrossFade(
+                duration: kTabScrollDuration,
+                crossFadeState: isRecording
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+                firstChild: IconButton(
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (_) => const _AttachmentSheet(),
+                  ),
+                  icon: Icon(
+                    Icons.attach_file,
+                    color: Theme.of(context).primaryColor,
+                    size: 28,
+                  ),
                 ),
-                icon: Icon(
-                  Icons.attach_file,
-                  color: Theme.of(context).primaryColor,
-                  size: 28,
+                secondChild: IconButton(
+                  onPressed: recorder.stop,
+                  icon: Icon(
+                    TranquilIcons.trash,
+                    color: Theme.of(context).primaryColor,
+                    size: 27,
+                  ),
                 ),
               ),
             ),
             Expanded(
               child: Builder(builder: (context) {
-                if (recording) {
+                if (isRecording) {
                   return Padding(
                     padding: const EdgeInsets.only(left: 4, bottom: 13),
-                    child: Text(
-                      durationText,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    child: StreamBuilder<String>(
+                        initialData: '00:00',
+                        stream: recorder.onDurationText,
+                        builder: (context, snapshot) {
+                          return Text(
+                            snapshot.data!,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          );
+                        }),
                   );
                 }
                 return TextField(
@@ -150,37 +119,48 @@ class _InputBarState extends State<_InputBar> {
                 );
               }),
             ),
-            Container(
-              margin: const EdgeInsets.only(right: 8, bottom: 5),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Theme.of(context).primaryColor,
-                border: recording
-                    ? Border.all(color: ColorPalette.primary[800]!, width: 3)
-                    : null,
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  if (micMode) return;
-                },
-                onLongPress: micMode ? _startRecording : null,
-                onLongPressUp: micMode ? _sendRecording : null,
-                onLongPressCancel: micMode ? _stopRecording : null,
-                child: Padding(
-                  padding: const EdgeInsets.all(6),
+            SwipeableWidget(
+              maxOffset: 32,
+              enabled: showMic,
+              resetOnRelease: true,
+              swipedWidget: const Icon(Icons.mic, color: ColorPalette.red),
+              onStateChanged: (isActive) {
+                if (showMic && isActive) recorder.start();
+              },
+              child: AnimatedContainer(
+                duration: kThemeChangeDuration,
+                padding: const EdgeInsets.all(6),
+                margin: EdgeInsets.only(right: isRecording ? 6 : 8, bottom: 5),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).primaryColor,
+                  border: isRecording
+                      ? Border.all(color: ColorPalette.blue, width: 2)
+                      : null,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    if (isRecording) _sendRecording();
+                  },
                   child: AnimatedCrossFade(
                     duration: kThemeChangeDuration,
-                    crossFadeState: micMode
+                    crossFadeState: showMic
                         ? CrossFadeState.showSecond
                         : CrossFadeState.showFirst,
-                    firstChild: const Padding(
-                      padding: EdgeInsets.fromLTRB(4, 3, 2, 3),
-                      child: Icon(Icons.send, color: Colors.white, size: 22),
+                    firstChild: Padding(
+                      padding: isRecording
+                          ? const EdgeInsets.fromLTRB(3, 1, 2, 1)
+                          : const EdgeInsets.fromLTRB(4, 3, 2, 3),
+                      child: const Icon(
+                        Icons.send,
+                        color: Colors.white,
+                        size: 22,
+                      ),
                     ),
-                    secondChild: Icon(
+                    secondChild: const Icon(
                       Icons.mic,
                       color: Colors.white,
-                      size: recording ? 22 : 28,
+                      size: 28,
                     ),
                   ),
                 ),
@@ -199,52 +179,63 @@ class _AttachmentSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(vertical: 24),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _AttachmentButton(
-                  label: 'Camera',
-                  icon: Icons.camera_alt,
-                  color: const Color(0xff0680BB),
-                  onPressed: () {},
-                ),
-                _AttachmentButton(
-                  label: 'Gallery',
-                  icon: Icons.image,
-                  color: const Color(0xff2D713E),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _AttachmentButton(
-                  label: 'Document',
-                  icon: Icons.file_open,
-                  color: const Color(0xffFFC600),
-                  onPressed: () {},
-                ),
-                _AttachmentButton(
-                  label: 'Audio',
-                  icon: Icons.headphones,
-                  color: const Color(0xff43A95D),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          ],
+        child: FractionallySizedBox(
+          widthFactor: 0.75,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _AttachmentButton(
+                    label: 'Camera',
+                    icon: Icons.camera_alt,
+                    color: const Color(0xff0680BB),
+                    onPressed: () => context
+                        .read<ChatBloc>()
+                        .add(const UploadChatMediaEvent(MediaType.camera)),
+                  ),
+                  _AttachmentButton(
+                    label: 'Gallery',
+                    icon: Icons.image,
+                    color: const Color(0xff2D713E),
+                    onPressed: () => context
+                        .read<ChatBloc>()
+                        .add(const UploadChatMediaEvent(MediaType.gallery)),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _AttachmentButton(
+                    label: 'Document',
+                    icon: Icons.file_open,
+                    color: const Color(0xffFFC600),
+                    onPressed: () => context
+                        .read<ChatBloc>()
+                        .add(const UploadChatMediaEvent(MediaType.document)),
+                  ),
+                  _AttachmentButton(
+                    label: 'Audio',
+                    icon: Icons.headphones,
+                    color: const Color(0xff43A95D),
+                    onPressed: () => context
+                        .read<ChatBloc>()
+                        .add(const UploadChatMediaEvent(MediaType.audio)),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

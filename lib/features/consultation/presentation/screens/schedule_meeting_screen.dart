@@ -36,7 +36,7 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: consultant.name),
+      appBar: CustomAppBar(title: consultant.displayName),
       backgroundColor: Colors.grey[100],
       body: Padding(
         padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),

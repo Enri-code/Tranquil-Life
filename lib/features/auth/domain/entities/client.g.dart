@@ -11,6 +11,8 @@ Map<String, dynamic> _$ClientToJson(Client instance) => <String, dynamic>{
       'l_name': instance.lastName,
       'email': instance.email,
       'avatar_url': instance.avatarUrl,
+      'token': instance.token,
+      'id': instance.id,
       'display_name': instance.displayName,
       'phone': instance.phoneNumber,
       'email_verified_at': instance.isVerified ? true : null,
