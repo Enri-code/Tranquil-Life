@@ -133,9 +133,8 @@ class _Item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var color = (isSelected ?? true)
-        ? Theme.of(context).primaryColor
-        : Colors.grey[600];
+    final color =
+        isSelected ?? true ? Theme.of(context).primaryColor : Colors.grey[600];
     return GestureDetector(
       onTap: onTap,
       child: Column(

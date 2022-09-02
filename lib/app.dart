@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/config.dart';
+import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/theme_data.dart';
 import 'package:tranquil_life/core/utils/helpers/app_init.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
@@ -62,14 +63,14 @@ class App extends StatelessWidget {
           }
         },
         child: MaterialApp(
-          navigatorKey: _navigatorKey,
-          title: AppConfig.appName,
-          theme: MyThemeData.theme,
-          themeMode: ThemeMode.light,
-          debugShowCheckedModeBanner: false,
-          locale: const Locale('en', 'NG'),
-          supportedLocales: const [Locale('en', 'NG')],
           routes: AppConfig.routes,
+          title: AppConfig.appName,
+          themeMode: ThemeMode.light,
+          navigatorKey: _navigatorKey,
+          debugShowCheckedModeBanner: false,
+          // locale: const Locale('en', 'NG'),
+          // supportedLocales: const [Locale('en', 'NG')],
+          theme: LightThemeData(ColorPalette.green).theme,
           home: Builder(builder: (_) {
             AppSetup.init(_navigatorKey.currentState!);
             CustomLoader.init(_navigatorKey.currentState!);

@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tranquil_life/core/constants/constants.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 abstract class MediaService {
   static final _filePicker = FilePicker.platform;
@@ -25,6 +27,32 @@ abstract class MediaService {
 
   static Future<File?> selectDocument([List<String>? allowedExtensions]) =>
       _selectFile(type: FileType.any, allowedExtensions: allowedExtensions);
+
+  ///Returns a jpg image file
+  static Future<File?> generateVideoThumb(
+    String path, {
+    bool fromFile = false,
+    int? maxHeight,
+  }) async {
+    if (fromFile) {
+      final data = await VideoThumbnail.thumbnailData(
+        maxHeight: chatBoxMaxWidth.round(),
+        imageFormat: ImageFormat.JPEG,
+        quality: 75,
+        video: path,
+      );
+      if (data == null) return null;
+      return File.fromRawPath(data);
+    }
+    final data = await VideoThumbnail.thumbnailFile(
+      maxHeight: maxHeight ?? chatBoxMaxWidth.round(),
+      imageFormat: ImageFormat.JPEG,
+      quality: 75,
+      video: path,
+    );
+    if (data == null) return null;
+    return File(data);
+  }
 
   static Future<File?> _selectFile({
     FileType type = FileType.any,

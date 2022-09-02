@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/chat_screen.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/speak_with_consultant.dart';
-import 'package:tranquil_life/features/dashboard/presentation/screens/tabs/home.dart';
+import 'package:tranquil_life/features/dashboard/presentation/screens/home_tab.dart';
 import 'package:tranquil_life/features/dashboard/presentation/widgets/nav_bar.dart';
-import 'package:tranquil_life/features/dashboard/presentation/screens/tabs/profile_screen.dart';
+import 'package:tranquil_life/features/profile/presentation/screens/profile_tab.dart';
+import 'package:tranquil_life/features/wallet/presentation/screens/wallet_tab.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const routeName = 'client_dashboard';
@@ -44,7 +45,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               sizing: StackFit.expand,
               children: const [
                 HomeTab(),
-                SizedBox(),
+                WalletTab(),
                 ProfileScreen(),
               ],
             ),

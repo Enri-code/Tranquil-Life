@@ -9,13 +9,13 @@ import 'package:tranquil_life/features/calls/domain/video_call_repo.dart';
 
 class AgoraController extends CallController {
   AgoraController() {
-    init();
+    initFuture = init();
   }
 
-  bool isInitialized = false;
   bool isAudioOn = true, isFrontCamera = true;
   Set<int> remoteIds = {};
 
+  Future? initFuture;
   RtcEngine? _engine;
 
   Future<String?> get _token async {
@@ -24,9 +24,9 @@ class AgoraController extends CallController {
 
   @override
   Future init() async {
-    if (isInitialized) return;
-    _engine = await RtcEngine.create(agoraId);
-    // _engine = await RtcEngine.createWithContext(RtcEngineContext(agoraId));
+    // _engine = await RtcEngine.create(agoraId);
+    _engine = await RtcEngine.createWithContext(RtcEngineContext(agoraId));
+    print('created');
     _engine!.setEventHandler(RtcEngineEventHandler(
       error: (errorCode) {
         print(errorCode);
@@ -46,7 +46,6 @@ class AgoraController extends CallController {
       _engine!.setChannelProfile(ChannelProfile.Communication),
       _engine!.setClientRole(ClientRole.Broadcaster),
     ]);
-    isInitialized = true;
   }
 
   @override
@@ -54,6 +53,7 @@ class AgoraController extends CallController {
     if (Platform.isIOS || Platform.isAndroid) {
       await [Permission.microphone, Permission.camera].request();
     }
+    await initFuture;
     await switchVideo(startWithVideo);
     await _engine?.joinChannel(
       await _token,

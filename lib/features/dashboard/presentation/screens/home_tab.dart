@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_icon_button.dart';
+import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/core/constants/moods.dart';
 import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/core/utils/services/app_data_store.dart';
@@ -42,7 +43,7 @@ class HomeTab extends StatelessWidget {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(22, 8, 22, 0),
+                        padding: const EdgeInsets.fromLTRB(22, 8, 22, 28),
                         child: Column(
                           children: [
                             const _Title(),
@@ -54,7 +55,6 @@ class HomeTab extends StatelessWidget {
                             ),
                             const SizedBox(height: 32),
                             const _MoodsListView(),
-                            const SizedBox(height: 28),
                           ],
                         ),
                       ),

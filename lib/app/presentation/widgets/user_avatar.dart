@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,12 +11,36 @@ class UserAvatar extends StatelessWidget {
     Key? key,
     this.imageUrl,
     this.size = 48,
+    this.isLocal = false,
     this.decoration,
   }) : super(key: key);
 
   final double size;
   final String? imageUrl;
+  final bool isLocal;
   final BoxDecoration? decoration;
+
+  Widget _errorBuilder(_, __, ___) => Icon(
+        TranquilIcons.profile,
+        color: Colors.grey[600],
+        size: size * 0.9 - 4,
+      );
+
+  Widget _frameBuilder(_, img, val, ___) {
+    return AnimatedCrossFade(
+      alignment: Alignment.center,
+      firstChild: Center(
+        child: PulsingWidget(
+          maxOpacity: 0.5,
+          child: Icon(Icons.image_search, size: size * 0.7),
+        ),
+      ),
+      secondChild: img,
+      crossFadeState:
+          val == null ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      duration: kThemeAnimationDuration,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,33 +53,22 @@ class UserAvatar extends StatelessWidget {
       decoration: decoration ??
           BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white,
-            border: Border.all(color: Colors.grey),
+            border: Border.all(color: Colors.black),
           ),
-      child: Image.network(
-        url,
-        errorBuilder: (_, __, ___) => Icon(
-          TranquilIcons.profile,
-          color: Colors.grey,
-          size: size * 0.9 - 4,
-        ),
-        frameBuilder: (_, img, val, ___) {
-          return AnimatedCrossFade(
-            alignment: Alignment.center,
-            firstChild: Center(
-              child: PulsingWidget(
-                maxOpacity: 0.5,
-                child: Icon(Icons.image_search, size: size * 0.7),
-              ),
-            ),
-            secondChild: img,
-            crossFadeState: val == null
-                ? CrossFadeState.showFirst
-                : CrossFadeState.showSecond,
-            duration: kThemeAnimationDuration,
+      child: Builder(builder: (context) {
+        if (isLocal) {
+          return Image.file(
+            File(url),
+            errorBuilder: _errorBuilder,
+            frameBuilder: _frameBuilder,
           );
-        },
-      ),
+        }
+        return Image.network(
+          url,
+          errorBuilder: _errorBuilder,
+          frameBuilder: _frameBuilder,
+        );
+      }),
     );
   }
 }

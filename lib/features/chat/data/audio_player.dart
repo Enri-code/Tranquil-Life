@@ -24,7 +24,11 @@ class AudioWavePlayer extends AudioPlayer {
   Stream<String> get onDurationText => _durTextStream.stream;
 
   @override
-  Future seekTo(int milliseconds) => _controller.seekTo(milliseconds);
+  Future seekTo(int milliseconds) async {
+    await _controller.seekTo(milliseconds);
+    _controller.setPlayerState(PlayerState.playing);
+    _controller.setPlayerState(PlayerState.paused);
+  }
 
   @override
   Future seekToPercent(double percent) {
@@ -38,6 +42,7 @@ class AudioWavePlayer extends AudioPlayer {
       _durPercentStream.add(event / _controller.maxDuration);
       _durTextStream.add(TimeFormatter.toTimerString(event));
     });
+    _durPercentStream.add(0);
     _durTextStream.add(TimeFormatter.toTimerString(_controller.maxDuration));
   }
 

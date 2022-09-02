@@ -7,25 +7,28 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _Button(
-            icon: Icons.videocam_off,
-            onPressed: () {},
-          ),
-          _Button(
-            icon: Icons.call_end,
-            backgroundColor: Colors.white,
-            iconColor: ColorPalette.red,
-            onPressed: () {},
-          ),
-          _Button(
-            icon: Icons.mic_off,
-            onPressed: () {},
-          ),
-        ],
+      padding: const EdgeInsets.only(bottom: 6),
+      child: FractionallySizedBox(
+        widthFactor: 0.9,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _Button(
+              icon: Icons.videocam_off,
+              onPressed: () {},
+            ),
+            _Button(
+              icon: Icons.call_end,
+              backgroundColor: Colors.white,
+              iconColor: ColorPalette.red,
+              onPressed: () {},
+            ),
+            _Button(
+              icon: Icons.mic_off,
+              onPressed: () {},
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -59,7 +62,7 @@ class _Button extends StatelessWidget {
           containedInkWell: true,
           child: Padding(
             padding: const EdgeInsets.all(8),
-            child: Icon(icon, color: iconColor, size: 32),
+            child: Icon(icon, color: iconColor, size: 36),
           ),
         ),
       ),

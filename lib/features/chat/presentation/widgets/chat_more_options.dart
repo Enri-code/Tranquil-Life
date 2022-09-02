@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
-import 'package:tranquil_life/app/presentation/widgets/confirm_dialog.dart';
+import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/app/presentation/widgets/info_dialog.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/features/auth/domain/entities/client.dart';
@@ -34,7 +34,7 @@ class MoreOptions extends StatelessWidget {
           case 0:
             showDialog(
               context: context,
-              builder: (_) => const Dialog(child: _SendInviteDialog()),
+              builder: (_) => const _SendInviteDialog(),
             );
             break;
           case 1:
@@ -49,7 +49,7 @@ class MoreOptions extends StatelessWidget {
           case 3:
             showDialog(
               context: context,
-              builder: (_) => const Dialog(child: _EndSessionDialog()),
+              builder: (_) => const _EndSessionDialog(),
             );
             break;
         }

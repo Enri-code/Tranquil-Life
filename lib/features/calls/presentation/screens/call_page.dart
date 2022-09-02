@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:agora_rtc_engine/rtc_local_view.dart' as local;
-import 'package:agora_rtc_engine/rtc_remote_view.dart' as remote;
+// import 'package:agora_rtc_engine/rtc_local_view.dart' as local;
+// import 'package:agora_rtc_engine/rtc_remote_view.dart' as remote;
 import 'package:get_it/get_it.dart';
 import 'package:tranquil_life/app/presentation/widgets/back_button_white.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
@@ -54,7 +54,7 @@ class _CallScreenState extends State<CallScreen> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            /* Column(
+            /*  Column(
               children: controller.remoteIds
                   .map((e) => Expanded(
                         child: remote.SurfaceView(
@@ -67,9 +67,12 @@ class _CallScreenState extends State<CallScreen> {
             Column(
               children: [
                 Expanded(
-                  child: Builder(builder: (context) {
-                    return SmallView(channelId: '');
-                  }),
+                  child: SmallView(
+                    channelId: '',
+                    onPlatformViewCreated: (val) {
+                      print(val);
+                    },
+                  ),
                 ),
                 SafeArea(top: false, child: BottomBar()),
               ],

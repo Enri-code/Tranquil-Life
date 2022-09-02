@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
-import 'package:tranquil_life/app/presentation/widgets/confirm_dialog.dart';
+import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
@@ -67,18 +67,15 @@ class _ConsultantWidget extends StatelessWidget {
       onTap: () {
         showDialog(
           context: context,
-          builder: (_) => Dialog(
-            child: ConfirmDialog(
-              title: 'Are you sure?',
-              bodyText:
-                  '${consultant.displayName} will get access to this note.',
-              yesDialog: DialogOption(
-                'Share',
-                onPressed: () {
-                  //TODO
-                  Navigator.of(context).pop();
-                },
-              ),
+          builder: (_) => ConfirmDialog(
+            title: 'Are you sure?',
+            bodyText: '${consultant.displayName} will get access to this note.',
+            yesDialog: DialogOption(
+              'Share',
+              onPressed: () {
+                //TODO
+                Navigator.of(context).pop();
+              },
             ),
           ),
         );

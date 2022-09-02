@@ -36,22 +36,25 @@ class _SmallViewState extends State<SmallView> {
         MediaQuery.of(context).padding.deflateSize(MediaQuery.of(context).size);
     final size = Size(0.21 * screenSize.width, 0.2 * screenSize.height);
     return SafeArea(
+      bottom: false,
       child: Stack(
         children: [
           DraggableWidget(
-            horizontalSpace: 12,
             topMargin: 48,
-            bottomMargin: size.height * 0.5 + 48,
-            statusBarHeight: MediaQuery.of(context).viewPadding.top,
+            horizontalSpace: 12,
             initialPosition: AnchoringPosition.bottomRight,
-            child: SizedBox.fromSize(
-              size: size,
-              child: GestureDetector(
-                onDoubleTap: widget.onDoubleTap,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  color: Colors.white,
-                  child: _viewBuilder(),
+            statusBarHeight: MediaQuery.of(context).viewPadding.top,
+            bottomMargin: size.height * 0.5 +
+                MediaQuery.of(context).viewPadding.bottom +
+                80,
+            child: Container(
+              color: Colors.white,
+              padding: EdgeInsets.all(3),
+              child: SizedBox.fromSize(
+                size: size,
+                child: GestureDetector(
+                  onDoubleTap: widget.onDoubleTap,
+                  child: Container(color: Colors.white, child: _viewBuilder()),
                 ),
               ),
             ),

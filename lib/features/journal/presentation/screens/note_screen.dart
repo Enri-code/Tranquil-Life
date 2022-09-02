@@ -130,11 +130,14 @@ class _NoteScreenState extends State<NoteScreen> {
                             Hero(
                               tag:
                                   '${isAlreadySaved ? 'saved' : 'home'}-${_note.emoji!}',
-                              child: Text(
-                                _note.emoji!,
-                                style: Platform.isIOS
-                                    ? const TextStyle(fontSize: 48)
-                                    : const TextStyle(fontSize: 40),
+                              child: Material(
+                                type: MaterialType.transparency,
+                                child: Text(
+                                  _note.emoji!,
+                                  style: Platform.isIOS
+                                      ? const TextStyle(fontSize: 48)
+                                      : const TextStyle(fontSize: 40),
+                                ),
                               ),
                             ),
                         ],

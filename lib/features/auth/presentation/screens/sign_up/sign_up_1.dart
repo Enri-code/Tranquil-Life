@@ -46,137 +46,137 @@ class _ClientSignUpScreen1State extends State<SignUp1Screen> {
   Widget build(BuildContext context) {
     return CustomBGWidget(
       title: 'Sign Up',
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 32, bottom: 20),
-            child: Text(
-              'Register Account',
-              style: TextStyle(fontSize: 36),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 32, bottom: 20),
+              child: Text('Register Account', style: TextStyle(fontSize: 36)),
             ),
-          ),
-          const Text(
-            'Complete your profile',
-            style: TextStyle(fontSize: 18),
-          ),
-          const SizedBox(height: 24),
-          Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: TextFormField(
-                    autocorrect: false,
-                    keyboardType: TextInputType.name,
-                    initialValue: params.firstName,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
-                      hintText: 'First Name',
-                      errorStyle: authScreensErrorStyle,
+            const Text('Complete your profile', style: TextStyle(fontSize: 18)),
+            const SizedBox(height: 24),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: TextFormField(
+                      autocorrect: false,
+                      keyboardType: TextInputType.name,
+                      initialValue: params.firstName,
+                      textInputAction: TextInputAction.next,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: const InputDecoration(
+                        hintText: 'First Name',
+                        errorStyle: authScreensErrorStyle,
+                      ),
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'What is your first name? This will be kept private';
+                        }
+                        params.firstName = val;
+                        return null;
+                      },
                     ),
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return 'What is your first name? This will be kept private';
-                      }
-                      params.firstName = val;
-                      return null;
-                    },
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: TextFormField(
-                    autocorrect: false,
-                    initialValue: params.lastName,
-                    keyboardType: TextInputType.name,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
-                      hintText: 'Last Name',
-                      errorStyle: authScreensErrorStyle,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: TextFormField(
+                      autocorrect: false,
+                      initialValue: params.lastName,
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: const InputDecoration(
+                        hintText: 'Last Name',
+                        errorStyle: authScreensErrorStyle,
+                      ),
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'What is your last name? This will be kept private';
+                        }
+                        params.lastName = val;
+                        return null;
+                      },
                     ),
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return 'What is your last name? This will be kept private';
-                      }
-                      params.lastName = val;
-                      return null;
-                    },
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: TextFormField(
-                    autocorrect: false,
-                    initialValue: params.displayName,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      hintText: 'Display name',
-                      errorStyle: authScreensErrorStyle,
-                      suffixIcon: IconButton(
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (_) => const FractionallySizedBox(
-                            widthFactor: 0.9,
-                            child: Dialog(child: _UsernameInfoDialog()),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: TextFormField(
+                      autocorrect: false,
+                      initialValue: params.displayName,
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        hintText: 'Display name',
+                        errorStyle: authScreensErrorStyle,
+                        suffixIcon: IconButton(
+                          onPressed: () => showDialog(
+                            context: context,
+                            builder: (_) => const FractionallySizedBox(
+                              widthFactor: 0.9,
+                              child: Dialog(child: _UsernameInfoDialog()),
+                            ),
+                          ),
+                          icon: const Icon(Icons.info_outline),
+                        ),
+                      ),
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Your display name will be shown to consultants';
+                        }
+                        params.displayName = val;
+                        return null;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Stack(
+                      children: [
+                        IgnorePointer(
+                          child: TextFormField(
+                            controller: _dateTextController,
+                            decoration: const InputDecoration(
+                              hintText: 'Date of Birth',
+                            ),
                           ),
                         ),
-                        icon: const Icon(Icons.info_outline),
-                      ),
-                    ),
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return 'Your display name will be shown to consultants';
-                      }
-                      params.displayName = val;
-                      return null;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: GestureDetector(
-                    onTap: () async {
-                      var val = await showCustomDatePicker(
-                        context,
-                        minDateFromNow: DateTime(-100, 0, 0),
-                        maxDateFromNow: DateTime(-16, 0, 0),
-                      );
-                      _dateTextController.text =
-                          val?.formatted ?? _dateTextController.text;
-                      params.birthDate = val?.folded ?? params.birthDate;
-                    },
-                    child: AbsorbPointer(
-                      child: TextFormField(
-                        controller: _dateTextController,
-                        decoration: const InputDecoration(
-                          hintText: 'Date of Birth',
+                        Positioned.fill(
+                          child: GestureDetector(
+                            onTap: () async {
+                              var date = await showCustomDatePicker(
+                                context,
+                                minDateFromNow: DateTime(-100, 0, 0),
+                                maxDateFromNow: DateTime(-16, 0, 0),
+                              );
+                              _dateTextController.text =
+                                  date?.formatted ?? _dateTextController.text;
+                              params.birthDate =
+                                  date?.folded ?? params.birthDate;
+                            },
+                          ),
                         ),
-                        validator: (val) {
-                          if (val!.isEmpty) {
-                            return 'Your Date of Birth will be kept private.';
-                          }
-                          return null;
-                        },
-                      ),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 32),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate() || true) {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const SignUp2Screen(),
-                ));
-              }
-            },
-            child: const Text('Next'),
-          ),
-        ],
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const SignUp2Screen(),
+                  ));
+                }
+              },
+              child: const Text('Next'),
+            ),
+          ],
+        ),
       ),
     );
   }

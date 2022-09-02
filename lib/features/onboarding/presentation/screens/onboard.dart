@@ -67,7 +67,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                       (i) => Center(
                         child: Image(
                           image: AssetImage('assets/images/onboarding/$i.png'),
-                          fit: BoxFit.contain,
+                          fit: BoxFit.scaleDown,
                         ),
                       ),
                     ),

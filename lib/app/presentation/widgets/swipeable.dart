@@ -89,8 +89,8 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
             child: Opacity(
               opacity: Curves.easeIn.transform(percentage.clamp(0, 1)),
               child: Listener(
-                onPointerDown: (_) => _animateTo(false),
-                behavior: HitTestBehavior.opaque,
+                onPointerUp: (_) => _animateTo(false),
+                behavior: HitTestBehavior.translucent,
                 child: widget.swipedWidget!,
               ),
             ),

@@ -25,11 +25,7 @@ class CustomBGWidget extends StatelessWidget {
           Column(
             children: [
               if (title != null)
-                CustomAppBar(
-                  title: title,
-                  titleColor: Colors.white,
-                  // isStatusBarDark: false,
-                ),
+                CustomAppBar(title: title, titleColor: Colors.white),
               Expanded(
                 child: SafeArea(
                   top: false,

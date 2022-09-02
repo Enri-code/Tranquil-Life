@@ -1,4 +1,4 @@
-part of 'package:tranquil_life/features/dashboard/presentation/screens/tabs/home.dart';
+part of 'package:tranquil_life/features/dashboard/presentation/screens/home_tab.dart';
 
 class _RescheduleMeetingBottomSheet extends StatefulWidget {
   const _RescheduleMeetingBottomSheet({

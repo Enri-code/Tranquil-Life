@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
+import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/features/profile/presentation/widgets/picture_bottom_sheet.dart';
 
@@ -38,60 +39,64 @@ class EditProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 32, 16, 24),
               child: MyDefaultTextStyle(
                 style: const TextStyle(fontSize: 15.5),
-                child: Column(
-                  children: [
-                    _Button(
-                      title: 'Edit Photo',
-                      suffix: const UserAvatar(size: 36),
-                      onPressed: () => showModalBottomSheet(
-                        context: context,
-                        backgroundColor: Colors.transparent,
-                        builder: (_) => const AddPictureSheet(),
+                child: UnfocusWidget(
+                  child: Column(
+                    children: [
+                      _Button(
+                        title: 'Edit Photo',
+                        suffix: const UserAvatar(
+                          size: 38,
+                        ),
+                        onPressed: () => showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          builder: (_) => const AddPictureSheet(),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    _Button(
-                      title: 'First Name',
-                      suffixText: 'Rick',
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 20),
-                    _Button(
-                      title: 'Last Name',
-                      suffixText: 'Swash',
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 20),
-                    _Button(
-                      title: 'Display Name',
-                      suffixText: 'Rick Swash',
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 40),
-                    _Button(
-                      title: 'Date of Birth',
-                      suffixText: '21-04-1994',
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 20),
-                    _Button(
-                      title: 'Gender',
-                      suffixText: 'Male',
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 40),
-                    _Button(
-                      title: 'Location',
-                      suffixText: 'United Kingdom United Kingdom',
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 20),
-                    _Button(
-                      title: 'Phone No',
-                      suffixText: '+44 656 766',
-                      onPressed: () {},
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      _Button(
+                        title: 'First Name',
+                        suffixText: 'Rick',
+                        onPressed: () {},
+                      ),
+                      const SizedBox(height: 20),
+                      _Button(
+                        title: 'Last Name',
+                        suffixText: 'Swash',
+                        onPressed: () {},
+                      ),
+                      const SizedBox(height: 20),
+                      _Button(
+                        title: 'Display Name',
+                        suffixText: 'Rick Swash',
+                        onPressed: () {},
+                      ),
+                      const SizedBox(height: 40),
+                      _Button(
+                        title: 'Date of Birth',
+                        suffixText: '21-04-1994',
+                        onPressed: () {},
+                      ),
+                      const SizedBox(height: 20),
+                      _Button(
+                        title: 'Gender',
+                        suffixText: 'Male',
+                        onPressed: () {},
+                      ),
+                      const SizedBox(height: 40),
+                      _Button(
+                        title: 'Location',
+                        suffixText: 'United Kingdom United Kingdom',
+                        onPressed: () {},
+                      ),
+                      const SizedBox(height: 20),
+                      _Button(
+                        title: 'Phone No',
+                        suffixText: '+44 656 766',
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -130,22 +135,27 @@ class _Button extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(4)),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(title),
+              const SizedBox(width: 16),
               Flexible(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: suffix ??
-                      Text(
-                        suffixText!,
-                        textAlign: TextAlign.end,
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey[800],
-                        ),
+                child: suffix ??
+                    TextFormField(
+                      maxLines: null,
+                      initialValue: suffixText,
+                      textAlign: TextAlign.right,
+                      textInputAction: TextInputAction.done,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: InputDecoration(
+                        filled: false,
+                        hintText: 'Old: $suffixText',
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.zero,
                       ),
-                ),
+                      onEditingComplete: () {},
+                    ),
               )
             ],
           ),

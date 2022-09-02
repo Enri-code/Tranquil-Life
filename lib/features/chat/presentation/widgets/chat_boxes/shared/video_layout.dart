@@ -2,15 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:tranquil_life/core/constants/constants.dart';
 import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
+import 'package:tranquil_life/core/utils/services/media_service.dart';
 import 'package:tranquil_life/features/chat/domain/entities/message.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/video_player_page.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class VideoLayout extends StatefulWidget {
   const VideoLayout({Key? key, required this.message}) : super(key: key);
   final Message message;
+
+  static Future<File?> getVideoThumb(String url,
+      [bool fromFile = false]) async {
+    return (await DefaultCacheManager().getFileFromCache(url))?.file ??
+        await MediaService.generateVideoThumb(url, fromFile: fromFile);
+  }
 
   @override
   State<VideoLayout> createState() => _VideoLayoutState();
@@ -36,38 +41,18 @@ class _VideoLayoutState extends State<VideoLayout> {
   File? thumbFile;
 
   Future _generateThumb() async {
-    var cachedFile = await DefaultCacheManager().getFileFromCache(
+    final file = await VideoLayout.getVideoThumb(
       widget.message.data,
+      !widget.message.isSent,
     );
-    if (cachedFile != null) {
-      setState(() => thumbFile = cachedFile.file);
-      return;
-    }
-    if (widget.message.isSent) {
-      final fileName = await VideoThumbnail.thumbnailFile(
-        quality: 75,
-        imageFormat: ImageFormat.JPEG,
-        maxHeight: chatBoxMaxWidth.round(),
-        video: widget.message.data,
-      );
-      setState(() => thumbFile = File(fileName ?? ''));
-    } else {
-      final file = await VideoThumbnail.thumbnailData(
-        maxHeight: chatBoxMaxWidth.round(),
-        imageFormat: ImageFormat.JPEG,
-        quality: 75,
-        video: widget.message.data,
-      );
-      setState(() {
-        thumbFile = file == null ? File('') : File.fromRawPath(file);
-      });
-    }
+    setState(() => thumbFile = file ?? File(''));
     if (thumbFile!.path.isNotEmpty) {
       DefaultCacheManager().putFile(
         thumbFile!.path,
         await thumbFile!.readAsBytes(),
         key: widget.message.data,
         maxAge: const Duration(hours: 1),
+        fileExtension: 'jpg',
       );
     }
   }

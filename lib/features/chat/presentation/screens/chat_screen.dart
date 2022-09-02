@@ -80,19 +80,12 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-class _Messages extends StatefulWidget {
-  const _Messages({Key? key}) : super(key: key);
+class _ChatBox extends StatelessWidget {
+  const _ChatBox(this.message, {Key? key}) : super(key: key);
+  final Message message;
 
   @override
-  State<_Messages> createState() => _MessagesState();
-}
-
-class _MessagesState extends State<_Messages>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController animController;
-  late final Animation<double> highlightAnim;
-
-  Widget _chatBoxBuilder(Message message) {
+  Widget build(BuildContext context) {
     if (message.fromYou) {
       switch (message.type) {
         case MessageType.image:
@@ -117,6 +110,19 @@ class _MessagesState extends State<_Messages>
       }
     }
   }
+}
+
+class _Messages extends StatefulWidget {
+  const _Messages({Key? key}) : super(key: key);
+
+  @override
+  State<_Messages> createState() => _MessagesState();
+}
+
+class _MessagesState extends State<_Messages>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController animController;
+  late final Animation<double> highlightAnim;
 
   @override
   void initState() {
@@ -164,21 +170,19 @@ class _MessagesState extends State<_Messages>
               bottom: MediaQuery.of(context).viewPadding.bottom,
             ),
             itemBuilder: (_, index) {
-              final child = Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: _chatBoxBuilder(messages[index]),
-              );
-              if (index != state.chatIndex) {
-                return SizedBox(key: ValueKey(index), child: child);
-              }
+              final bool animate = index == state.chatIndex;
               return AnimatedBuilder(
                 key: ValueKey(index),
-                animation: highlightAnim,
+                animation:
+                    animate ? highlightAnim : const AlwaysStoppedAnimation(0),
                 builder: (context, _) {
-                  final value = highlightAnim.value * 0.3;
+                  final value = animate ? highlightAnim.value * 0.4 : 0.0;
                   return Container(
                     color: Theme.of(context).primaryColor.withOpacity(value),
-                    child: child,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: _ChatBox(messages[index]),
+                    ),
                   );
                 },
               );

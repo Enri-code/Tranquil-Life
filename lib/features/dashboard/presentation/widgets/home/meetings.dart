@@ -1,4 +1,4 @@
-part of 'package:tranquil_life/features/dashboard/presentation/screens/tabs/home.dart';
+part of 'package:tranquil_life/features/dashboard/presentation/screens/home_tab.dart';
 
 class _Meetings extends StatefulWidget {
   const _Meetings({Key? key}) : super(key: key);
@@ -118,55 +118,16 @@ class _MeetingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _DialogButton(
-              title: 'Re-schedule this meeting',
-              onPressed: () {
-                Navigator.of(context).pop();
-                showModalBottomSheet(
-                  context: context,
-                  backgroundColor: Colors.transparent,
-                  builder: (_) => _RescheduleMeetingBottomSheet(
-                    consultant: consultant,
-                  ),
-                );
-              },
-            ),
-            _DialogButton(
-              title: 'Cancel this meeting',
-              onPressed: () {},
-            ),
-          ],
+    return OptionsDialog([
+      DialogOption(
+        'Re-schedule this meeting',
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          backgroundColor: Colors.transparent,
+          builder: (_) => _RescheduleMeetingBottomSheet(consultant: consultant),
         ),
       ),
-    );
-  }
-}
-
-class _DialogButton extends StatelessWidget {
-  const _DialogButton({
-    Key? key,
-    required this.title,
-    required this.onPressed,
-  }) : super(key: key);
-
-  final String title;
-  final Function() onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-        child: Text(title),
-      ),
-    );
+      DialogOption('Cancel this meeting'),
+    ]);
   }
 }

@@ -147,8 +147,9 @@ class _VoiceNoteLayoutState extends State<VoiceNoteLayout>
                                   return _Slider(
                                     value: snapshot.data!,
                                     fromYou: widget.message.fromYou,
-                                    onValueChanged: (val) {
-                                      audioPlayer.seekToPercent(val);
+                                    onValueChanged: (val) async {
+                                      await audioPlayer.seekToPercent(val);
+                                      audioPlayer.play();
                                     },
                                   );
                                 },

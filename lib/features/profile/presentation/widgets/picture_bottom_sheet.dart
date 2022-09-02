@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
+import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
+import 'package:tranquil_life/core/utils/services/media_service.dart';
 
 class AddPictureSheet extends StatelessWidget {
   const AddPictureSheet({Key? key}) : super(key: key);
@@ -9,42 +12,59 @@ class AddPictureSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+      padding: const EdgeInsets.only(top: 20),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
       ),
       child: SafeArea(
-        child: MyDefaultTextStyle(
-          style: TextStyle(
-            color: ColorPalette.green[800],
-            fontWeight: FontWeight.w600,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _Button(
-                title: 'Take a picture',
-                iconData: Icons.camera_alt,
-                onPressed: () {},
-              ),
-              _Button(
-                title: 'Upload from gallery',
-                iconData: Icons.image,
-                onPressed: () {},
-              ),
-              _Button(
-                title: 'Use a bitmoji',
-                child: Image.asset('assets/images/icons/bitmoji.png'),
-                onPressed: () {},
-              ),
-              _Button(
-                title: 'Remove picture',
-                iconData: TranquilIcons.trash,
-                onPressed: () {},
-              ),
-            ],
+        child: Material(
+          type: MaterialType.transparency,
+          child: MyDefaultTextStyle(
+            style: TextStyle(
+              color: ColorPalette.green[800],
+              fontWeight: FontWeight.w600,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _Button(
+                  title: 'Take a picture',
+                  iconData: Icons.camera_alt,
+                  onPressed: () async {
+                    await MediaService.selectImage(ImageSource.camera);
+                  },
+                ),
+                _Button(
+                  title: 'Upload from gallery',
+                  iconData: Icons.image,
+                  onPressed: () async {
+                    await MediaService.selectImage();
+                  },
+                ),
+                _Button(
+                  title: 'Use a bitmoji',
+                  child: Image.asset('assets/images/icons/bitmoji.png'),
+                  onPressed: () {},
+                ),
+                _Button(
+                  title: 'Remove picture',
+                  iconData: TranquilIcons.trash,
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => ConfirmDialog(
+                        title: 'Remove Picture?',
+                        bodyText:
+                            'Are you sure you want to remove your current profile picture?',
+                        yesDialog: DialogOption('Remove'),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -69,14 +89,16 @@ class _Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: GestureDetector(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: InkResponse(
+        containedInkWell: true,
+        highlightShape: BoxShape.rectangle,
         onTap: () {
-          onPressed();
           Navigator.of(context).pop();
+          onPressed();
         },
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
           child: Row(
             children: [
               if (iconData != null)

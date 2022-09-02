@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tranquil_life/app/presentation/widgets/confirm_dialog.dart';
+import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 
 class DeleteNoteDialog extends StatelessWidget {

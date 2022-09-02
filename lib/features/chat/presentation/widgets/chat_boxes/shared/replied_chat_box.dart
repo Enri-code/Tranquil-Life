@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +11,7 @@ import 'package:tranquil_life/features/chat/domain/entities/message.dart';
 import 'package:tranquil_life/features/chat/domain/entities/reply.dart';
 import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/shared/chat_box.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/shared/video_layout.dart';
 
 class RepliedChatBox extends StatelessWidget {
   const RepliedChatBox(
@@ -89,7 +92,7 @@ class _MediaReplyWidget extends StatefulWidget {
 }
 
 class _MediaReplyWidgetState extends State<_MediaReplyWidget> {
-  late final PlayerController playerController;
+  late final PlayerController player;
   String duration = '';
 
   @override
@@ -101,19 +104,18 @@ class _MediaReplyWidgetState extends State<_MediaReplyWidget> {
   }
 
   Future _initAudio() async {
-    playerController = PlayerController();
-    late final String path;
+    final String path;
+    player = PlayerController();
     if (widget.message.repliedMessage.isSent) {
-      var file = await DefaultCacheManager()
-          .getSingleFile(widget.message.repliedMessage.data);
-      path = file.path;
+      final cachedFile = await DefaultCacheManager().getSingleFile(
+        widget.message.repliedMessage.data,
+      );
+      path = cachedFile.path;
     } else {
       path = widget.message.repliedMessage.data;
     }
-    await playerController.preparePlayer(path);
-    setState(() {
-      duration = TimeFormatter.toTimerString(playerController.maxDuration);
-    });
+    await player.preparePlayer(path);
+    setState(() => duration = TimeFormatter.toTimerString(player.maxDuration));
   }
 
   Widget _labelWidgetBuilder() {
@@ -181,14 +183,16 @@ class _MediaReplyWidgetState extends State<_MediaReplyWidget> {
                     fit: BoxFit.cover,
                   );
                 }
-                return FutureBuilder(
-                  future: DefaultCacheManager()
-                      .getFileFromCache(widget.message.repliedMessage.data),
-                  builder: (_, AsyncSnapshot<FileInfo?> snaoshot) {
+                return FutureBuilder<File?>(
+                  future: VideoLayout.getVideoThumb(
+                    widget.message.repliedMessage.data,
+                    !widget.message.isSent,
+                  ),
+                  builder: (_, AsyncSnapshot<File?> snaoshot) {
                     if (snaoshot.data == null) {
                       return const Icon(Icons.video_file, size: 40);
                     }
-                    return Image.file(snaoshot.data!.file, fit: BoxFit.cover);
+                    return Image.file(snaoshot.data!, fit: BoxFit.cover);
                   },
                 );
               }),

@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/text.dart';
 
-abstract class MyButtonTheme {
-  static final textButtonTheme = TextButtonThemeData(
-    style: TextButton.styleFrom(primary: ColorPalette.green[800]),
-  );
-  static final elevatedButtonTheme = ElevatedButtonThemeData(
+class MyButtonTheme {
+  final Color primaryColor;
+  MyButtonTheme({required this.primaryColor})
+      : textButtonTheme = TextButtonThemeData(
+          style: TextButton.styleFrom(primary: primaryColor),
+        ),
+        outlinedButtonTheme = OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            fixedSize: const Size(380, 56),
+            padding: const EdgeInsets.all(12),
+            side: BorderSide(width: 1.5, color: primaryColor),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        );
+
+  final TextButtonThemeData textButtonTheme;
+  final OutlinedButtonThemeData outlinedButtonTheme;
+
+  final elevatedButtonTheme = ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
     fixedSize: const Size(380, 56),
     onPrimary: Colors.white,
@@ -16,14 +31,6 @@ abstract class MyButtonTheme {
       fontSize: 18,
     ),
     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-  ));
-
-  static final outlinedButtonTheme = OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-    fixedSize: const Size(380, 56),
-    padding: const EdgeInsets.all(12),
-    side: const BorderSide(width: 2),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
   ));
 

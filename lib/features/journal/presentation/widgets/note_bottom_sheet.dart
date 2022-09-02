@@ -98,9 +98,7 @@ class _NoteBottomSheetState extends State<NoteBottomSheet> {
                   Navigator.of(context).pop();
                   return showDialog(
                     context: context,
-                    builder: (_) => Dialog(
-                      child: DeleteNoteDialog(note: widget.note),
-                    ),
+                    builder: (_) => DeleteNoteDialog(note: widget.note),
                   );
                 },
               ),
