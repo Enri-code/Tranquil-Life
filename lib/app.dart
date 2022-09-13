@@ -21,6 +21,7 @@ import 'package:tranquil_life/features/journal/presentation/bloc/note/note_bloc.
 import 'package:tranquil_life/features/onboarding/presentation/screens/splash.dart';
 import 'package:tranquil_life/features/questionnaire/data/repos/questionnaire_repo.dart';
 import 'package:tranquil_life/features/questionnaire/presentation/bloc/questionnaire_bloc.dart';
+import 'package:tranquil_life/features/wallet/presentation/bloc/edit_card/edit_card_bloc.dart';
 
 class App extends StatelessWidget {
   App({Key? key}) : super(key: key);
@@ -42,6 +43,7 @@ class App extends StatelessWidget {
         BlocProvider(create: (_) => JournalBloc(const JournalRepoImpl())),
         BlocProvider(create: (_) => NoteBloc()),
         BlocProvider(create: (_) => ChatBloc()),
+        BlocProvider(create: (_) => EditCardBloc()),
         BlocProvider(
           create: (_) => QuestionnaireBloc(const QuestionnaireRepoImpl()),
         ),

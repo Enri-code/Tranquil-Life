@@ -34,6 +34,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         fit: StackFit.expand,
         alignment: Alignment.bottomCenter,
@@ -52,6 +53,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           NavBar(
             onPageChanged: (page) {
+              FocusManager.instance.primaryFocus?.unfocus();
               switch (page) {
                 case 3:
                   if (true) //TODO: if in a meeting

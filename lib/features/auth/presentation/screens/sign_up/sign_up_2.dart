@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:tranquil_life/app/presentation/theme/buttons.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/features/auth/domain/entities/partner.dart';
@@ -173,6 +174,7 @@ class _OrganizationSectionState extends State<_OrganizationSection>
                 errorStyle: authScreensErrorStyle,
               ),
               dropdownDecoration: BoxDecoration(
+                boxShadow: WidgetsThemeData.dropDownShadow,
                 borderRadius: BorderRadius.circular(8),
               ),
               hint: state.partners != null

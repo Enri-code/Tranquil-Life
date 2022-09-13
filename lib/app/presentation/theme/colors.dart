@@ -7,7 +7,7 @@ abstract class ColorPalette {
   );
   static const blue = MaterialColor(
     0xff056B9C,
-    {500: Color(0xff056B9C), 700: Color(0xff04557D)},
+    {500: Color(0xff056B9C), 800: Color(0xff04557D)},
   );
   static const yellow = MaterialColor(0xFFEDC24D, {500: Color(0xFFEDC24D)});
   static const red = MaterialColor(0xFFEF5656, {

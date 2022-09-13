@@ -21,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(right: 12, top: 8),
                 child: AppBarButton(
-                  icon: const Icon(Icons.settings, color: Colors.white),
+                  icon: const Icon(Icons.settings),
                   onPressed: () =>
                       Navigator.of(context).pushNamed(SettingsScreen.routeName),
                 ),
@@ -56,11 +56,7 @@ class ProfileScreen extends StatelessWidget {
                             const Text('Edit Profile'),
                             const SizedBox(width: 6),
                             AppBarButton(
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                                size: 22,
-                              ),
+                              icon: const Icon(Icons.edit, size: 22),
                               onPressed: () => Navigator.of(context)
                                   .pushNamed(EditProfileScreen.routeName),
                             ),

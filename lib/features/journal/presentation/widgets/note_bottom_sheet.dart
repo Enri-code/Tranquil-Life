@@ -59,9 +59,9 @@ class _NoteBottomSheetState extends State<NoteBottomSheet> {
                       ),
                     ),
                     ...List.generate(
-                      colors.length,
+                      noteColors.length,
                       (index) {
-                        var color = colors[index];
+                        var color = noteColors[index];
                         return GestureDetector(
                           onTap: () => _onChooseColor(color),
                           child: _ColorCircle(

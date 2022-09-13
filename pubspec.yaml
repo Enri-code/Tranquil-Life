@@ -19,6 +19,8 @@ dependencies:
   audio_session: ^0.1.10
   camera: ^0.10.0+1
   card_swiper: ^2.0.4
+  credit_card_type_detector: ^2.0.0
+  credit_card_validator: ^2.0.1
   dartz: ^0.10.1
   device_info_plus: ^4.1.2
   dio: ^4.0.6
@@ -28,8 +30,10 @@ dependencies:
   equatable: ^2.0.3
   flutter_bloc: ^8.0.1
   flutter_cache_manager: ^3.3.0
-  flutter_native_splash: ^2.2.8
+  # fluttermoji: ^1.0.0
+  # flutter_native_splash: ^2.2.9
   # flutter_neumorphic: ^3.2.0
+  flutter_secure_storage: ^6.0.0
   flutter_staggered_grid_view: ^0.6.2
   flutter_speed_dial: ^6.0.0
   get_it: ^7.2.0
@@ -75,6 +79,7 @@ flutter:
     - assets/images/onboarding/
     - assets/images/wallet/
     - assets/images/wallet/cards/
+    - assets/images/wallet/networks/
 
   fonts:
     - family: TranquilIcons

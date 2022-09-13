@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as local;
 // import 'package:agora_rtc_engine/rtc_remote_view.dart' as remote;
-import 'package:get_it/get_it.dart';
 import 'package:tranquil_life/app/presentation/widgets/back_button_white.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/features/calls/domain/video_call_repo.dart';
 
-import 'package:tranquil_life/features/calls/data/agora_call.dart';
 import 'package:tranquil_life/features/calls/presentation/widgets/buttons.dart';
 import 'package:tranquil_life/features/calls/presentation/widgets/small_view.dart';
 import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
@@ -29,7 +28,7 @@ class CallScreen extends StatefulWidget {
 }
 
 class _CallScreenState extends State<CallScreen> {
-  final controller = GetIt.instance.get<AgoraController>();
+  final controller = getIt<CallController>();
 
   @override
   void didChangeDependencies() {
@@ -74,7 +73,7 @@ class _CallScreenState extends State<CallScreen> {
                     },
                   ),
                 ),
-                SafeArea(top: false, child: BottomBar()),
+                const SafeArea(top: false, child: BottomBar()),
               ],
             ),
             SafeArea(

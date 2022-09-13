@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/text.dart';
 
-class MyButtonTheme {
+class WidgetsThemeData {
   final Color primaryColor;
-  MyButtonTheme({required this.primaryColor})
+  WidgetsThemeData({required this.primaryColor})
       : textButtonTheme = TextButtonThemeData(
           style: TextButton.styleFrom(primary: primaryColor),
         ),
@@ -48,4 +48,7 @@ class MyButtonTheme {
     ),
     contentPadding: EdgeInsets.all(24),
   );
+  static const dropDownShadow = [
+    BoxShadow(blurRadius: 4, offset: Offset(0, 2), color: Colors.black12)
+  ];
 }

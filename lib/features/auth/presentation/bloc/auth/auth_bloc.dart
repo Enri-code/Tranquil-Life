@@ -7,10 +7,11 @@ import 'package:tranquil_life/app/presentation/bloc_helpers/state_base.dart';
 import 'package:tranquil_life/core/utils/errors/api_error.dart';
 import 'package:tranquil_life/app/domain/entities/query_params.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
-import 'package:tranquil_life/core/utils/services/app_data_store.dart';
+import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/auth/data/use_cases.dart/sign_out.dart';
 import 'package:tranquil_life/features/auth/domain/entities/client.dart';
 import 'package:tranquil_life/features/auth/domain/repos/auth.dart';
+import 'package:tranquil_life/features/auth/domain/repos/user_data.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -46,7 +47,7 @@ abstract class AuthBloc<P extends QueryParams>
   _restoreSignIn(RestoreSignIn event, Emitter<AuthState> emit) =>
       emit(state.copyWith(
         error: null,
-        user: AppData.user,
+        user: getIt<IUserDataStore>().user,
         status: OperationStatus.initial,
         authStatus: AuthStatus.signedIn,
       ));
@@ -57,7 +58,7 @@ abstract class AuthBloc<P extends QueryParams>
     emit(res.fold(
       (l) => state.copyWith(status: OperationStatus.error, error: l),
       (r) {
-        AppData.user = r;
+        getIt<IUserDataStore>().user = r;
         return state.copyWith(
           status: OperationStatus.success,
           authStatus: AuthStatus.signedIn,
@@ -74,7 +75,7 @@ abstract class AuthBloc<P extends QueryParams>
     emit(res.fold(
       (l) => state.copyWith(status: OperationStatus.error, error: l),
       (r) {
-        AppData.user = r;
+        getIt<IUserDataStore>().user = r;
         return state.copyWith(
           status: OperationStatus.success,
           authStatus: AuthStatus.signedIn,
@@ -88,7 +89,7 @@ abstract class AuthBloc<P extends QueryParams>
   _signOut(SignOut event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: OperationStatus.loading));
     await signOutCase();
-    AppData.user = null;
+    getIt<IUserDataStore>().user = null;
     emit(state.copyWith(
       status: OperationStatus.success,
       authStatus: AuthStatus.signedOut,

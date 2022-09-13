@@ -8,7 +8,7 @@ class AppBarAction {
   final bool isCustomButton;
   final Function()? onPressed;
 
-  AppBarAction({
+  const AppBarAction({
     required this.child,
     required this.onPressed,
     this.isCustomButton = true,
@@ -19,7 +19,6 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   final Color? titleColor;
   final List<AppBarAction>? actions;
-  //final bool? isStatusBarDark;
   final Function()? onBackPressed;
 
   const CustomAppBar({
@@ -27,7 +26,6 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     this.title,
     this.titleColor,
     this.actions,
-    //this.isStatusBarDark,
     this.onBackPressed,
   }) : super(key: key);
 
@@ -37,18 +35,10 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       surfaceTintColor: const Color(0x00ffffff),
       backgroundColor: Colors.transparent,
       toolbarTextStyle: TextStyle(
-        fontSize: 18,
+        fontSize: 17,
         color: ColorPalette.green[800],
         fontFamily: MyTextData.josefinFamily,
       ),
-      /* systemOverlayStyle: isStatusBarDark == null
-          ? null
-          : SystemUiOverlayStyle(
-              statusBarIconBrightness:
-                  isStatusBarDark! ? Brightness.dark : Brightness.light,
-              statusBarBrightness:
-                  isStatusBarDark! ? Brightness.light : Brightness.dark,
-            ), */
       leading: Navigator.of(context).canPop() || onBackPressed != null
           ? Hero(
               tag: 'back_button',
@@ -56,11 +46,11 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 child: AppBarButton(
                   onPressed: onBackPressed ?? Navigator.of(context).pop,
                   icon: const Padding(
-                    padding: EdgeInsets.all(2),
+                    padding: EdgeInsets.all(1),
                     child: Icon(
                       Icons.arrow_back_ios_new,
                       color: Colors.white,
-                      size: 20,
+                      size: 19,
                     ),
                   ),
                 ),

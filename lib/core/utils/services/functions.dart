@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:tranquil_life/app/presentation/widgets/ios_date_picker.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 import 'package:tranquil_life/features/journal/presentation/widgets/note_bottom_sheet.dart';
+
+final getIt = GetIt.instance.get;
 
 void setStatusBarBrightness(bool dark, [Duration? delayedTime]) async {
   await Future.delayed(delayedTime ?? const Duration(milliseconds: 300));

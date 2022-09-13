@@ -8,7 +8,7 @@ abstract class BlocStateBase extends Equatable {
   final ResolvedError? error;
   final OperationStatus status;
 
-  copyWith();
+  BlocStateBase copyWith();
 
   @override
   List<Object?> get props => [status, error];

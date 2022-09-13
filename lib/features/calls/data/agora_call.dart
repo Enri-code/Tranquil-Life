@@ -1,21 +1,21 @@
 import 'dart:io';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:get_it/get_it.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tranquil_life/core/constants/constants.dart';
+import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/calls/domain/video_call_repo.dart';
 
 class AgoraController extends CallController {
   AgoraController() {
-    initFuture = init();
+    _initFuture = init();
   }
 
-  bool isAudioOn = true, isFrontCamera = true;
-  Set<int> remoteIds = {};
+  bool _isAudioOn = true, _isFrontCamera = true;
+  Set<int> _remoteIds = {};
 
-  Future? initFuture;
+  Future? _initFuture;
   RtcEngine? _engine;
 
   Future<String?> get _token async {
@@ -36,10 +36,10 @@ class AgoraController extends CallController {
       },
       joinChannelSuccess: (channel, uid, elapsed) {},
       userJoined: (uid, elapsed) {
-        remoteIds.add(uid);
+        _remoteIds.add(uid);
       },
       userOffline: (uid, reason) {
-        remoteIds.remove(uid);
+        _remoteIds.remove(uid);
       },
     ));
     await Future.wait([
@@ -53,13 +53,13 @@ class AgoraController extends CallController {
     if (Platform.isIOS || Platform.isAndroid) {
       await [Permission.microphone, Permission.camera].request();
     }
-    await initFuture;
+    await _initFuture;
     await switchVideo(startWithVideo);
     await _engine?.joinChannel(
       await _token,
       callRoomId,
       null,
-      GetIt.instance.get<ClientAuthBloc>().state.user!.id,
+      getIt<ClientAuthBloc>().state.user!.id,
     );
   }
 
@@ -68,7 +68,7 @@ class AgoraController extends CallController {
 
   @override
   Future switchCamera() {
-    isFrontCamera = !isFrontCamera;
+    _isFrontCamera = !_isFrontCamera;
     return _engine!.switchCamera();
   }
 

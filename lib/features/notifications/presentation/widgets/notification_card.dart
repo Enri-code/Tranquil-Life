@@ -33,11 +33,8 @@ class NotificationCard extends StatelessWidget {
     return SwipeableWidget(
       swipedWidget: Align(
         alignment: Alignment.centerRight,
-        child: GestureDetector(
-          onTap: () {
-            //TODO
-          },
-          child: const _DeleteIcon(),
+        child: _DeleteIcon(
+          onPressed: () {},
         ),
       ),
       child: Stack(
@@ -101,17 +98,37 @@ class NotificationCard extends StatelessWidget {
 }
 
 class _DeleteIcon extends StatelessWidget {
-  const _DeleteIcon({Key? key}) : super(key: key);
+  const _DeleteIcon({Key? key, required this.onPressed}) : super(key: key);
+  final Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: ColorPalette.blue,
-        borderRadius: BorderRadius.circular(8),
+    return ClipRRect(
+      clipBehavior: Clip.hardEdge,
+      borderRadius: BorderRadius.circular(8),
+      child: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            color: ColorPalette.blue,
+            child: const Icon(
+              TranquilIcons.trash,
+              size: 26,
+              color: Colors.white,
+            ),
+          ),
+          Positioned.fill(
+            child: Material(
+              type: MaterialType.transparency,
+              child: InkResponse(
+                containedInkWell: true,
+                highlightShape: BoxShape.rectangle,
+                onTap: onPressed,
+              ),
+            ),
+          )
+        ],
       ),
-      child: const Icon(TranquilIcons.trash, size: 26, color: Colors.white),
     );
   }
 }

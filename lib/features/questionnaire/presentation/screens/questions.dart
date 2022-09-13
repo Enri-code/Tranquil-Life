@@ -21,7 +21,7 @@ class QuestionsScreen extends StatefulWidget {
 class _QuestionsScreenState extends State<QuestionsScreen> {
   var index = 0;
   var questionsCount = questions.length;
-  bool get isDone => index >= questions.length - 1;
+  bool get isDone => questions.every((e) => e.answer != null);
 
   _onOptionTap(bool canContinue, Option option) async {
     setState(() => questions[index].answer = option);
@@ -39,25 +39,30 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           CustomAppBar(
             onBackPressed: index > 0 ? () => setState(() => index--) : null,
             actions: [
-              AppBarAction(
-                child: Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: Icon(
-                    isDone ? Icons.check : Icons.arrow_forward_ios,
-                    color: Colors.white,
-                    size: 20,
+              if (index < questionsCount - 1)
+                AppBarAction(
+                  child: const Padding(
+                    padding: EdgeInsets.all(2),
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
+                  onPressed: () => setState(() => index++),
                 ),
-                onPressed: () {
-                  final bloc = context.read<QuestionnaireBloc>();
-                  if (bloc.state.status == OperationStatus.loading) return;
-                  if (isDone) {
+              if (isDone)
+                AppBarAction(
+                  child: const Padding(
+                    padding: EdgeInsets.all(2),
+                    child: Icon(Icons.check, color: Colors.white, size: 20),
+                  ),
+                  onPressed: () {
+                    final bloc = context.read<QuestionnaireBloc>();
+                    if (bloc.state.status == OperationStatus.loading) return;
                     context.read<QuestionnaireBloc>().add(Submit(questions));
-                  } else {
-                    setState(() => index++);
-                  }
-                },
-              ),
+                  },
+                ),
             ],
           ),
           SliderTheme(

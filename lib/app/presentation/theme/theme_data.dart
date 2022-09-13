@@ -5,7 +5,7 @@ import 'package:tranquil_life/app/presentation/theme/text.dart';
 class LightThemeData {
   final Color primaryColor;
   LightThemeData(this.primaryColor)
-      : buttonTheme = MyButtonTheme(primaryColor: primaryColor) {
+      : buttonTheme = WidgetsThemeData(primaryColor: primaryColor) {
     theme = ThemeData.from(
       colorScheme: ColorScheme.light(primary: primaryColor),
       textTheme: MyTextData.textTheme,
@@ -21,9 +21,9 @@ class LightThemeData {
       textButtonTheme: buttonTheme.textButtonTheme,
       elevatedButtonTheme: buttonTheme.elevatedButtonTheme,
       outlinedButtonTheme: buttonTheme.outlinedButtonTheme,
-      inputDecorationTheme: MyButtonTheme.inputDecorationTheme,
+      inputDecorationTheme: WidgetsThemeData.inputDecorationTheme,
     );
   }
-  final MyButtonTheme buttonTheme;
+  final WidgetsThemeData buttonTheme;
   late final ThemeData theme;
 }

@@ -1,57 +1,37 @@
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:tranquil_life/features/auth/data/models/client_model.dart';
-import 'package:tranquil_life/features/auth/domain/entities/client.dart';
-
-abstract class _Store {
-  static Box? _box;
-  static Future init() async => _box ??= await Hive.openBox('app_data');
-
-  static T? get<T>(String key, {T? defaultValue}) =>
-      _box!.get(key) ?? defaultValue;
-
-  static Future set(String key, dynamic value) => _box!.put(key, value);
-  static Future deleteAll(List<String> keys) => _box!.deleteAll(keys);
-}
+import 'package:tranquil_life/core/utils/helpers/store.dart';
 
 abstract class _Keys {
-  static const user = 'user';
-  static const isSignedIn = 'isSignedIn';
   static const isOnboardingCompleted = 'isOnboardingCompleted';
   static const hasReadMeetingAbsenceMessage = 'hasReadMeetingAbsenceMessage';
   static const hasAnsweredQuestions = 'hasAnsweredQuestions';
 }
 
 abstract class AppData {
-  static Future init() => _Store.init();
+  static final _store = HiveStore('app_data');
 
-  static bool get isOnboardingCompleted =>
-      _Store.get(_Keys.isOnboardingCompleted, defaultValue: false)!;
-  static set isOnboardingCompleted(bool val) =>
-      _Store.set(_Keys.isOnboardingCompleted, val);
+  static Future init() => _store.init();
 
-  static bool get hasAnsweredQuestions =>
-      _Store.get(_Keys.hasAnsweredQuestions, defaultValue: false)!;
-  static set hasAnsweredQuestions(bool val) =>
-      _Store.set(_Keys.hasAnsweredQuestions, val);
-
-  static bool get hasReadMeetingAbsenceMessage =>
-      _Store.get(_Keys.hasReadMeetingAbsenceMessage, defaultValue: false)!;
-  static set hasReadMeetingAbsenceMessage(bool val) =>
-      _Store.set(_Keys.hasReadMeetingAbsenceMessage, val);
-
-  static Client? get user {
-    var val = _Store.get(_Keys.user);
-    if (val == null) return null;
-    return ClientModel.fromJson(val);
+  static bool get isOnboardingCompleted {
+    return _store.get(_Keys.isOnboardingCompleted) ?? false;
   }
 
-  static set user(Client? val) => _Store.set(_Keys.user, val?.toJson());
+  static set isOnboardingCompleted(bool val) {
+    _store.set(_Keys.isOnboardingCompleted, val);
+  }
 
-  static bool get isSignedIn => _Store.get(
-        _Keys.isSignedIn,
-        defaultValue: false,
-      )!;
+  static bool get hasAnsweredQuestions {
+    return _store.get(_Keys.hasAnsweredQuestions) ?? false;
+  }
 
-  static Future deleteUser() =>
-      _Store.deleteAll([_Keys.user, _Keys.isSignedIn]);
+  static set hasAnsweredQuestions(bool val) {
+    _store.set(_Keys.hasAnsweredQuestions, val);
+  }
+
+  static bool get hasReadMeetingAbsenceMessage {
+    return _store.get(_Keys.hasReadMeetingAbsenceMessage) ?? false;
+  }
+
+  static set hasReadMeetingAbsenceMessage(bool val) {
+    _store.set(_Keys.hasReadMeetingAbsenceMessage, val);
+  }
 }

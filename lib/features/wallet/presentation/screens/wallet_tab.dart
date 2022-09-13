@@ -2,9 +2,12 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
-import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
+import 'package:tranquil_life/core/constants/constants.dart';
 import 'package:tranquil_life/features/wallet/domain/entities/card_data.dart';
-import 'package:tranquil_life/features/wallet/presentation/widgets/card.dart';
+import 'package:tranquil_life/features/wallet/presentation/screens/add_card_screen.dart';
+import 'package:tranquil_life/features/wallet/presentation/widgets/card_dialog.dart';
+import 'package:tranquil_life/features/wallet/presentation/widgets/card_widget.dart';
+import 'package:tranquil_life/features/wallet/presentation/widgets/transaction_sheet.dart';
 
 class WalletTab extends StatefulWidget {
   const WalletTab({Key? key}) : super(key: key);
@@ -52,25 +55,7 @@ class _WalletTabState extends State<WalletTab> {
                   ],
                 ),
                 const Spacer(),
-                if (cardCount < 3)
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ColorPalette.green[800],
-                    ),
-                    child: Material(
-                      type: MaterialType.transparency,
-                      child: InkResponse(
-                        radius: 16,
-                        onTap: () {},
-                        child: const Center(
-                          child: Icon(Icons.add, color: Colors.white, size: 26),
-                        ),
-                      ),
-                    ),
-                  )
+                if (cardCount < 3) const _AddCardButton()
               ],
             ),
           ),
@@ -80,7 +65,11 @@ class _WalletTabState extends State<WalletTab> {
             child: Column(
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (_) => const TransactionsSheet(),
+                  ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: const [
@@ -105,15 +94,59 @@ class _WalletTabState extends State<WalletTab> {
   }
 }
 
-class _Cards extends StatelessWidget {
-  const _Cards({Key? key}) : super(key: key);
+class _AddCardButton extends StatelessWidget {
+  const _AddCardButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final cardCount = 3;
-    final data = CardData();
-    final width = MediaQuery.of(context).size.width - 48;
-    final height = width / 1.586;
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: ColorPalette.green[800],
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkResponse(
+          radius: 16,
+          onTap: () => Navigator.of(context).pushNamed(AddCardScreen.routeName),
+          child: const Center(
+            child: Icon(Icons.add, color: Colors.white, size: 26),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Cards extends StatelessWidget {
+  const _Cards({Key? key}) : super(key: key);
+
+  static final savedCards = [
+    CardData.virtual(),
+    const CardData(
+      cardId: 1,
+      holderName: null,
+      cardNumber: '5567458525329686',
+      expiryDate: '07/15',
+      CVV: '563',
+      type: CardType.mastercard,
+    ),
+    const CardData(
+      cardId: 2,
+      holderName: null,
+      cardNumber: '5567458525329686',
+      expiryDate: '07/18',
+      CVV: '4954',
+      type: CardType.visa,
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width - 42;
+    final height = width / cardAspectRatio;
 
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.57,
@@ -139,58 +172,36 @@ class _Cards extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Builder(builder: (context) {
-              if (cardCount == 0) {
+              if (savedCards.isEmpty) {
                 return SizedBox(
                   width: width,
                   height: height,
-                  child: const _NoCardWidget(),
-                );
-              }
-              if (cardCount == 1) {
-                return SizedBox(
-                  width: width,
-                  height: height,
-                  child: CardWidget(index: 0, cardData: data),
+                  child: CardWidget(
+                    index: 0,
+                    cardData: CardData.virtual(),
+                  ),
                 );
               }
               return Swiper(
-                itemCount: 3,
+                index: 0, //default/initial index
                 itemWidth: width,
                 itemHeight: height,
                 layout: SwiperLayout.STACK,
+                itemCount: savedCards.length,
                 onTap: (index) {
                   showDialog(
                     context: context,
-                    builder: (_) => OptionsDialog([
-                      DialogOption(
-                        'Set as default',
-                        onPressed: () {},
-                      ),
-                      DialogOption(
-                        'Delete card',
-                        onPressed: () {},
-                      ),
-                    ]),
+                    builder: (_) => CardDialog(savedCards[index]),
                   );
                 },
-                itemBuilder: (_, index) =>
-                    CardWidget(index: index, cardData: data),
+                itemBuilder: (_, index) {
+                  return CardWidget(index: index, cardData: savedCards[index]);
+                },
               );
             }),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _NoCardWidget extends StatelessWidget {
-  const _NoCardWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [],
     );
   }
 }

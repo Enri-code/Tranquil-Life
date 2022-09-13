@@ -23,5 +23,5 @@ class JournalState extends BlocStateBase {
   }
 
   @override
-  List<Object?> get props => [...super.props];
+  List<Object?> get props => [notes, ...super.props];
 }

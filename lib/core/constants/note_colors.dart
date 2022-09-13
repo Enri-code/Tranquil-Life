@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const colors = <Color>[
+const noteColors = <Color>[
   Color(0xffACD5E8),
   Color(0xffC0E2C9),
   Color(0xff82BFDD),

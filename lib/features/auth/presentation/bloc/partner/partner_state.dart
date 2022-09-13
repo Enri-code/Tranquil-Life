@@ -9,10 +9,10 @@ class PartnerState extends BlocStateBase {
   final List<Partner>? partners;
 
   @override
-  List<Object?> get props => [partners];
+  List<Object?> get props => [partners, ...super.props];
 
   @override
-  copyWith({
+  PartnerState copyWith({
     OperationStatus? status,
     ResolvedError? error,
     List<Partner>? partners,

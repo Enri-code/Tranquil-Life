@@ -29,7 +29,7 @@ class AuthState extends BlocStateBase {
       );
 
   @override
-  List<Object?> get props => [user, status, error, authStatus];
+  List<Object?> get props => [user, authStatus, ...super.props];
 }
 
 class EmailError extends ErrorCause {

@@ -87,7 +87,7 @@ class EditProfileScreen extends StatelessWidget {
                       _Button(
                         title: 'Location',
                         suffixText: 'United Kingdom United Kingdom',
-                        onPressed: () {},
+                        onPressed: null,
                       ),
                       const SizedBox(height: 20),
                       _Button(
@@ -144,6 +144,7 @@ class _Button extends StatelessWidget {
                     TextFormField(
                       maxLines: null,
                       initialValue: suffixText,
+                      enabled: onPressed != null,
                       textAlign: TextAlign.right,
                       textInputAction: TextInputAction.done,
                       textCapitalization: TextCapitalization.words,

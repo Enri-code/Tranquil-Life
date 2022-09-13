@@ -80,28 +80,23 @@ class _ConsultantWidget extends StatelessWidget {
           ),
         );
       },
-      child: Column(
-        children: [
-          const Divider(height: 16, thickness: 1),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            child: Row(
-              children: [
-                UserAvatar(imageUrl: consultant.avatarUrl),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    consultant.displayName,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: ColorPalette.green[800],
-                    ),
-                  ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Row(
+          children: [
+            UserAvatar(imageUrl: consultant.avatarUrl),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                consultant.displayName,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: ColorPalette.green[800],
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

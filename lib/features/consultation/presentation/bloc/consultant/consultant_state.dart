@@ -23,5 +23,5 @@ class ConsultantState extends BlocStateBase {
   }
 
   @override
-  List<Object?> get props => [...super.props];
+  List<Object?> get props => [consultants, ...super.props];
 }

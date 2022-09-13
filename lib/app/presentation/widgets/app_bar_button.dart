@@ -17,12 +17,17 @@ class AppBarButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(9),
           color: backgroundColor ?? Theme.of(context).primaryColor,
         ),
-        child: icon,
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            iconTheme: const IconThemeData(color: Colors.white, size: 22),
+          ),
+          child: icon,
+        ),
       ),
     );
   }

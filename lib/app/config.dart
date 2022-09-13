@@ -17,6 +17,7 @@ import 'package:tranquil_life/features/onboarding/presentation/screens/onboard.d
 import 'package:tranquil_life/features/profile/presentation/screens/edit_profile.dart';
 import 'package:tranquil_life/features/questionnaire/presentation/screens/questions.dart';
 import 'package:tranquil_life/features/settings/presentation/screens/settings.dart';
+import 'package:tranquil_life/features/wallet/presentation/screens/add_card_screen.dart';
 
 abstract class AppConfig {
   static const appName = 'Tranquil Life';
@@ -28,6 +29,7 @@ abstract class AppConfig {
     SentPasswordResetEmailScreen.routeName: (_) =>
         const SentPasswordResetEmailScreen(),
     DashboardScreen.routeName: (_) => const DashboardScreen(),
+    AddCardScreen.routeName: (_) => const AddCardScreen(),
     QuestionsScreen.routeName: (_) => const QuestionsScreen(),
     SpeakWithConsultantScreen.routeName: (_) =>
         const SpeakWithConsultantScreen(),
