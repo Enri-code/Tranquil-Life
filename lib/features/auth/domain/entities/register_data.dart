@@ -14,7 +14,6 @@ class RegisterData extends QueryParams {
 
   @override
   Map<String, dynamic> toJson() {
-    var dates = birthDate.split('-').map((e) => int.parse(e)).toList();
     return <String, dynamic>{
       'f_name': firstName,
       'l_name': lastName,
@@ -23,9 +22,7 @@ class RegisterData extends QueryParams {
       'password': password,
       'phone': phone,
       'company_id': companyId,
-      'day_of_birth': dates[0],
-      'month_of_birth': dates[1],
-      'year_of_birth': dates[2],
+      'birth_date': birthDate,
     };
   }
 }

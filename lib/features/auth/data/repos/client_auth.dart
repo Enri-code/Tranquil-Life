@@ -2,10 +2,10 @@ import 'package:tranquil_life/core/constants/end_points.dart';
 import 'package:tranquil_life/core/utils/errors/api_error.dart';
 import 'package:dartz/dartz.dart';
 import 'package:tranquil_life/core/utils/helpers/api_client.dart';
-import 'package:tranquil_life/features/auth/data/models/client_model.dart';
+import 'package:tranquil_life/features/profile/data/models/client_model.dart';
 import 'package:tranquil_life/features/auth/domain/repos/auth.dart';
 import 'package:tranquil_life/features/auth/domain/entities/register_data.dart';
-import 'package:tranquil_life/features/auth/domain/entities/client.dart';
+import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 
 class AuthRepoImpl extends AuthRepo<Client, RegisterData> {

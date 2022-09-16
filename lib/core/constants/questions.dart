@@ -1,4 +1,6 @@
 import 'package:tranquil_life/app/config.dart';
+import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/questionnaire/domain/entities/question.dart';
 
 final questions = <Question>[
@@ -7,8 +9,13 @@ final questions = <Question>[
     options: const [
       Option('Male'),
       Option('Female'),
-      Option('Choose not to say')
+      Option('Non-binary'),
+      Option('Choose not to say'),
     ],
+    onAnswer: (answer) {
+      if (answer.title == 'Choose not to say') return;
+      getIt<ProfileBloc>().add(UpdateUser(gender: answer.title));
+    },
   ),
   Question(
     title: 'What is your relationship status?',

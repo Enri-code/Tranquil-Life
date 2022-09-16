@@ -8,7 +8,10 @@ abstract class ProfileEvent extends Equatable {
 }
 
 class UpdateUser extends Client implements ProfileEvent {
+  static Client get _profileData => getIt<ProfileBloc>().state.user!;
+
   UpdateUser({
+    Client? oldData,
     int? id,
     String? email,
     String? firstName,
@@ -21,23 +24,28 @@ class UpdateUser extends Client implements ProfileEvent {
     bool? usesBitmoji,
     String? token,
     bool? hasAnsweredQuestions,
+    String? gender,
   }) : super(
-          id: id ?? _profileBlocData.id,
-          email: email ?? _profileBlocData.email,
-          firstName: firstName ?? _profileBlocData.firstName,
-          lastName: lastName ?? _profileBlocData.lastName,
-          displayName: displayName ?? _profileBlocData.displayName,
-          phoneNumber: phoneNumber ?? _profileBlocData.phoneNumber,
-          birthDate: birthDate ?? _profileBlocData.birthDate,
-          avatarUrl: avatarUrl ?? _profileBlocData.avatarUrl,
-          isVerified: isVerified ?? _profileBlocData.isVerified,
-          usesBitmoji: usesBitmoji ?? _profileBlocData.usesBitmoji,
-          token: token ?? _profileBlocData.token,
-          hasAnsweredQuestions:
-              hasAnsweredQuestions ?? _profileBlocData.hasAnsweredQuestions,
+          id: id ?? oldData?.id ?? _profileData.id,
+          email: email ?? oldData?.email ?? _profileData.email,
+          firstName: firstName ?? oldData?.firstName ?? _profileData.firstName,
+          lastName: lastName ?? oldData?.lastName ?? _profileData.lastName,
+          displayName:
+              displayName ?? oldData?.displayName ?? _profileData.displayName,
+          phoneNumber:
+              phoneNumber ?? oldData?.phoneNumber ?? _profileData.phoneNumber,
+          birthDate: birthDate ?? oldData?.birthDate ?? _profileData.birthDate,
+          avatarUrl: avatarUrl ?? oldData?.avatarUrl ?? _profileData.avatarUrl,
+          isVerified:
+              isVerified ?? oldData?.isVerified ?? _profileData.isVerified,
+          usesBitmoji:
+              usesBitmoji ?? oldData?.usesBitmoji ?? _profileData.usesBitmoji,
+          token: token ?? oldData?.token ?? _profileData.token,
+          hasAnsweredQuestions: hasAnsweredQuestions ??
+              oldData?.hasAnsweredQuestions ??
+              _profileData.hasAnsweredQuestions,
+          gender: gender ?? oldData?.gender ?? _profileData.gender,
         );
-
-  static Client get _profileBlocData => getIt<ProfileBloc>().state.user!;
 
   @override
   List<Object> get props => [];

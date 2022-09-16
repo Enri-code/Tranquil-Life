@@ -8,7 +8,7 @@ import 'package:tranquil_life/core/utils/errors/api_error.dart';
 import 'package:tranquil_life/app/domain/entities/query_params.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/features/auth/data/use_cases.dart';
-import 'package:tranquil_life/features/auth/domain/entities/client.dart';
+import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 import 'package:tranquil_life/features/auth/domain/repos/auth.dart';
 
 part 'auth_event.dart';

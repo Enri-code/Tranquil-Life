@@ -37,6 +37,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   _onOptionTap(bool canContinue, Option option) async {
     final answer = canContinue ? option : null;
     setState(() => questions[index].answer = answer);
+    questions[index].onAnswer?.call(option);
     await Future.delayed(kThemeChangeDuration);
     _setLastAnsweredIndex();
     if (mounted && canContinue) setState(() => index++);

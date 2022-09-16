@@ -13,6 +13,7 @@ class QuestionBottomSheet extends StatefulWidget {
 class _QuestionBottomSheetState extends State<QuestionBottomSheet> {
   void _onSelect(Option option) async {
     setState(() => widget.question.answer = option);
+    widget.question.onAnswer?.call(option);
     final navigator = Navigator.of(context);
     await Future.delayed(kThemeAnimationDuration);
     navigator.pop(true);

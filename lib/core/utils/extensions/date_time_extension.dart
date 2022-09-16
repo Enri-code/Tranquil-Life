@@ -5,8 +5,8 @@ extension DateTimeExtension on DateTime {
   static final _timeFormat = DateFormat('hh:mm a');
 
   String get folded {
-    _toPaddedString(int val) => val.toString().padLeft(2, '0');
-    return '${_toPaddedString(day)}-${_toPaddedString(month)}-$year';
+    _padded(int val) => val.toString().padLeft(2, '0');
+    return '${_padded(day)}-${_padded(month)}-${_padded(year)}';
   }
 
   String get formatted {
@@ -16,7 +16,7 @@ extension DateTimeExtension on DateTime {
     return _timeFormat.format(this);
   }
 
-  String timeAgo({DateTime? other, bool numericDates = true}) {
+/*   String timeAgo({DateTime? other, bool numericDates = true}) {
     final difference = (other ?? DateTime.now()).difference(this);
     if ((difference.inDays / 7).floor() >= 1) {
       return (numericDates) ? '1 week ago' : 'Last week';
@@ -38,4 +38,5 @@ extension DateTimeExtension on DateTime {
       return 'Just now';
     }
   }
+ */
 }

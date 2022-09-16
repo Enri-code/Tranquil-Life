@@ -1,4 +1,4 @@
-import 'package:tranquil_life/features/auth/domain/entities/client.dart';
+import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 
 abstract class IUserDataStore {
   Client? get user;

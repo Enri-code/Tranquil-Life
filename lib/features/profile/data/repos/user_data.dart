@@ -1,7 +1,7 @@
 import 'package:tranquil_life/app/data/repos/store.dart';
-import 'package:tranquil_life/features/auth/data/models/client_model.dart';
-import 'package:tranquil_life/features/auth/domain/entities/client.dart';
-import 'package:tranquil_life/features/auth/domain/repos/user_data.dart';
+import 'package:tranquil_life/features/profile/data/models/client_model.dart';
+import 'package:tranquil_life/features/profile/domain/entities/client.dart';
+import 'package:tranquil_life/features/profile/domain/repos/user_data.dart';
 
 abstract class _Keys {
   static const user = 'user';

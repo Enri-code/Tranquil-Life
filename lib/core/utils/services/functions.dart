@@ -18,33 +18,32 @@ void setStatusBarBrightness(bool dark, [Duration? delayedTime]) async {
 }
 
 Future<DateTime?> showCustomDatePicker(BuildContext context,
-    {required DateTime minDateFromNow, required DateTime maxDateFromNow}) {
+    {DateTime? minDateFromNow, DateTime? maxDateFromNow}) {
   var now = DateTime.now();
 
   var min = DateTime(
-    now.year + minDateFromNow.year,
-    now.month + minDateFromNow.month,
+    now.year + (minDateFromNow?.year ?? 0),
+    now.month + (minDateFromNow?.month ?? 0),
     now.day,
   );
   var max = DateTime(
-    now.year + maxDateFromNow.year,
+    now.year + maxDateFromNow!.year,
     now.month + maxDateFromNow.month,
     now.day,
   );
 
+  final initial = now.isBefore(max) ? now : max;
+
   if (Platform.isIOS) {
     return showModalBottomSheet<DateTime>(
       context: context,
-      builder: (_) => IOSDatePicker(
-        minDate: min,
-        maxDate: max,
-        initialDate: max,
-      ),
+      builder: (_) =>
+          IOSDatePicker(minDate: min, maxDate: max, initialDate: initial),
     );
   }
   return showDatePicker(
     context: context,
-    initialDate: now,
+    initialDate: initial,
     firstDate: min,
     lastDate: max,
   );

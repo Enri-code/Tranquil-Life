@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tranquil_life/features/auth/domain/entities/user.dart';
+import 'package:tranquil_life/features/profile/domain/entities/user.dart';
 
 part 'client.g.dart';
 
@@ -18,6 +18,7 @@ class Client extends User {
     required this.usesBitmoji,
     super.avatarUrl,
     this.birthDate,
+    this.gender,
   });
 
   @JsonKey(name: 'f_name')
@@ -29,6 +30,7 @@ class Client extends User {
   @JsonKey(name: 'phone')
   final String phoneNumber;
   final String? birthDate;
+  final String? gender;
 
   final String token;
   final bool hasAnsweredQuestions, usesBitmoji;

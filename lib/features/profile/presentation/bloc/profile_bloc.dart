@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
-import 'package:tranquil_life/features/auth/domain/entities/client.dart';
-import 'package:tranquil_life/features/auth/domain/repos/user_data.dart';
+import 'package:tranquil_life/features/profile/domain/entities/client.dart';
+import 'package:tranquil_life/features/profile/domain/repos/user_data.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';

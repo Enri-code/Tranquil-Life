@@ -1,8 +1,9 @@
 class Question {
-  Question({required this.title, required this.options});
+  Question({required this.title, required this.options, this.onAnswer});
 
   final String title;
   final List<Option> options;
+  final Function(Option)? onAnswer;
   Option? answer;
 
   Map<String, dynamic>? toJson() {

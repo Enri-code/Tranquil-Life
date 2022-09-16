@@ -1,4 +1,4 @@
-import 'package:tranquil_life/features/auth/domain/entities/user.dart';
+import 'package:tranquil_life/features/profile/domain/entities/user.dart';
 
 class Consultant extends User {
   final String specialties;

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/core/utils/services/media_service.dart';
+import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/profile/presentation/screens/edit_avatar.dart';
 
 class AddPictureSheet extends StatelessWidget {
@@ -45,11 +47,19 @@ class AddPictureSheet extends StatelessWidget {
                     final image = await MediaService.selectImage();
                   },
                 ),
-                _Button(
-                  title: 'Use a bitmoji',
-                  child: Image.asset('assets/images/icons/bitmoji.png'),
-                  onPressed: () => Navigator.of(context)
-                      .pushNamed(AvatarEditorScreen.routeName),
+                BlocBuilder<ProfileBloc, ProfileState>(
+                  buildWhen: (prev, curr) =>
+                      curr.user!.usesBitmoji != prev.user!.usesBitmoji,
+                  builder: (context, state) {
+                    return _Button(
+                      title: state.user!.usesBitmoji
+                          ? 'Edit your avatar'
+                          : 'Use an avatar',
+                      child: Image.asset('assets/images/icons/bitmoji.png'),
+                      onPressed: () => Navigator.of(context)
+                          .pushNamed(AvatarEditorScreen.routeName),
+                    );
+                  },
                 ),
                 _Button(
                   title: 'Remove picture',
