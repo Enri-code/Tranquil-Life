@@ -19,16 +19,33 @@ class QuestionsScreen extends StatefulWidget {
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  var index = 0;
+  int index = 0, lastAnsweredIndex = -1;
+
   var questionsCount = questions.length;
   bool get isDone => questions.every((e) => e.answer != null);
 
-  _onOptionTap(bool canContinue, Option option) async {
-    setState(() => questions[index].answer = option);
-    if (canContinue && !isDone) {
-      await Future.delayed(kThemeChangeDuration);
-      setState(() => ++index);
+  void _setLastAnsweredIndex() {
+    lastAnsweredIndex = questions.length;
+    for (var i = 0; i < questions.length; i++) {
+      if (questions[i].answer == null) {
+        lastAnsweredIndex = i - 1;
+        break;
+      }
     }
+  }
+
+  _onOptionTap(bool canContinue, Option option) async {
+    final answer = canContinue ? option : null;
+    setState(() => questions[index].answer = answer);
+    await Future.delayed(kThemeChangeDuration);
+    _setLastAnsweredIndex();
+    if (mounted && canContinue) setState(() => index++);
+  }
+
+  @override
+  void initState() {
+    _setLastAnsweredIndex();
+    super.initState();
   }
 
   @override
@@ -39,10 +56,10 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           CustomAppBar(
             onBackPressed: index > 0 ? () => setState(() => index--) : null,
             actions: [
-              if (index < questionsCount - 1)
+              if (index <= lastAnsweredIndex)
                 AppBarAction(
                   child: const Padding(
-                    padding: EdgeInsets.all(2),
+                    padding: EdgeInsets.all(1),
                     child: Icon(
                       Icons.arrow_forward_ios,
                       color: Colors.white,
@@ -54,7 +71,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               if (isDone)
                 AppBarAction(
                   child: const Padding(
-                    padding: EdgeInsets.all(2),
+                    padding: EdgeInsets.all(1),
                     child: Icon(Icons.check, color: Colors.white, size: 20),
                   ),
                   onPressed: () {
@@ -82,7 +99,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               } else {
                 CustomLoader.remove();
                 if (state.status == OperationStatus.success) {
-                  //AppData.hasAnsweredQuestions = true; TODO
+                  //TODO: hasAnsweredQuestions = true
                   Navigator.of(context).popAndPushNamed(
                     SpeakWithConsultantScreen.routeName,
                   );

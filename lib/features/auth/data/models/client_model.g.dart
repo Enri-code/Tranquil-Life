@@ -15,6 +15,8 @@ ClientModel _$ClientModelFromJson(Map<String, dynamic> json) => ClientModel(
       id: json['id'] as int,
       displayName: json['display_name'] as String,
       phoneNumber: json['phone'] as String,
+      hasAnsweredQuestions: json['has_answered_questions'] ?? false,
+      usesBitmoji: json['uses_bitmoji'] ?? false,
       birthDate:
           '${json['day_of_birth']}-${json['month_of_birth']}-${json['year_of_birth']}',
       isVerified: isVerifiedFromJson(json['email_verified_at']),

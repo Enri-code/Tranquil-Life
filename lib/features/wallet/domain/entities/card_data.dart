@@ -1,15 +1,29 @@
 // ignore_for_file: non_constant_identifier_names
-
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-enum CardType { visa, verve, mastercard, virtual }
+part 'card_data.g.dart';
 
+enum CardType {
+  @JsonValue('visa')
+  visa,
+  @JsonValue('verve')
+  verve,
+  @JsonValue('mastercard')
+  mastercard,
+  @JsonValue('virtual')
+  virtual,
+}
+
+@JsonSerializable(createToJson: true)
 class CardData extends Equatable {
   final int? cardId;
+
   final String? holderName;
   final String? cardNumber;
   final String? expiryDate;
   final String? CVV;
+
   final CardType? type;
 
   const CardData({
@@ -35,7 +49,7 @@ class CardData extends Equatable {
         holderName: '',
         cardNumber: '',
         expiryDate: '',
-        CVV: null,
+        CVV: '',
         type: null,
       );
 
@@ -57,5 +71,8 @@ class CardData extends Equatable {
   }
 
   @override
+  @JsonKey(ignore: true)
   List<Object?> get props => [holderName, cardNumber, expiryDate, CVV, type];
+
+  Map<String, dynamic> toJson() => _$CardDataToJson(this);
 }

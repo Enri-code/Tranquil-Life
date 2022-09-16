@@ -14,20 +14,34 @@ class AppBarButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(9),
-          color: backgroundColor ?? Theme.of(context).primaryColor,
-        ),
-        child: Theme(
-          data: Theme.of(context).copyWith(
-            iconTheme: const IconThemeData(color: Colors.white, size: 22),
+    return ClipRRect(
+      clipBehavior: Clip.hardEdge,
+      borderRadius: BorderRadius.circular(9),
+      child: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: backgroundColor ?? Theme.of(context).primaryColor,
+            ),
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                iconTheme: const IconThemeData(color: Colors.white, size: 22),
+              ),
+              child: icon,
+            ),
           ),
-          child: icon,
-        ),
+          Positioned.fill(
+            child: Material(
+              type: MaterialType.transparency,
+              child: InkResponse(
+                onTap: onPressed,
+                containedInkWell: true,
+                highlightShape: BoxShape.rectangle,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -15,6 +15,7 @@ import 'package:tranquil_life/features/consultation/presentation/screens/schedul
 import 'package:tranquil_life/features/dashboard/presentation/widgets/home/meeting_card.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 import 'package:tranquil_life/features/journal/presentation/screens/note_screen.dart';
+import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/questionnaire/presentation/screens/questions.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/speak_with_consultant.dart';
 import 'package:tranquil_life/features/notifications/presentation/screens/notifications.dart';
@@ -78,13 +79,7 @@ class _BG extends StatelessWidget {
     return FractionallySizedBox(
       heightFactor: 0.42,
       alignment: Alignment.topCenter,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius:
-              const BorderRadius.vertical(bottom: Radius.circular(16)),
-        ),
-      ),
+      child: Container(color: Colors.grey[200]),
     );
   }
 }

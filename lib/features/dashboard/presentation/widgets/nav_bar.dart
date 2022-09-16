@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/features/journal/presentation/screens/journal.dart';
 import 'package:tranquil_life/features/journal/presentation/screens/note_screen.dart';
@@ -103,7 +104,7 @@ class _NavBarState extends State<NavBar> {
                 padding: const EdgeInsets.all(9),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).primaryColor,
+                  color: ColorPalette.yellow,
                   border: Border.all(width: 7, color: Colors.white),
                 ),
                 child: const Icon(TranquilIcons.messages,

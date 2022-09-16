@@ -7,13 +7,14 @@ part of 'client.dart';
 // **************************************************************************
 
 Map<String, dynamic> _$ClientToJson(Client instance) => <String, dynamic>{
+      'id': instance.id,
+      'email': instance.email,
       'f_name': instance.firstName,
       'l_name': instance.lastName,
-      'email': instance.email,
-      'avatar_url': instance.avatarUrl,
-      'token': instance.token,
-      'id': instance.id,
       'display_name': instance.displayName,
+      'uses_bitmoji': instance.usesBitmoji,
+      'avatar_url': instance.avatarUrl,
       'phone': instance.phoneNumber,
-      'email_verified_at': instance.isVerified ? true : null,
+      'token': instance.token,
+      'email_verified_at': instance.isVerified,
     };

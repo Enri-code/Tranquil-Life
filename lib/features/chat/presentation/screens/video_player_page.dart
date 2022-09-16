@@ -15,7 +15,7 @@ class VideoPlayerScreen extends StatefulWidget {
   const VideoPlayerScreen({Key? key}) : super(key: key);
 
   @override
-  _VideoPLayerState createState() => _VideoPLayerState();
+  State<VideoPlayerScreen> createState() => _VideoPLayerState();
 }
 
 class _VideoPLayerState extends State<VideoPlayerScreen> {

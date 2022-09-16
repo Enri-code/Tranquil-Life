@@ -9,6 +9,7 @@ import 'package:tranquil_life/features/auth/domain/entities/user.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
+import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/questionnaire/presentation/screens/questions.dart';
 
 part 'package:tranquil_life/features/chat/presentation/widgets/chat_more_options/view_participant.dart';

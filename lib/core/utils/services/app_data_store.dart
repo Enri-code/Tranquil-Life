@@ -1,9 +1,8 @@
-import 'package:tranquil_life/core/utils/helpers/store.dart';
+import 'package:tranquil_life/app/data/repos/store.dart';
 
 abstract class _Keys {
   static const isOnboardingCompleted = 'isOnboardingCompleted';
   static const hasReadMeetingAbsenceMessage = 'hasReadMeetingAbsenceMessage';
-  static const hasAnsweredQuestions = 'hasAnsweredQuestions';
 }
 
 abstract class AppData {
@@ -19,14 +18,6 @@ abstract class AppData {
     _store.set(_Keys.isOnboardingCompleted, val);
   }
 
-  static bool get hasAnsweredQuestions {
-    return _store.get(_Keys.hasAnsweredQuestions) ?? false;
-  }
-
-  static set hasAnsweredQuestions(bool val) {
-    _store.set(_Keys.hasAnsweredQuestions, val);
-  }
-
   static bool get hasReadMeetingAbsenceMessage {
     return _store.get(_Keys.hasReadMeetingAbsenceMessage) ?? false;
   }
@@ -34,4 +25,7 @@ abstract class AppData {
   static set hasReadMeetingAbsenceMessage(bool val) {
     _store.set(_Keys.hasReadMeetingAbsenceMessage, val);
   }
+
+  static Future clearUserData() =>
+      _store.deleteAll(keys: [_Keys.hasReadMeetingAbsenceMessage]);
 }

@@ -6,8 +6,11 @@ import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/core/constants/constants.dart';
+import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
+import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/features/wallet/domain/entities/card_data.dart';
 import 'package:tranquil_life/features/wallet/presentation/bloc/edit_card/edit_card_bloc.dart';
+import 'package:tranquil_life/features/wallet/presentation/bloc/wallet/wallet_bloc.dart';
 import 'package:tranquil_life/features/wallet/presentation/widgets/card_widget.dart';
 
 class AddCardScreen extends StatefulWidget {
@@ -40,12 +43,8 @@ class _AddCardScreenState extends State<AddCardScreen> {
   @override
   void didChangeDependencies() {
     cardBloc = context.read<EditCardBloc>();
-    if (cardBloc.state.data == null) {
-      cardBloc.add(SetCardData(
-        ModalRoute.of(context)!.settings.arguments as CardData? ??
-            CardData.empty(),
-      ));
-    }
+    final cardArg = ModalRoute.of(context)!.settings.arguments as CardData?;
+    if (cardArg != null) cardBloc.add(SetCardData(cardArg));
     super.didChangeDependencies();
   }
 
@@ -53,7 +52,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      appBar: const _AppBar(),
+      appBar: _AppBar(onValidateForm: () => _formKey.currentState!.validate()),
       body: UnfocusWidget(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -65,7 +64,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   aspectRatio: cardAspectRatio,
                   child: BlocBuilder<EditCardBloc, EditCardState>(
                     builder: (context, state) =>
-                        CardWidget(cardData: state.data ?? CardData.empty()),
+                        CardWidget(cardData: state.data),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -87,7 +86,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                               return DropdownButtonFormField2<CardType>(
                                 itemHeight: 44,
                                 buttonHeight: 36,
-                                value: state.data?.type,
+                                value: state.data.type,
                                 itemPadding: const EdgeInsets.symmetric(
                                   horizontal: 16,
                                   vertical: 8,
@@ -112,7 +111,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                                 onChanged: (val) {
                                   isCardTypePicked = true;
                                   cardBloc.add(SetCardData(
-                                    cardBloc.state.data!.copyWith(type: val),
+                                    cardBloc.state.data.copyWith(type: val),
                                   ));
                                 },
                                 validator: (val) {
@@ -124,7 +123,21 @@ class _AddCardScreenState extends State<AddCardScreen> {
                               );
                             },
                           ),
-                          const SizedBox(height: 24),
+                          BlocListener<WalletBloc, WalletState>(
+                            listenWhen: (previous, current) =>
+                                current.status != OperationStatus.initial,
+                            listener: (context, state) {
+                              if (state.status == OperationStatus.loading) {
+                                CustomLoader.display();
+                              } else {
+                                CustomLoader.remove();
+                                if (state.status == OperationStatus.success) {
+                                  Navigator.of(context).pop();
+                                }
+                              }
+                            },
+                            child: const SizedBox(height: 24),
+                          ),
                           TextFormField(
                             maxLength: 19,
                             keyboardType: TextInputType.number,
@@ -133,7 +146,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                               hintText: 'Card number',
                             ),
                             onChanged: (number) => cardBloc
-                                .add(SetCardData(cardBloc.state.data!.copyWith(
+                                .add(SetCardData(cardBloc.state.data.copyWith(
                               cardNumber: number,
                               type: isCardTypePicked
                                   ? null
@@ -150,7 +163,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                               hintText: 'Card-holder name',
                             ),
                             onChanged: (val) => cardBloc.add(SetCardData(
-                              cardBloc.state.data!.copyWith(holderName: val),
+                              cardBloc.state.data.copyWith(holderName: val),
                             )),
                             validator: (val) {
                               if (val?.isEmpty ?? true) {
@@ -168,7 +181,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                               hintText: 'Expiry date',
                             ),
                             onChanged: (val) => cardBloc.add(SetCardData(
-                              cardBloc.state.data!.copyWith(expiryDate: val),
+                              cardBloc.state.data.copyWith(expiryDate: val),
                             )),
                             validator: cardBloc.validateCardExpiryDate,
                           ),
@@ -180,6 +193,9 @@ class _AddCardScreenState extends State<AddCardScreen> {
                             decoration: const InputDecoration(
                               hintText: 'CVV',
                             ),
+                            onChanged: (val) => cardBloc.add(SetCardData(
+                              cardBloc.state.data.copyWith(CVV: val),
+                            )),
                             validator: cardBloc.validateCardCVV,
                           ),
                         ],
@@ -197,28 +213,24 @@ class _AddCardScreenState extends State<AddCardScreen> {
 }
 
 class _AppBar extends CustomAppBar {
-  const _AppBar({Key? key}) : super(key: key);
+  const _AppBar({Key? key, required this.onValidateForm}) : super(key: key);
+  final bool Function() onValidateForm;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EditCardBloc, EditCardState>(
       builder: (context, state) {
+        final isComplete =
+            state.data.props.every((e) => e is String ? e.isNotEmpty : true);
         return CustomAppBar(
           title: 'Customize Your Card',
           actions: [
-            if (state.data?.props.every((e) {
-                  print(e);
-                  print(e is String);
-                  return e is String ? e.isNotEmpty : true;
-                }) ??
-                false)
+            if (isComplete)
               AppBarAction(
-                child: BlocListener<EditCardBloc, EditCardState>(
-                  listenWhen: (prev, curr) => prev.data != curr.data,
-                  listener: (context, state) {},
-                  child: const Icon(Icons.check),
-                ),
+                child: const Icon(Icons.check),
                 onPressed: () {
+                  if (!onValidateForm()) return;
+                  context.read<WalletBloc>().add(AddCard(state.data));
                   context.read<EditCardBloc>().add(const SetCardData(null));
                 },
               ),

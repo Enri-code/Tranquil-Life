@@ -17,11 +17,16 @@ import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
 import 'package:tranquil_life/features/calls/data/agora_call.dart';
 import 'package:tranquil_life/features/calls/domain/video_call_repo.dart';
+import 'package:tranquil_life/features/lock/data/lock.dart';
+import 'package:tranquil_life/features/lock/domain/lock.dart';
 import 'package:tranquil_life/features/onboarding/presentation/screens/onboard.dart';
+import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 
 class AppSetup {
+  static bool _isInit = false;
   static init(NavigatorState navigator) async {
-    _injectInstancesFromContext(navigator.context);
+    if (_isInit) return;
+    _injectInstances(navigator.context);
     chatBoxMaxWidth = MediaQuery.of(navigator.context).size.width * 0.7;
     if (Platform.isAndroid) {
       deviceInfoPlugin.androidInfo.then((value) {
@@ -31,9 +36,10 @@ class AppSetup {
       });
     }
     final hiveFuture = Hive.initFlutter().whenComplete(() async {
-      _injectInstances();
-      await AppData.init();
+      _injectStoreInstances();
+      return AppData.init();
     });
+    _isInit = true;
     await Future.wait([
       hiveFuture.whenComplete(() {
         if (!AppData.isOnboardingCompleted) {
@@ -48,10 +54,11 @@ class AppSetup {
     _goToScreen(navigator);
   }
 
-  static _goToScreen(NavigatorState navigator) {
+  static _goToScreen(NavigatorState navigator) async {
     late final String nextRoute;
     if (getIt<IUserDataStore>().isSignedIn) {
-      navigator.context.read<ClientAuthBloc>().add(const RestoreSignIn());
+      final didAuthenticate = await getIt<IScreenLock>().authenticate();
+      if (didAuthenticate) getIt<ClientAuthBloc>().add(const RestoreSignIn());
       return;
     } else if (AppData.isOnboardingCompleted) {
       nextRoute = SignInScreen.routeName;
@@ -61,13 +68,15 @@ class AppSetup {
     navigator.popAndPushNamed(nextRoute);
   }
 
-  static _injectInstancesFromContext(BuildContext context) {
-    GetIt.instance..registerLazySingleton(() => context.read<ClientAuthBloc>());
+  static _injectStoreInstances() {
+    GetIt.instance.registerSingleton<IUserDataStore>(UserDataStore());
   }
 
-  static _injectInstances() {
+  static _injectInstances(BuildContext context) {
     GetIt.instance
-      ..registerSingleton<IUserDataStore>(UserDataStore()..init())
+      ..registerSingleton(context.read<ClientAuthBloc>())
+      ..registerSingleton(context.read<ProfileBloc>())
+      ..registerSingleton<IScreenLock>(ScreenLock()..init(context))
       ..registerLazySingleton<CallController>(() => AgoraController());
   }
 }

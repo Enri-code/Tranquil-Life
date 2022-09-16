@@ -14,6 +14,7 @@ import 'package:tranquil_life/features/journal/presentation/screens/journal.dart
 import 'package:tranquil_life/features/journal/presentation/screens/note_screen.dart';
 import 'package:tranquil_life/features/notifications/presentation/screens/notifications.dart';
 import 'package:tranquil_life/features/onboarding/presentation/screens/onboard.dart';
+import 'package:tranquil_life/features/profile/presentation/screens/edit_avatar.dart';
 import 'package:tranquil_life/features/profile/presentation/screens/edit_profile.dart';
 import 'package:tranquil_life/features/questionnaire/presentation/screens/questions.dart';
 import 'package:tranquil_life/features/settings/presentation/screens/settings.dart';
@@ -44,5 +45,6 @@ abstract class AppConfig {
     NoteScreen.routeName: (_) => const NoteScreen(),
     SettingsScreen.routeName: (_) => const SettingsScreen(),
     EditProfileScreen.routeName: (_) => const EditProfileScreen(),
+    AvatarEditorScreen.routeName: (_) => const AvatarEditorScreen(),
   };
 }

@@ -25,6 +25,7 @@ class SavedNote extends Note {
   Map<String, dynamic> toJson() => _$SavedNoteToJson(this);
 
   @override
+  @JsonKey(ignore: true)
   int get hashCode => super.hashCode & id.hashCode;
 }
 

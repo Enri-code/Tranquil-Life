@@ -42,7 +42,7 @@ class ProfileScreen extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            UserAvatar(
+                            MyAvatarWidget(
                               size: 120,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),

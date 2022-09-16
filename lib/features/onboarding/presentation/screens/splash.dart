@@ -11,9 +11,9 @@ class SplashScreen extends StatelessWidget {
         children: [
           Image.asset('assets/images/background.png', fit: BoxFit.cover),
           Align(
-            alignment: const Alignment(0, -0.3),
+            alignment: const Alignment(0, -0.2),
             child: FractionallySizedBox(
-              widthFactor: 0.6,
+              widthFactor: 0.5,
               child: Image.asset('assets/images/logo.png', fit: BoxFit.contain),
             ),
           ),

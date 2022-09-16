@@ -13,7 +13,7 @@ part 'edit_card_state.dart';
 class EditCardBloc extends Bloc<EditCardEvent, EditCardState> {
   static final _cardValidator = CreditCardValidator();
 
-  EditCardBloc() : super(const EditCardState()) {
+  EditCardBloc() : super(EditCardState()) {
     on<SetCardData>(_setCardData);
   }
 
@@ -33,10 +33,10 @@ class EditCardBloc extends Bloc<EditCardEvent, EditCardState> {
 
   String? validateCardNumber(String? val) {
     if (val?.isEmpty ?? true) {
-      return 'What is the 16-digit number on your card?';
+      return 'What is the numbers on your card?';
     }
     if (val!.length < 16) {
-      return '${16 - val.length} digits missing.';
+      return 'At least ${16 - val.length} digits missing.';
     }
     final result = _cardValidator.validateCCNum(val);
     if (!result.isPotentiallyValid) return 'This card number is not valid';
@@ -56,11 +56,11 @@ class EditCardBloc extends Bloc<EditCardEvent, EditCardState> {
     if (val?.isEmpty ?? true) {
       return 'What is the number at the back of the card?';
     }
-    add(SetCardData(state.data!.copyWith(CVV: val)));
+    add(SetCardData(state.data.copyWith(CVV: val)));
     return null;
   }
 
   _setCardData(SetCardData event, Emitter<EditCardState> emit) {
-    emit(state.copyWith(data: event.data));
+    emit(state.copyWith(data: event.data ?? CardData.empty()));
   }
 }

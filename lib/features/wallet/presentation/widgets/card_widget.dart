@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
+import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/wallet/domain/entities/card_data.dart';
+import 'package:tranquil_life/features/wallet/presentation/bloc/wallet/wallet_bloc.dart';
 
 class CardWidget extends StatelessWidget {
   final int? index;
@@ -24,7 +25,7 @@ class CardWidget extends StatelessWidget {
     }
   }
 
-  String hideChars(String value) {
+  String _hideChars(String value) {
     if (value.length < 8) return value;
     const startIndex = 4;
     final endIndex = value.length - 4;
@@ -33,14 +34,13 @@ class CardWidget extends StatelessWidget {
     return '${value.substring(0, startIndex)}$hiddenChars${value.substring(endIndex)}';
   }
 
-  String spaceChars(String value) {
+  String _spaceChars(String value) {
     final result = RegExp('.{1,4}').allMatches(value).map((e) => e[0]);
     return result.join(' ');
   }
 
   @override
   Widget build(BuildContext context) {
-    final cardBgIndex = index ?? 2; //TODO: last index
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -51,9 +51,14 @@ class CardWidget extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(24),
-                child: Image.asset(
-                  'assets/images/wallet/cards/card_$cardBgIndex.jpg',
-                  fit: BoxFit.fill,
+                child: BlocBuilder<WalletBloc, WalletState>(
+                  builder: (context, state) {
+                    final cardBgIndex = index ?? state.cards?.length ?? 1;
+                    return Image.asset(
+                      'assets/images/wallet/cards/card_$cardBgIndex.jpg',
+                      fit: BoxFit.fill,
+                    );
+                  },
                 ),
               ),
               MyDefaultTextStyle(
@@ -74,8 +79,8 @@ class CardWidget extends StatelessWidget {
                         width: double.infinity,
                         child: FittedBox(
                           fit: BoxFit.contain,
-                          child: Text(spaceChars(
-                            hideChars(
+                          child: Text(_spaceChars(
+                            _hideChars(
                               cardData.cardNumber ?? '0000000000000000',
                             ),
                           )),
@@ -102,7 +107,7 @@ class CardWidget extends StatelessWidget {
                             Text(
                               cardData.holderName ??
                                   context
-                                      .watch<ClientAuthBloc>()
+                                      .watch<ProfileBloc>()
                                       .state
                                       .user!
                                       .displayName,
@@ -119,20 +124,22 @@ class CardWidget extends StatelessWidget {
             ],
           ),
         ),
-        if (index != null)
-
-          ///default index == [index]
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2),
+        BlocBuilder<WalletBloc, WalletState>(
+          builder: (context, state) {
+            if (state.defaultIndex != index) return const SizedBox();
+            return Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2),
+                ),
+                child: const Icon(Icons.check, color: Colors.white),
               ),
-              child: const Icon(Icons.check, color: Colors.white),
-            ),
-          )
+            );
+          },
+        )
       ],
     );
   }

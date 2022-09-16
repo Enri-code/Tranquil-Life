@@ -1,9 +1,11 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/core/constants/constants.dart';
 import 'package:tranquil_life/features/wallet/domain/entities/card_data.dart';
+import 'package:tranquil_life/features/wallet/presentation/bloc/wallet/wallet_bloc.dart';
 import 'package:tranquil_life/features/wallet/presentation/screens/add_card_screen.dart';
 import 'package:tranquil_life/features/wallet/presentation/widgets/card_dialog.dart';
 import 'package:tranquil_life/features/wallet/presentation/widgets/card_widget.dart';
@@ -123,26 +125,6 @@ class _AddCardButton extends StatelessWidget {
 class _Cards extends StatelessWidget {
   const _Cards({Key? key}) : super(key: key);
 
-  static final savedCards = [
-    CardData.virtual(),
-    const CardData(
-      cardId: 1,
-      holderName: null,
-      cardNumber: '5567458525329686',
-      expiryDate: '07/15',
-      CVV: '563',
-      type: CardType.mastercard,
-    ),
-    const CardData(
-      cardId: 2,
-      holderName: null,
-      cardNumber: '5567458525329686',
-      expiryDate: '07/18',
-      CVV: '4954',
-      type: CardType.visa,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width - 42;
@@ -171,32 +153,37 @@ class _Cards extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Builder(builder: (context) {
-              if (savedCards.isEmpty) {
+            BlocBuilder<WalletBloc, WalletState>(builder: (context, state) {
+              final cardLength = state.cards?.length ?? 0;
+              if (cardLength < 2) {
+                final card =
+                    cardLength == 1 ? state.cards![0] : CardData.virtual();
                 return SizedBox(
                   width: width,
                   height: height,
-                  child: CardWidget(
-                    index: 0,
-                    cardData: CardData.virtual(),
-                  ),
+                  child: CardWidget(index: 0, cardData: card),
                 );
               }
               return Swiper(
-                index: 0, //default/initial index
                 itemWidth: width,
                 itemHeight: height,
                 layout: SwiperLayout.STACK,
-                itemCount: savedCards.length,
+                index: state.defaultIndex,
+                itemCount: cardLength,
                 onTap: (index) {
-                  showDialog(
-                    context: context,
-                    builder: (_) => CardDialog(savedCards[index]),
-                  );
+                  final card = state.cards![index];
+                  if (card.type != CardType.virtual ||
+                      state.defaultIndex != index) {
+                    showDialog(
+                      context: context,
+                      builder: (_) => CardDialog(card),
+                    );
+                  }
                 },
-                itemBuilder: (_, index) {
-                  return CardWidget(index: index, cardData: savedCards[index]);
-                },
+                itemBuilder: (_, index) => CardWidget(
+                  index: index,
+                  cardData: state.cards![index],
+                ),
               );
             }),
           ],

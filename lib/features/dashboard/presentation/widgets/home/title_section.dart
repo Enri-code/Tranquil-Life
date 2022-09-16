@@ -29,7 +29,7 @@ class _AppBarState extends State<_AppBar> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if (context.watch<ClientAuthBloc>().state.user!.isVerified)
+        if (context.watch<ProfileBloc>().state.user!.isVerified)
           Container(
             margin: const EdgeInsets.only(left: 16),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -97,8 +97,10 @@ class _TitleState extends State<_Title> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 6),
-              child: Text('Hi,',
-                  style: TextStyle(color: themeColor, fontSize: 22)),
+              child: Text(
+                'Hi,',
+                style: TextStyle(color: themeColor, fontSize: 22),
+              ),
             ),
             const Spacer(),
             Row(
@@ -106,7 +108,8 @@ class _TitleState extends State<_Title> {
               children: [
                 CustomIconButton(
                   onPressed: () {
-                    if (AppData.hasAnsweredQuestions) {
+                    final user = context.read<ProfileBloc>().state.user!;
+                    if (user.hasAnsweredQuestions) {
                       Navigator.of(context)
                           .pushNamed(SpeakWithConsultantScreen.routeName);
                     } else {
@@ -115,8 +118,11 @@ class _TitleState extends State<_Title> {
                           .whenComplete(() => setStatusBarBrightness(true));
                     }
                   },
-                  icon: Icon(TranquilIcons.users,
-                      size: 28, color: Theme.of(context).primaryColor),
+                  icon: Icon(
+                    TranquilIcons.users,
+                    size: 28,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 GestureDetector(
@@ -128,8 +134,11 @@ class _TitleState extends State<_Title> {
                     alignment: AlignmentDirectional.topEnd,
                     children: [
                       CustomIconButton(
-                        icon: Icon(TranquilIcons.bell,
-                            size: 28, color: Theme.of(context).primaryColor),
+                        icon: Icon(
+                          TranquilIcons.bell,
+                          size: 28,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                       if (notificationsCount > 0)
                         Transform.translate(
@@ -149,6 +158,7 @@ class _TitleState extends State<_Title> {
                                   notificationsCount.toString(),
                                   style: const TextStyle(
                                     color: Colors.white,
+                                    fontWeight: FontWeight.w700,
                                     fontSize: 12,
                                   ),
                                 ),

@@ -96,9 +96,7 @@ class OptionWidget extends StatelessWidget {
               showModalBottomSheet<bool>(
                 context: context,
                 backgroundColor: Colors.transparent,
-                builder: (_) => QuestionBottomSheet(
-                  option.subQuestion!,
-                ),
+                builder: (_) => QuestionBottomSheet(option.subQuestion!),
               ).then((val) => onTap?.call(val ?? false));
             } else {
               onTap?.call(true);

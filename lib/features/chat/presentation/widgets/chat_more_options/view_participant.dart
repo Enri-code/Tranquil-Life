@@ -38,7 +38,7 @@ class _ViewParticipantsDialogState extends State<_ViewParticipantsDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _ParticipantTile(context.watch<ClientAuthBloc>().state.user!),
+              _ParticipantTile(context.watch<ProfileBloc>().state.user!),
               _ParticipantTile(context.watch<ChatBloc>().state.consultant!),
 
               //TODO: _ParticipantTile(context.watch<ChatBloc>().state.consultant!),

@@ -5,6 +5,7 @@ import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/core/utils/services/media_service.dart';
+import 'package:tranquil_life/features/profile/presentation/screens/edit_avatar.dart';
 
 class AddPictureSheet extends StatelessWidget {
   const AddPictureSheet({Key? key}) : super(key: key);
@@ -33,40 +34,51 @@ class AddPictureSheet extends StatelessWidget {
                   title: 'Take a picture',
                   iconData: Icons.camera_alt,
                   onPressed: () async {
-                    await MediaService.selectImage(ImageSource.camera);
+                    final image =
+                        await MediaService.selectImage(ImageSource.camera);
                   },
                 ),
                 _Button(
                   title: 'Upload from gallery',
                   iconData: Icons.image,
                   onPressed: () async {
-                    await MediaService.selectImage();
+                    final image = await MediaService.selectImage();
                   },
                 ),
                 _Button(
                   title: 'Use a bitmoji',
                   child: Image.asset('assets/images/icons/bitmoji.png'),
-                  onPressed: () {},
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed(AvatarEditorScreen.routeName),
                 ),
                 _Button(
                   title: 'Remove picture',
                   iconData: TranquilIcons.trash,
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => ConfirmDialog(
-                        title: 'Remove Picture?',
-                        bodyText:
-                            'Are you sure you want to remove your current profile picture?',
-                        yesDialog: DialogOption('Remove'),
-                      ),
-                    );
-                  },
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (_) => const _RemoveDialog(),
+                  ),
                 ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _RemoveDialog extends StatelessWidget {
+  const _RemoveDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ConfirmDialog(
+      title: 'Remove Picture?',
+      bodyText: 'Are you sure you want to remove your current profile picture?',
+      yesDialog: DialogOption(
+        'Remove',
+        onPressed: () {},
       ),
     );
   }

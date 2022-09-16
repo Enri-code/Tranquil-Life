@@ -4,8 +4,8 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tranquil_life/core/constants/constants.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/calls/domain/video_call_repo.dart';
+import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 
 class AgoraController extends CallController {
   AgoraController() {
@@ -59,7 +59,7 @@ class AgoraController extends CallController {
       await _token,
       callRoomId,
       null,
-      getIt<ClientAuthBloc>().state.user!.id,
+      getIt<ProfileBloc>().state.user!.id,
     );
   }
 

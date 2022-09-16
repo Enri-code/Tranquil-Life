@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/features/wallet/domain/entities/transaction.dart';
@@ -23,7 +24,7 @@ class TransactionsSheet extends StatelessWidget {
               padding: EdgeInsets.only(left: 24),
               child: Text(
                 'Transactions',
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
               ),
             ),
             const SizedBox(height: 12),
@@ -101,12 +102,13 @@ class TransactionCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(data.refId),
-                  GestureDetector(
-                    onTap: () {},
-                    child: const Icon(
-                      Icons.content_copy,
-                      color: Colors.grey,
-                      size: 14,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 6, bottom: 2),
+                    child: GestureDetector(
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: data.refId));
+                      },
+                      child: const Icon(Icons.content_copy, size: 16),
                     ),
                   ),
                 ],

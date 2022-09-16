@@ -4,8 +4,10 @@ abstract class IUserDataStore {
   Client? get user;
   set user(Client? val);
 
-  bool get isSignedIn;
-  set isSignedIn(bool val);
+  bool get isUsingAvatar;
+  set isUsingAvatar(bool val);
+
+  bool get isSignedIn => user != null;
 
   Future init();
   Future deleteUser();

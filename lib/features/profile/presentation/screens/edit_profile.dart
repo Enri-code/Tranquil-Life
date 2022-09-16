@@ -44,9 +44,7 @@ class EditProfileScreen extends StatelessWidget {
                     children: [
                       _Button(
                         title: 'Edit Photo',
-                        suffix: const UserAvatar(
-                          size: 38,
-                        ),
+                        suffix: const MyAvatarWidget(size: 38),
                         onPressed: () => showModalBottomSheet(
                           context: context,
                           backgroundColor: Colors.transparent,

@@ -37,7 +37,7 @@ class ConsultantCard extends StatelessWidget {
                       tag: '${consultant.id}-img',
                       transitionOnUserGestures: true,
                       child: Image.network(
-                        consultant.avatarUrl!,
+                        consultant.avatarUrl,
                         fit: BoxFit.fitHeight,
                         errorBuilder: (_, __, ___) => const Icon(
                           TranquilIcons.profile,

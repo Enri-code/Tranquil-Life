@@ -4,9 +4,7 @@ import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dar
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 
 class MeetingCard extends StatelessWidget {
-  const MeetingCard({
-    Key? key,
-  }) : super(key: key);
+  const MeetingCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

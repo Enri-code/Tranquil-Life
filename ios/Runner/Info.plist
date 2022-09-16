@@ -30,6 +30,8 @@
 		<string>Tranquil Life requires permission to your camera to make calls and to take pictures and videos.</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Tranquil Life requires permission to your microphone to make calls and to record voice notes and videos.</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>Tranquil Life uses Face ID authentication to unlock the app</string>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>

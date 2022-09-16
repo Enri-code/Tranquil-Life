@@ -30,7 +30,7 @@ class _VideoLayoutState extends State<VideoLayout> {
         children: [
           Icon(Icons.videocam_off_outlined, color: Colors.grey[700], size: 80),
           Text(
-            'Video unavailable',
+            'Preview unavailable',
             style: TextStyle(color: Colors.grey[800]!, fontSize: 18),
           ),
         ],
@@ -51,7 +51,7 @@ class _VideoLayoutState extends State<VideoLayout> {
         thumbFile!.path,
         await thumbFile!.readAsBytes(),
         key: widget.message.data,
-        maxAge: const Duration(hours: 1),
+        maxAge: const Duration(hours: 6),
         fileExtension: 'jpg',
       );
     }

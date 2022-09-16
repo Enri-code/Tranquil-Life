@@ -15,6 +15,8 @@ class ClientModel extends Client {
     required super.displayName,
     required super.phoneNumber,
     required super.isVerified,
+    required super.hasAnsweredQuestions,
+    required super.usesBitmoji,
     super.birthDate,
   });
 

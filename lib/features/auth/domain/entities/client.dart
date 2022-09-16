@@ -14,6 +14,8 @@ class Client extends User {
     required super.displayName,
     required this.isVerified,
     required this.token,
+    required this.hasAnsweredQuestions,
+    required this.usesBitmoji,
     super.avatarUrl,
     this.birthDate,
   });
@@ -29,6 +31,7 @@ class Client extends User {
   final String? birthDate;
 
   final String token;
+  final bool hasAnsweredQuestions, usesBitmoji;
 
   @JsonKey(name: 'email_verified_at', fromJson: isVerifiedFromJson)
   final bool isVerified;

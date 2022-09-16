@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
-import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
+import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
@@ -61,7 +61,7 @@ class _PageBody extends StatelessWidget {
       child: Stack(
         children: [
           Image.network(
-            consultant.avatarUrl!,
+            consultant.avatarUrl,
             fit: BoxFit.cover,
             height: MediaQuery.of(context).size.height - 432,
             width: double.infinity,
@@ -76,7 +76,23 @@ class _PageBody extends StatelessWidget {
               ),
             ),
           ),
-          const Positioned(top: 0, left: 0, right: 0, child: CustomAppBar()),
+          Positioned(
+            top: 8,
+            left: 8,
+            child: SafeArea(
+              child: AppBarButton(
+                onPressed: Navigator.of(context).pop,
+                icon: const Padding(
+                  padding: EdgeInsets.all(1),
+                  child: Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.white,
+                    size: 19,
+                  ),
+                ),
+              ),
+            ),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
