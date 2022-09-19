@@ -4,6 +4,7 @@ import 'package:tranquil_life/app/config.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/theme_data.dart';
 import 'package:tranquil_life/core/utils/helpers/app_init.dart';
+import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/features/auth/data/repos/partners.dart';
@@ -27,7 +28,6 @@ import 'package:tranquil_life/features/wallet/presentation/bloc/wallet/wallet_bl
 
 class App extends StatelessWidget {
   App({Key? key}) : super(key: key);
-
   final _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
@@ -66,25 +66,32 @@ class App extends StatelessWidget {
             );
           }
         },
-        child: BlocListener<ProfileBloc, ProfileState>(
-          listenWhen: (prev, curr) => curr.user != null && prev.user == null,
+        child: BlocListener<ClientAuthBloc, AuthState>(
+          listenWhen: (prev, curr) => prev.status != curr.status,
           listener: (context, state) {
-            context.read<WalletBloc>().add(InitWallet(state.user!.id));
+            if (state.status == OperationStatus.loading) {
+              CustomLoader.display();
+            } else {
+              CustomLoader.remove();
+            }
           },
-          child: MaterialApp(
-            routes: AppConfig.routes,
-            title: AppConfig.appName,
-            themeMode: ThemeMode.light,
-            navigatorKey: _navigatorKey,
-            debugShowCheckedModeBanner: false,
-            // locale: const Locale('en', 'NG'),
-            // supportedLocales: const [Locale('en', 'NG')],
-            theme: LightThemeData(ColorPalette.green).theme,
-            home: Builder(builder: (_) {
-              AppSetup.init(_navigatorKey.currentState!);
-              CustomLoader.init(_navigatorKey.currentState!);
-              return const SplashScreen();
-            }),
+          child: BlocListener<ProfileBloc, ProfileState>(
+            listenWhen: (prev, curr) => curr.user != null && prev.user == null,
+            listener: (context, state) =>
+                context.read<WalletBloc>().add(InitWallet(state.user!.id)),
+            child: MaterialApp(
+              routes: AppConfig.routes,
+              title: AppConfig.appName,
+              themeMode: ThemeMode.light,
+              navigatorKey: _navigatorKey,
+              debugShowCheckedModeBanner: false,
+              theme: LightThemeData(ColorPalette.green).theme,
+              home: Builder(builder: (_) {
+                AppSetup.init(_navigatorKey.currentState!);
+                CustomLoader.init(_navigatorKey.currentState!);
+                return const SplashScreen();
+              }),
+            ),
           ),
         ),
       ),

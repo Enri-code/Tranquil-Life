@@ -20,6 +20,10 @@ class CardWidget extends StatelessWidget {
         return Image.asset('assets/images/wallet/networks/verve.png');
       case CardType.mastercard:
         return Image.asset('assets/images/wallet/networks/mastercard.png');
+      case CardType.americanExpress:
+        return Image.asset(
+          'assets/images/wallet/networks/american_express.png',
+        );
       case CardType.virtual:
         return const Icon(TranquilIcons.logo, color: Colors.white, size: 33);
     }

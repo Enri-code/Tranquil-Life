@@ -11,6 +11,8 @@ enum CardType {
   verve,
   @JsonValue('mastercard')
   mastercard,
+  @JsonValue('americanExpress')
+  americanExpress,
   @JsonValue('virtual')
   virtual,
 }

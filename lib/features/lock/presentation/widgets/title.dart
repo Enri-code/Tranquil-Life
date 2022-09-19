@@ -9,7 +9,7 @@ class LockTitleWidget extends StatelessWidget {
     if (isPinSetup) {
       return const Text('Please insert a new pin');
     } else {
-      return const Text('Please insert your pin');
+      return const Text('Please insert your pin (3 trials)');
     }
   }
 }

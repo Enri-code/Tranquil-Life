@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
-import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/core/utils/services/validators.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
@@ -13,6 +12,8 @@ import 'package:tranquil_life/features/auth/presentation/styles.dart';
 import 'package:tranquil_life/app/presentation/widgets/mountain_bg.dart';
 import 'package:tranquil_life/features/auth/presentation/widgets/forgot_pasword.dart';
 import 'package:tranquil_life/features/dashboard/presentation/screens/dashboard.dart';
+import 'package:tranquil_life/features/profile/domain/entities/client.dart';
+import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 
 class SignInScreen extends StatefulWidget {
   static const routeName = 'sign_in';
@@ -60,13 +61,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: BlocListener<ClientAuthBloc, AuthState>(
                           listenWhen: (_, __) => !isModalOpen,
                           listener: (context, state) {
-                            if (state.status == OperationStatus.loading) {
-                              CustomLoader.display();
-                            } else {
-                              CustomLoader.remove();
-                              if (state.status == OperationStatus.error) {
-                                _formKey.currentState!.validate();
-                              }
+                            if (state.status == OperationStatus.error) {
+                              _formKey.currentState!.validate();
                             }
                           },
                           child: TextFormField(
@@ -169,6 +165,18 @@ class _SignInScreenState extends State<SignInScreen> {
                   padding: const EdgeInsets.only(top: 32),
                   child: OutlinedButton(
                     onPressed: () {
+                      context.read<ProfileBloc>().add(const AddUser(Client(
+                            id: 1,
+                            firstName: 'Chappelle',
+                            lastName: 'Eric',
+                            email: 'eric@gmail.com',
+                            displayName: 'Enrique',
+                            phoneNumber: '09069184604',
+                            token: '',
+                            isVerified: false,
+                            hasAnsweredQuestions: false,
+                            usesBitmoji: false,
+                          )));
                       Navigator.of(context).pushNamedAndRemoveUntil(
                         DashboardScreen.routeName,
                         (_) => false,
@@ -186,10 +194,7 @@ class _SignInScreenState extends State<SignInScreen> {
               children: [
                 const Spacer(),
                 MyDefaultTextStyle(
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

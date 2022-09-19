@@ -21,5 +21,6 @@ const _$CardTypeEnumMap = {
   CardType.visa: 'visa',
   CardType.verve: 'verve',
   CardType.mastercard: 'mastercard',
+  CardType.americanExpress: 'americanExpress',
   CardType.virtual: 'virtual',
 };

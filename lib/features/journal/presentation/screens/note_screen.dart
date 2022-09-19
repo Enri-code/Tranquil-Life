@@ -49,7 +49,13 @@ class _NoteScreenState extends State<NoteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bgColor = Color.lerp(
+      _note.hexColor?.toColor() ?? Colors.white,
+      Colors.white,
+      .5,
+    );
     return Scaffold(
+      backgroundColor: bgColor,
       appBar: CustomAppBar(
         title: 'Note',
         actions: [
@@ -73,12 +79,9 @@ class _NoteScreenState extends State<NoteScreen> {
                 context,
                 _note,
                 onColorChanged: (color) {
-                  _note.hexColor = color?.toHex();
-                  if (isAlreadySaved) {
-                    context
-                        .read<NoteBloc>()
-                        .add(UpdateNote(_note as SavedNote));
-                  }
+                  setState(() => _note.hexColor = color?.toHex());
+                  if (!isAlreadySaved) return;
+                  context.read<NoteBloc>().add(UpdateNote(_note as SavedNote));
                 },
               ),
             ),

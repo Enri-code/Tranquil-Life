@@ -90,7 +90,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
                     }
                   },
                   builder: (context, state) {
-                    if (state.status == OperationStatus.loading) {
+                    if (state.status == OperationStatus.customLoading) {
                       return CustomLoader.widget();
                     }
                     return ElevatedButton(

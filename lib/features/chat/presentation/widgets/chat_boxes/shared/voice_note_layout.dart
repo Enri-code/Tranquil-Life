@@ -149,8 +149,7 @@ class _VoiceNoteLayoutState extends State<VoiceNoteLayout>
                                     fromYou: widget.message.fromYou,
                                     onValueChanged: (val) async {
                                       await audioPlayer.seekToPercent(val);
-                                      await audioPlayer.play();
-                                      audioPlayer.pause();
+                                      audioPlayer.play();
                                     },
                                   );
                                 },

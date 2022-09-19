@@ -30,9 +30,9 @@ class ConfirmDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
         child: MyDefaultTextStyle(
-          style: const TextStyle(fontSize: 17),
+          style: const TextStyle(fontSize: 16, color: Colors.black),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,41 +61,48 @@ class ConfirmDialog extends StatelessWidget {
                       );
                 }),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  if (noDialog != null)
-                    TextButton(
-                      onPressed: () {
-                        if (noDialog!.autoClose) Navigator.of(context).pop();
-                        noDialog!.onPressed?.call();
-                      },
-                      child: Text(
-                        noDialog!.title,
-                        style: const TextStyle(
-                          color: ColorPalette.red,
-                          fontWeight: FontWeight.w600,
+              Theme(
+                data: Theme.of(context).copyWith(
+                    textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                )),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (noDialog != null)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: TextButton(
+                          onPressed: () {
+                            if (noDialog!.autoClose) {
+                              Navigator.of(context).pop();
+                            }
+                            noDialog!.onPressed?.call();
+                          },
+                          child: Text(
+                            noDialog!.title,
+                            style: const TextStyle(color: ColorPalette.red),
+                          ),
                         ),
                       ),
-                    ),
-                  if (yesDialog != null)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: TextButton(
+                    if (yesDialog != null)
+                      TextButton(
                         onPressed: () {
                           if (yesDialog!.autoClose) Navigator.of(context).pop();
                           yesDialog!.onPressed?.call();
                         },
                         child: Text(
                           yesDialog!.title,
-                          style: const TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: const TextStyle(color: Colors.green),
                         ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

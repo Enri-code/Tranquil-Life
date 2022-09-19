@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/core/utils/services/location_service.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:tranquil_life/features/profile/presentation/widgets/edit_profile_tile.dart';
+import 'package:tranquil_life/features/profile/presentation/widgets/gender_bottom_sheet.dart';
 import 'package:tranquil_life/features/profile/presentation/widgets/picture_bottom_sheet.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -20,6 +22,9 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   UpdateUser newUserData = UpdateUser();
+
+  static const _smallPadding = SizedBox(height: 20);
+  static const _bigPadding = SizedBox(height: 40);
 
   @override
   Widget build(BuildContext context) {
@@ -54,20 +59,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   child: Column(
                     children: [
                       GestureDetector(
-                        child: const _Button(
-                          title: 'Edit Photo',
-                          suffix: MyAvatarWidget(size: 38),
-                        ),
                         onTap: () => showModalBottomSheet(
                           context: context,
                           backgroundColor: Colors.transparent,
                           builder: (_) => const AddPictureSheet(),
                         ),
+                        child: const EditProfileTile(
+                          title: 'Edit Photo',
+                          suffix: MyAvatarWidget(size: 38),
+                        ),
                       ),
-                      const SizedBox(height: 20),
-                      _Button(
+                      _smallPadding,
+                      EditProfileTile(
                         title: 'First Name',
-                        suffixText: newUserData.firstName,
+                        suffixFieldValue: newUserData.firstName,
                         onDoneEditing: (value) {
                           newUserData = UpdateUser(
                             oldData: newUserData,
@@ -75,10 +80,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           );
                         },
                       ),
-                      const SizedBox(height: 20),
-                      _Button(
+                      _smallPadding,
+                      EditProfileTile(
                         title: 'Last Name',
-                        suffixText: newUserData.lastName,
+                        suffixFieldValue: newUserData.lastName,
                         onDoneEditing: (value) {
                           newUserData = UpdateUser(
                             oldData: newUserData,
@@ -86,10 +91,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           );
                         },
                       ),
-                      const SizedBox(height: 20),
-                      _Button(
+                      _smallPadding,
+                      EditProfileTile(
                         title: 'Display Name',
-                        suffixText: newUserData.displayName,
+                        suffixFieldValue: newUserData.displayName,
                         onDoneEditing: (value) {
                           newUserData = UpdateUser(
                             oldData: newUserData,
@@ -97,7 +102,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           );
                         },
                       ),
-                      const SizedBox(height: 40),
+                      _smallPadding,
+                      EditProfileTile(
+                        title: 'Phone No',
+                        suffixFieldValue: newUserData.phoneNumber,
+                        onDoneEditing: (value) {
+                          newUserData = UpdateUser(
+                            oldData: newUserData,
+                            phoneNumber: value,
+                          );
+                        },
+                      ),
+                      _bigPadding,
                       GestureDetector(
                         onTap: () async {
                           final date = await showCustomDatePicker(
@@ -112,32 +128,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             );
                           });
                         },
-                        child: _Button(
+                        child: EditProfileTile(
                           title: 'Date of Birth',
                           suffix: Text(newUserData.birthDate ?? '- - -'),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      _Button(
-                        title: 'Gender',
-                        suffixText: newUserData.gender ?? 'Unknown',
-                        // onDoneEditing: (value) {},
+                      _smallPadding,
+                      GestureDetector(
+                        onTap: () => showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          builder: (_) => SelectGenderSheet(
+                            onChanged: (value) => setState(() {
+                              newUserData = UpdateUser(
+                                oldData: newUserData,
+                                gender: value,
+                              );
+                            }),
+                          ),
+                        ),
+                        child: EditProfileTile(
+                          title: 'Gender',
+                          suffix: Text(newUserData.gender ?? 'Unknown'),
+                        ),
                       ),
-                      const SizedBox(height: 40),
-                      _Button(
-                        title: 'Location',
-                        suffixText: 'United Kingdom United Kingdom',
-                      ),
-                      const SizedBox(height: 20),
-                      _Button(
-                        title: 'Phone No',
-                        suffixText: newUserData.phoneNumber,
-                        onDoneEditing: (value) {
-                          newUserData = UpdateUser(
-                            oldData: newUserData,
-                            phoneNumber: value,
-                          );
-                        },
+                      _bigPadding,
+                      FutureBuilder<String?>(
+                        future: LocationService.requestLocation(),
+                        builder: (_, snapshot) => EditProfileTile(
+                          title: 'Location',
+                          suffixFieldValue:
+                              snapshot.data ?? 'Somewhere on Earth',
+                        ),
                       ),
                     ],
                   ),
@@ -146,62 +168,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _Button extends StatelessWidget {
-  const _Button({
-    Key? key,
-    required this.title,
-    this.suffix,
-    this.suffixText,
-    this.onDoneEditing,
-  })  : assert(suffix != null || suffixText != null),
-        super(key: key);
-
-  final String title;
-  final String? suffixText;
-  final Widget? suffix;
-  final Function(String newValue)? onDoneEditing;
-
-  @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 56),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        decoration: BoxDecoration(
-          color: ColorPalette.green[200],
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(title),
-            const SizedBox(width: 16),
-            Flexible(
-              child: suffix ??
-                  TextFormField(
-                    maxLines: null,
-                    initialValue: suffixText,
-                    enabled: onDoneEditing != null,
-                    textAlign: TextAlign.right,
-                    textInputAction: TextInputAction.done,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(
-                      filled: false,
-                      hintText: 'Previous: $suffixText',
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                    onFieldSubmitted: onDoneEditing,
-                  ),
-            )
-          ],
-        ),
       ),
     );
   }

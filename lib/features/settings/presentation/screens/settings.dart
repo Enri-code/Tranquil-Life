@@ -1,13 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
+import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
+import 'package:tranquil_life/features/lock/domain/lock.dart';
 import 'package:tranquil_life/features/settings/presentation/widgets/settings_button.dart';
 import 'package:tranquil_life/features/settings/presentation/widgets/theme_brightness_button.dart';
 
@@ -42,7 +42,7 @@ class SettingsScreen extends StatelessWidget {
                 onPressed: () {},
               ),
               SettingsButton(
-                prefixIconData: Icons.file_present,
+                prefixIconData: TranquilIcons.privacy_policy,
                 label: 'Privacy policy',
                 onPressed: () {},
               ),
@@ -55,7 +55,7 @@ class SettingsScreen extends StatelessWidget {
               const _SectionTitle('Customization'),
               SettingsButton(
                 label: 'Theme',
-                prefixIconData: Icons.format_paint,
+                prefixIconData: TranquilIcons.theme,
                 suffixWidget: const ThemeBrightnessIcon(),
                 onPressed: () {},
               ),
@@ -64,24 +64,44 @@ class SettingsScreen extends StatelessWidget {
                 label: 'Notifications',
                 onPressed: () {},
               ),
-              if (Platform.isAndroid || Platform.isIOS)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              SettingsButton(
+                prefixIconData: Icons.language,
+                label: 'Languages',
+                suffixWidget: Row(
                   children: [
-                    const SizedBox(height: 28),
-                    const _SectionTitle('Security'),
-                    SettingsButton(
-                      prefixIconData: Icons.security,
-                      label:
-                          Platform.isIOS ? 'Face ID' : 'Face ID / Fingerprint',
-                      onPressed: () {},
+                    Text(
+                      Localizations.localeOf(context)
+                          .languageCode
+                          .toUpperCase(),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 5, left: 4),
+                      child: Icon(Icons.arrow_forward_ios_rounded),
                     ),
                   ],
                 ),
+                onPressed: () {},
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 28),
+                  const _SectionTitle('Security'),
+                  SettingsButton(
+                    prefixIconData: Icons.lock,
+                    label: 'Reset Pin',
+                    onPressed: () async {
+                      if (await getIt<IScreenLock>().authenticate()) {
+                        await getIt<IScreenLock>().setupPin();
+                      }
+                    },
+                  ),
+                ],
+              ),
               const SizedBox(height: 28),
               SettingsButton(
                 label: 'Sign out',
-                prefixIconData: Icons.exit_to_app,
+                prefixIconData: TranquilIcons.sign_out,
                 prefixIconColor: ColorPalette.red,
                 onPressed: () =>
                     context.read<ClientAuthBloc>().add(const SignOut()),
@@ -103,7 +123,7 @@ class _SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 28, bottom: 4),
-      child: Text(title),
+      child: Text(title, style: const TextStyle(fontSize: 14)),
     );
   }
 }

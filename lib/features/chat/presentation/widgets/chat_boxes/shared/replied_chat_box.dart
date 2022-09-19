@@ -95,6 +95,9 @@ class _MediaReplyWidgetState extends State<_MediaReplyWidget> {
   late final PlayerController player;
   String duration = '';
 
+  Color get color =>
+      widget.message.repliedMessage.fromYou ? Colors.white70 : Colors.black54;
+
   @override
   void initState() {
     if (widget.message.repliedMessage.type == MessageType.voiceNote) {
@@ -119,8 +122,6 @@ class _MediaReplyWidgetState extends State<_MediaReplyWidget> {
   }
 
   Widget _labelWidgetBuilder() {
-    final color =
-        widget.message.repliedMessage.fromYou ? Colors.white70 : Colors.black54;
     switch (widget.message.repliedMessage.type) {
       case MessageType.video:
         return _MediaWidget(text: 'Video', icon: Icons.image, color: color);
@@ -181,6 +182,11 @@ class _MediaReplyWidgetState extends State<_MediaReplyWidget> {
                   return Image.network(
                     widget.message.repliedMessage.data,
                     fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Icon(
+                      Icons.broken_image_outlined,
+                      color: color,
+                      size: 40,
+                    ),
                   );
                 }
                 return FutureBuilder<File?>(

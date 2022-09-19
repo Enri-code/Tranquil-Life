@@ -26,6 +26,8 @@ class EditCardBloc extends Bloc<EditCardEvent, EditCardState> {
         return CardType.mastercard;
       case CreditCardType.visa:
         return CardType.visa;
+      case CreditCardType.amex:
+        return CardType.americanExpress;
       default:
         return null;
     }

@@ -19,25 +19,27 @@ class ScreenLock extends IScreenLock {
     String correctPin = '',
   }) async {
     String? inputPin;
-    _continue(String val) {
+    _continue(String val) async {
       inputPin = val;
+      await Future.delayed(const Duration(milliseconds: 50));
       Navigator.of(_context!).pop();
     }
 
-    late InputController controller;
-    if (isPinSetup) controller = InputController();
+    final controller = InputController();
     await screenLock(
-        context: _context!,
-        maxRetries: 3,
-        canCancel: false,
-        confirmation: isPinSetup,
-        correctString: correctPin,
-        inputController: isPinSetup ? controller : null,
-        didConfirmed: isPinSetup ? _continue : null,
-        didUnlocked: isPinSetup ? null : () => _continue(''),
-        title: LockTitleWidget(isPinSetup: isPinSetup),
-        confirmTitle: const Text('Please re-enter the same pin'),
-        footer: isPinSetup ? Footer(controller: controller) : null);
+      context: _context!,
+      canCancel: false,
+      maxRetries: 3,
+      retryDelay: const Duration(minutes: 5),
+      confirmation: isPinSetup,
+      correctString: correctPin,
+      inputController: isPinSetup ? controller : null,
+      didConfirmed: isPinSetup ? _continue : null,
+      didUnlocked: isPinSetup ? null : () => _continue(''),
+      title: LockTitleWidget(isPinSetup: isPinSetup),
+      confirmTitle: const Text('Please re-enter the same pin'),
+      footer: Footer(isPinSetup, controller: controller),
+    );
     return inputPin;
   }
 
@@ -49,7 +51,7 @@ class ScreenLock extends IScreenLock {
   }
 
   @override
-  Future<bool> authenticate([String? reason]) async {
+  Future<bool> authenticate({String? reason, bool setupIfNull = false}) async {
     if (_isDeviceAuthAvailable) {
       assert(
         _context != null,
@@ -85,8 +87,10 @@ class ScreenLock extends IScreenLock {
     final key = await secureStore.read(key: pinStoreKey);
     if (key != null) {
       return (await _showPinScreen(correctPin: key)) != null;
-    } else {
+    } else if (setupIfNull) {
       return setupPin();
+    } else {
+      return true;
     }
   }
 

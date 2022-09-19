@@ -5,7 +5,6 @@ import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:tranquil_life/app/presentation/theme/buttons.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
-import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/features/auth/domain/entities/partner.dart';
 import 'package:tranquil_life/features/auth/domain/entities/register_data.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
@@ -87,14 +86,7 @@ class _ClientSignUpScreen1State extends State<SignUp2Screen> {
             ),
           ),
           const SizedBox(height: 20),
-          BlocConsumer<ClientAuthBloc, AuthState>(
-            listener: (context, state) {
-              if (state.status == OperationStatus.loading) {
-                CustomLoader.display();
-              } else {
-                CustomLoader.remove();
-              }
-            },
+          BlocBuilder<ClientAuthBloc, AuthState>(
             builder: (context, state) {
               return Text(
                 state.status == OperationStatus.error

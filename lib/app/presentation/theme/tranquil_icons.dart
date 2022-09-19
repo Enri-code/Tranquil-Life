@@ -25,6 +25,8 @@ class TranquilIcons {
 
   static const IconData wallet =
       IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData logo =
+      IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData profile =
       IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData book_saved =
@@ -33,8 +35,6 @@ class TranquilIcons {
       IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData calendar_tick =
       IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData logo =
-      IconData(0xe819, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData message =
       IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData messages =
@@ -51,6 +51,8 @@ class TranquilIcons {
       IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData view_note =
       IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData home =
+      IconData(0xe80e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData bright =
       IconData(0xe80f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData card =
@@ -63,8 +65,12 @@ class TranquilIcons {
       IconData(0xe814, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData night =
       IconData(0xe815, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData home =
+  static const IconData privacy_policy =
       IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData wallet_checkmark =
       IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData theme =
+      IconData(0xe819, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData sign_out =
+      IconData(0xe81a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

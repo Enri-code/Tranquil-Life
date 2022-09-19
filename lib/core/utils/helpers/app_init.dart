@@ -57,7 +57,9 @@ class AppSetup {
   static _goToScreen(NavigatorState navigator) async {
     late final String nextRoute;
     if (getIt<IUserDataStore>().isSignedIn) {
-      final didAuthenticate = await getIt<IScreenLock>().authenticate();
+      final didAuthenticate = await getIt<IScreenLock>().authenticate(
+        setupIfNull: true,
+      );
       if (didAuthenticate) getIt<ClientAuthBloc>().add(const RestoreSignIn());
       return;
     } else if (AppData.isOnboardingCompleted) {

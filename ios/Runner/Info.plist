@@ -32,6 +32,10 @@
 		<string>Tranquil Life requires permission to your microphone to make calls and to record voice notes and videos.</string>
 		<key>NSFaceIDUsageDescription</key>
 		<string>Tranquil Life uses Face ID authentication to unlock the app</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Tranquil Life keeps your location private and only uses it for security and in life-threatening situations.</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>Tranquil Life keeps your location private and only uses it for security and in life-threatening situations.</string>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>

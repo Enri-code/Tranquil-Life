@@ -77,7 +77,7 @@ abstract class AuthBloc<P extends QueryParams>
   }
 
   _resetPassword(ResetPassword event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: OperationStatus.customLoading));
     var res = await repo.resetPassword(event.email);
     emit(res.fold(
       (l) => state.copyWith(status: OperationStatus.error, error: l),

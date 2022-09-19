@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -24,13 +26,13 @@ class AvatarEditorScreen extends StatelessWidget {
               child: Icon(Icons.done, color: Colors.white, size: 20),
             ),
             onPressed: () async {
-              //TODO
-              final navigator = Navigator.of(context);
               context.read<ProfileBloc>().add(UpdateUser(
                     usesBitmoji: true,
                     avatarUrl: await fluttermojiFunctions.encodeMySVGtoString(),
                   ));
-              navigator.pop();
+              if (ModalRoute.of(context)?.settings.name == routeName) {
+                Navigator.of(context).pop();
+              }
             },
           ),
         ],

@@ -38,7 +38,14 @@ class _ViewParticipantsDialogState extends State<_ViewParticipantsDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _ParticipantTile(context.watch<ProfileBloc>().state.user!),
+              BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  return _ParticipantTile(
+                    state.user!,
+                    usesBitmoji: state.user!.usesBitmoji,
+                  );
+                },
+              ),
               _ParticipantTile(context.watch<ChatBloc>().state.consultant!),
 
               //TODO: _ParticipantTile(context.watch<ChatBloc>().state.consultant!),
@@ -51,9 +58,14 @@ class _ViewParticipantsDialogState extends State<_ViewParticipantsDialog> {
 }
 
 class _ParticipantTile extends StatelessWidget {
-  const _ParticipantTile(this.user, {Key? key}) : super(key: key);
+  const _ParticipantTile(
+    this.user, {
+    Key? key,
+    this.usesBitmoji = false,
+  }) : super(key: key);
 
   final User user;
+  final bool usesBitmoji;
 
   String get participantType {
     if (user is Consultant) return 'Consultant';
@@ -68,7 +80,11 @@ class _ParticipantTile extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          UserAvatar(size: 44, imageUrl: user.avatarUrl),
+          UserAvatar(
+            size: 44,
+            imageUrl: user.avatarUrl,
+            source: usesBitmoji ? AvatarSource.bitmojiUrl : null,
+          ),
           const SizedBox(width: 12),
           Flexible(
             child: Column(

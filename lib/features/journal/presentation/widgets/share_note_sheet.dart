@@ -36,13 +36,14 @@ class ShareNoteBottomSheet extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: List.generate(
                       8,
-                      (index) => const _ConsultantWidget(
+                      (index) => _ConsultantWidget(
                         Consultant(
-                          id: 0,
+                          id: index,
                           displayName: 'Dr. David blaine Mckenzie',
                           avatarUrl:
                               'https://media-exp1.licdn.com/dms/image/C4D03AQG9RwdZxoR3LA/profile-displayphoto-shrink_800_800/0/1641042314872?e=1664409600&v=beta&t=3i2pGW6GJaM47SVvonYStK24fA_OJO3nMbHq8JcFfZk',
                         ),
+                        note: note,
                       ),
                     ),
                   ),
@@ -57,29 +58,20 @@ class ShareNoteBottomSheet extends StatelessWidget {
 }
 
 class _ConsultantWidget extends StatelessWidget {
-  const _ConsultantWidget(this.consultant, {Key? key}) : super(key: key);
+  const _ConsultantWidget(this.consultant, {required this.note, Key? key})
+      : super(key: key);
+
+  final Note note;
   final Consultant consultant;
 
   @override
   Widget build(BuildContext context) {
     return InkResponse(
       containedInkWell: true,
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (_) => ConfirmDialog(
-            title: 'Are you sure?',
-            bodyText: '${consultant.displayName} will get access to this note.',
-            yesDialog: DialogOption(
-              'Share',
-              onPressed: () {
-                //TODO
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        );
-      },
+      onTap: () => showDialog(
+        context: context,
+        builder: (_) => _ShareNoteDialog(note, consultant: consultant),
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Row(
@@ -97,6 +89,59 @@ class _ConsultantWidget extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ShareNoteDialog extends StatefulWidget {
+  const _ShareNoteDialog(this.note, {Key? key, required this.consultant})
+      : super(key: key);
+
+  final Note note;
+  final Consultant consultant;
+
+  @override
+  State<_ShareNoteDialog> createState() => _ShareNoteDialogState();
+}
+
+class _ShareNoteDialogState extends State<_ShareNoteDialog> {
+  bool allowUpdates = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConfirmDialog(
+      title: 'Share This Note?',
+      body: MyDefaultTextStyle(
+        style: TextStyle(height: 1.3, color: Colors.grey[700]),
+        child: Column(
+          children: [
+            Text(
+                '${widget.consultant.displayName} will get access to this note.'),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    'Allow the consultant see the latest update of this note:',
+                  ),
+                ),
+                const SizedBox(width: 24),
+                Switch.adaptive(
+                  value: allowUpdates,
+                  onChanged: (val) => setState(() => allowUpdates = val),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+      yesDialog: DialogOption(
+        'Share',
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
       ),
     );
   }

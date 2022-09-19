@@ -40,7 +40,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
     questions[index].onAnswer?.call(option);
     await Future.delayed(kThemeChangeDuration);
     _setLastAnsweredIndex();
-    if (mounted && canContinue) setState(() => index++);
+    if (mounted && canContinue && index < questions.length - 1) {
+      setState(() => index++);
+    }
   }
 
   @override
@@ -78,7 +80,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   onPressed: () {
                     final bloc = context.read<QuestionnaireBloc>();
                     if (bloc.state.status == OperationStatus.loading) return;
-                    context.read<QuestionnaireBloc>().add(Submit(questions));
+                    bloc.add(Submit(questions));
                   },
                 ),
             ],

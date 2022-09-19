@@ -26,12 +26,15 @@ class _AddCardScreenState extends State<AddCardScreen> {
   static final _networks = <CardType, Widget>{
     CardType.mastercard: const Image(
         image: AssetImage('assets/images/wallet/networks/mastercard_dark.png')),
-    CardType.visa: Image(
-      image: const AssetImage('assets/images/wallet/networks/visa.png'),
-      color: ColorPalette.blue[800],
+    CardType.americanExpress: const Image(
+      image: AssetImage('assets/images/wallet/networks/american_express.png'),
     ),
     CardType.verve: const Image(
       image: AssetImage('assets/images/wallet/networks/verve.png'),
+    ),
+    CardType.visa: Image(
+      image: const AssetImage('assets/images/wallet/networks/visa.png'),
+      color: ColorPalette.blue[800],
     ),
   };
 
