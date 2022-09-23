@@ -49,7 +49,7 @@ class _SmallViewState extends State<SmallView> {
                 80,
             child: Container(
               color: Colors.white,
-              padding: EdgeInsets.all(3),
+              padding: const EdgeInsets.all(3),
               child: SizedBox.fromSize(
                 size: size,
                 child: GestureDetector(

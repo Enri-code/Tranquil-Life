@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,9 +8,10 @@ import 'package:tranquil_life/features/chat/domain/entities/message.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/image_full_view.dart';
 
 class ChatImageLayout extends StatelessWidget {
-  const ChatImageLayout({Key? key, required this.message}) : super(key: key);
+  ChatImageLayout({Key? key, required this.message}) : super(key: key);
 
   final Message message;
+  bool canOpenFullview = true;
 
   static final _errorWidget = Container(
     color: Colors.grey[300],
@@ -33,6 +36,7 @@ class ChatImageLayout extends StatelessWidget {
       height: MediaQuery.of(context).size.width * 0.6,
       child: GestureDetector(
         onTap: () {
+          if (!canOpenFullview) return;
           Navigator.of(context).pushNamed(
             ImageFullView.routeName,
             arguments: ImageFullViewData(
@@ -53,7 +57,13 @@ class ChatImageLayout extends StatelessWidget {
                     message.fromYou ? Colors.white : null,
                   );
                 }
+                canOpenFullview = true;
                 return child;
+              }
+
+              Widget _errorBuilder(_, __, ___) {
+                canOpenFullview = false;
+                return _errorWidget;
               }
 
               if (message.isSent) {
@@ -61,14 +71,14 @@ class ChatImageLayout extends StatelessWidget {
                   message.data,
                   fit: BoxFit.cover,
                   frameBuilder: _frameBuilder,
-                  errorBuilder: (_, __, ___) => _errorWidget,
+                  errorBuilder: _errorBuilder,
                 );
               }
               return Image.file(
                 File(message.data),
                 fit: BoxFit.cover,
                 frameBuilder: _frameBuilder,
-                errorBuilder: (_, __, ___) => _errorWidget,
+                errorBuilder: _errorBuilder,
               );
             },
           ),

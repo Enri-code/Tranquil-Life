@@ -10,7 +10,9 @@ abstract class JournalRepo extends ItemsRepo<SavedNote> {
 
   Future<Either<ResolvedError, SavedNote>> add(Note note);
   Future<Either<ResolvedError, SavedNote>> update(SavedNote note);
-  Future<Either<ResolvedError, dynamic>> delete(SavedNote note);
-  Future<Either<ResolvedError, SavedNote>> share(
-      Consultant consultant, SavedNote note);
+  Future<Either<ResolvedError, bool>> delete(List<SavedNote> notes);
+  Future<Either<ResolvedError, bool>> share(
+    Consultant consultant,
+    List<SavedNote> notes,
+  );
 }

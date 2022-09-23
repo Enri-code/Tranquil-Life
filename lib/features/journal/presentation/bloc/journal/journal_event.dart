@@ -8,7 +8,8 @@ abstract class JournalEvent extends Equatable {
 }
 
 class GetNotes extends JournalEvent {
-  const GetNotes();
+  final List<SavedNote>? notes;
+  const GetNotes([this.notes]);
 }
 
 class AddNote extends JournalEvent {
@@ -19,4 +20,15 @@ class AddNote extends JournalEvent {
 class UpdateNote extends JournalEvent {
   final SavedNote note;
   const UpdateNote(this.note);
+}
+
+class RemoveNotes extends JournalEvent {
+  final List<SavedNote> notes;
+  const RemoveNotes(this.notes);
+}
+
+class ShareNotes extends JournalEvent {
+  final Consultant consultant;
+  final List<SavedNote> notes;
+  const ShareNotes({required this.consultant, required this.notes});
 }

@@ -17,7 +17,13 @@ class LocationService {
     final placeMarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     final place = placeMarks[0];
-    return '${place.subLocality}, ${place.subAdministrativeArea},';
+    final locality = (place.subLocality?.isEmpty ?? true)
+        ? place.locality
+        : place.subLocality!;
+    final area = (place.subAdministrativeArea?.isEmpty ?? true)
+        ? place.administrativeArea
+        : place.subAdministrativeArea!;
+    return '$locality, $area';
   }
 
   static Future<Position?> requestPosition() async {

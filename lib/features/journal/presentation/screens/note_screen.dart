@@ -49,13 +49,8 @@ class _NoteScreenState extends State<NoteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = Color.lerp(
-      _note.hexColor?.toColor() ?? Colors.white,
-      Colors.white,
-      .5,
-    );
-    return Scaffold(
-      backgroundColor: bgColor,
+    return _BGWidget(
+      backgroundColor: _note.hexColor?.toColor(),
       appBar: CustomAppBar(
         title: 'Note',
         actions: [
@@ -78,6 +73,7 @@ class _NoteScreenState extends State<NoteScreen> {
               onPressed: () async => showNoteDialog(
                 context,
                 _note,
+                onNoteDeleted: Navigator.of(context).pop,
                 onColorChanged: (color) {
                   setState(() => _note.hexColor = color?.toHex());
                   if (!isAlreadySaved) return;
@@ -87,7 +83,7 @@ class _NoteScreenState extends State<NoteScreen> {
             ),
         ],
       ),
-      body: UnfocusWidget(
+      child: UnfocusWidget(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
           child: Column(
@@ -173,6 +169,77 @@ class _NoteScreenState extends State<NoteScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _BGWidget extends StatefulWidget {
+  const _BGWidget({
+    Key? key,
+    required this.appBar,
+    required this.child,
+    this.backgroundColor,
+  }) : super(key: key);
+  final PreferredSizeWidget appBar;
+  final Widget child;
+  final Color? backgroundColor;
+
+  @override
+  State<_BGWidget> createState() => __BGWidgetState();
+}
+
+class __BGWidgetState extends State<_BGWidget>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController animController;
+  Color? backgroundColor = Colors.white;
+  Color? lastBackgroundColor = Colors.white;
+
+  @override
+  void initState() {
+    animController = AnimationController(
+      vsync: this,
+      duration: kThemeChangeDuration,
+    )..animateTo(1, duration: Duration.zero);
+    setBGColor();
+    super.initState();
+  }
+
+  void setBGColor() => backgroundColor = Color.lerp(
+        widget.backgroundColor ?? Colors.white,
+        Colors.white,
+        0.2,
+      );
+
+  @override
+  void didUpdateWidget(covariant _BGWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    lastBackgroundColor = backgroundColor;
+    setBGColor();
+    animController.forward(from: 0);
+  }
+
+  @override
+  void dispose() {
+    animController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animController,
+      builder: (context, child) {
+        return Scaffold(
+          body: child,
+          appBar: widget.appBar,
+          backgroundColor: Color.lerp(
+            lastBackgroundColor,
+            backgroundColor,
+            animController.value,
+          ),
+        );
+      },
+      child: widget.child,
     );
   }
 }

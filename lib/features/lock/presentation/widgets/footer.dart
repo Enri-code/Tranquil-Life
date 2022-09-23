@@ -5,6 +5,7 @@ import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
+import 'package:tranquil_life/features/auth/presentation/widgets/sign_out_dialog.dart';
 
 class Footer extends StatelessWidget {
   const Footer(
@@ -43,7 +44,10 @@ class Footer extends StatelessWidget {
                 child: const Text('FORGOT PIN?'),
               ),
               TextButton(
-                onPressed: () => getIt<ClientAuthBloc>().add(const SignOut()),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (_) => const SignOutDialog(),
+                ),
                 child: const Text('SIGN OUT'),
               ),
             ],

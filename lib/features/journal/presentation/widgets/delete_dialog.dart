@@ -1,19 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
-import 'package:tranquil_life/features/journal/domain/entities/note.dart';
+import 'package:tranquil_life/features/journal/domain/entities/saved_note.dart';
+import 'package:tranquil_life/features/journal/presentation/bloc/journal/journal_bloc.dart';
 
-class DeleteNoteDialog extends StatelessWidget {
-  final Note note;
-  const DeleteNoteDialog({Key? key, required this.note}) : super(key: key);
+class DeleteNotesDialog extends StatelessWidget {
+  const DeleteNotesDialog({
+    Key? key,
+    this.notes,
+    this.onNoteDeleted,
+  }) : super(key: key);
+
+  final List<SavedNote>? notes;
+  final Function()? onNoteDeleted;
 
   @override
   Widget build(BuildContext context) {
+    bool isMultiple = (notes?.length ?? 0) > 1;
     return ConfirmDialog(
-      title: 'Delete Note?',
-      bodyText: 'This note will be permanently deleted.',
+      title: 'Delete Note${isMultiple ? 's' : ''}?',
+      bodyText:
+          '${isMultiple ? 'These notes' : 'This note'} will be permanently deleted.',
       yesDialog: DialogOption(
         'Delete',
-        onPressed: () {}, //TODO
+        onPressed: () {
+          if (notes != null) {
+            context.read<JournalBloc>().add(RemoveNotes(notes!));
+          }
+          onNoteDeleted?.call();
+        },
       ),
     );
   }

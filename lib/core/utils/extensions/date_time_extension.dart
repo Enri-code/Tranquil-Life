@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 extension DateTimeExtension on DateTime {
-  static final _dateFormat = DateFormat.yMMMMd();
+  static final _dateFormat = DateFormat.yMMMd();
   static final _timeFormat = DateFormat('hh:mm a');
 
   String get folded {

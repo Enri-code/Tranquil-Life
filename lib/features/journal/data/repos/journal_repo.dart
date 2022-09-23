@@ -61,24 +61,23 @@ class JournalRepoImpl extends JournalRepo {
   }
 
   @override
-  Future<Either<ResolvedError, dynamic>> delete(SavedNote note) async {
-    throw UnimplementedError();
+  Future<Either<ResolvedError, bool>> delete(List<SavedNote> notes) async {
+    return const Right(true);
   }
 
   @override
-  Future<Either<ResolvedError, SavedNote>> share(
+  Future<Either<ResolvedError, bool>> share(
     Consultant consultant,
-    SavedNote note,
+    List<SavedNote> notes,
   ) async {
     try {
       var result = await ApiClient.post(
         JournalEndPoints.share,
-        body: {"id": note.id, "consultant_id": consultant.id},
+        // body: {"id": notes.id, "consultant_id": consultant.id},
       );
       var data = result.data as Map<String, dynamic>;
-      if (data.containsKey('success')) {
-        return Right(note);
-      }
+      if (data.containsKey('success')) return const Right(true);
+
       return const Left(ResolvedError());
     } catch (_) {
       return const Left(ResolvedError());

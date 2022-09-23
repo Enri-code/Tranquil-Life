@@ -11,13 +11,13 @@ final signOutCase = SignOutCase();
 class SignInCase {
   Future call(Client user) async {
     getIt<IScreenLock>().setupPin();
-    getIt<ProfileBloc>().add(AddUser(user));
+    getIt<ProfileBloc>().add(AddUserProfile(user));
   }
 }
 
 class SignOutCase {
   Future call() async {
-    getIt<ProfileBloc>().add(const RemoveUser());
+    getIt<ProfileBloc>().add(const RemoveUserProfile());
     await Future.wait([
       AppData.clearUserData(),
       getIt<IScreenLock>().clearPin(),

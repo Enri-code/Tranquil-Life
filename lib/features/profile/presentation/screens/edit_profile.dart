@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
@@ -6,7 +7,6 @@ import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
-import 'package:tranquil_life/core/utils/services/location_service.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/profile/presentation/widgets/edit_profile_tile.dart';
 import 'package:tranquil_life/features/profile/presentation/widgets/gender_bottom_sheet.dart';
@@ -32,9 +32,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: CustomAppBar(
         actions: [
           AppBarAction(
-            child: const Text("Done"),
+            child: const Text('Done'),
             isCustomButton: false,
-            onPressed: () => context.read<ProfileBloc>().add(newUserData),
+            onPressed: () {
+              context.read<ProfileBloc>().add(newUserData);
+              Navigator.of(context).pop();
+            },
           ),
         ],
       ),
@@ -130,7 +133,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         },
                         child: EditProfileTile(
                           title: 'Date of Birth',
-                          suffix: Text(newUserData.birthDate ?? '- - -'),
+                          suffix: Text(newUserData.birthDate ?? 'Not set'),
                         ),
                       ),
                       _smallPadding,
@@ -149,16 +152,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         child: EditProfileTile(
                           title: 'Gender',
-                          suffix: Text(newUserData.gender ?? 'Unknown'),
+                          suffix: Text(newUserData.gender ?? 'Not set'),
                         ),
                       ),
                       _bigPadding,
-                      FutureBuilder<String?>(
-                        future: LocationService.requestLocation(),
-                        builder: (_, snapshot) => EditProfileTile(
+                      BlocBuilder<ProfileBloc, ProfileState>(
+                        builder: (_, state) => EditProfileTile(
                           title: 'Location',
                           suffixFieldValue:
-                              snapshot.data ?? 'Somewhere on Earth',
+                              state.location ?? 'Somewhere on Earth',
                         ),
                       ),
                     ],

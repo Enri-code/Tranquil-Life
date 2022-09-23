@@ -29,7 +29,7 @@ dependencies:
   dropdown_button2: ^1.7.2
   equatable: ^2.0.3
   fluttermoji: ^1.0.0
-  flutter_bloc: ^8.0.1
+  flutter_bloc: ^8.1.1
   flutter_cache_manager: ^3.3.0
   # flutter_native_splash: ^2.2.9
   flutter_screen_lock: ^7.0.4

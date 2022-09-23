@@ -12,9 +12,7 @@ class ScrollToChatEvent extends ChatEvent {
   final int index;
 }
 
-enum MediaType { gallery, camera, audio, document, any }
-
-class UploadChatMediaEvent extends ChatEvent {
-  const UploadChatMediaEvent(this.type);
-  final MediaType type;
+class AddMessage extends ChatEvent {
+  const AddMessage(this.message);
+  final Message message;
 }

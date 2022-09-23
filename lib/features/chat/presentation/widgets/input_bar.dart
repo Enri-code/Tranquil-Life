@@ -16,15 +16,27 @@ class _InputBarState extends State<_InputBar> {
 
   StreamSubscription? _isRecordingStreamSub;
 
-  Future _sendRecording() async {
+  Future _handleRecordingUpload() async {
     final file = await recorder.stop();
+    if (file == null) return;
+  }
+
+  Future _uploadText() async {
+    final text = textController.text.trim();
+    textController.clear();
+    if (text.isEmpty) return;
+    context.read<ChatBloc>().add(AddMessage(Message(data: text)));
   }
 
   @override
   void initState() {
     recorder.init();
-    _isRecordingStreamSub = recorder.omRecordingState
-        .listen((event) => setState(() => isRecording = event));
+    textController.addListener(() {
+      setState(() => micMode = textController.text.trim().isEmpty);
+    });
+    _isRecordingStreamSub = recorder.omRecordingState.listen((event) {
+      setState(() => isRecording = event);
+    });
     super.initState();
   }
 
@@ -87,15 +99,13 @@ class _InputBarState extends State<_InputBar> {
                     child: StreamBuilder<String>(
                         initialData: '00:00',
                         stream: recorder.onDurationText,
-                        builder: (context, snapshot) {
-                          return Text(
-                            snapshot.data!,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          );
-                        }),
+                        builder: (context, snapshot) => Text(
+                              snapshot.data!,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )),
                   );
                 }
                 return TextField(
@@ -115,7 +125,6 @@ class _InputBarState extends State<_InputBar> {
                       horizontal: 4,
                     ),
                   ),
-                  onChanged: (val) => setState(() => micMode = val.isEmpty),
                 );
               }),
             ),
@@ -140,7 +149,12 @@ class _InputBarState extends State<_InputBar> {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    if (isRecording) _sendRecording();
+                    if (showMic) return;
+                    if (isRecording) {
+                      _handleRecordingUpload();
+                    } else {
+                      _uploadText();
+                    }
                   },
                   child: AnimatedCrossFade(
                     duration: kThemeChangeDuration,
@@ -176,6 +190,8 @@ class _InputBarState extends State<_InputBar> {
 class _AttachmentSheet extends StatelessWidget {
   const _AttachmentSheet({Key? key}) : super(key: key);
 
+  void _handleUpload(File? file) async {}
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -198,17 +214,16 @@ class _AttachmentSheet extends StatelessWidget {
                     label: 'Camera',
                     icon: Icons.camera_alt,
                     color: const Color(0xff0680BB),
-                    onPressed: () => context
-                        .read<ChatBloc>()
-                        .add(const UploadChatMediaEvent(MediaType.camera)),
+                    onPressed: () async => _handleUpload(
+                      await MediaService.selectImage(ImageSource.camera),
+                    ),
                   ),
                   _AttachmentButton(
                     label: 'Gallery',
                     icon: Icons.image,
                     color: const Color(0xff2D713E),
-                    onPressed: () => context
-                        .read<ChatBloc>()
-                        .add(const UploadChatMediaEvent(MediaType.gallery)),
+                    onPressed: () async =>
+                        _handleUpload(await MediaService.selectImage()),
                   ),
                 ],
               ),
@@ -220,17 +235,15 @@ class _AttachmentSheet extends StatelessWidget {
                     label: 'Document',
                     icon: Icons.file_open,
                     color: const Color(0xffFFC600),
-                    onPressed: () => context
-                        .read<ChatBloc>()
-                        .add(const UploadChatMediaEvent(MediaType.document)),
+                    onPressed: () async =>
+                        _handleUpload(await MediaService.selectDocument()),
                   ),
                   _AttachmentButton(
                     label: 'Audio',
                     icon: Icons.headphones,
                     color: const Color(0xff43A95D),
-                    onPressed: () => context
-                        .read<ChatBloc>()
-                        .add(const UploadChatMediaEvent(MediaType.audio)),
+                    onPressed: () async =>
+                        _handleUpload(await MediaService.selectAudio()),
                   ),
                 ],
               ),

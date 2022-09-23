@@ -61,13 +61,19 @@ class AddPictureSheet extends StatelessWidget {
                     );
                   },
                 ),
-                _Button(
-                  title: 'Remove picture',
-                  iconData: TranquilIcons.trash,
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (_) => const _RemoveDialog(),
-                  ),
+                BlocBuilder<ProfileBloc, ProfileState>(
+                  builder: (context, state) {
+                    if (state.user!.avatarUrl.isEmpty) return const SizedBox();
+                    return _Button(
+                      title:
+                          'Remove your ${state.user!.usesBitmoji ? 'avatar' : 'picture'}',
+                      iconData: TranquilIcons.trash,
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (_) => const _RemoveDialog(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -88,7 +94,9 @@ class _RemoveDialog extends StatelessWidget {
       bodyText: 'Are you sure you want to remove your current profile picture?',
       yesDialog: DialogOption(
         'Remove',
-        onPressed: () {},
+        onPressed: () => context.read<ProfileBloc>().add(
+              UpdateUser(usesBitmoji: false, avatarUrl: null),
+            ),
       ),
     );
   }

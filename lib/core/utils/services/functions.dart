@@ -50,9 +50,15 @@ Future<DateTime?> showCustomDatePicker(BuildContext context,
 }
 
 Future<Color?> showNoteDialog(BuildContext context, Note note,
-        {Function(Color?)? onColorChanged}) =>
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (_) => NoteBottomSheet(note, onColorChanged: onColorChanged),
-    );
+    {Function(Color?)? onColorChanged, Function()? onNoteDeleted}) {
+  return showModalBottomSheet(
+    context: context,
+    barrierColor: Colors.black26,
+    backgroundColor: Colors.transparent,
+    builder: (_) => NoteBottomSheet(
+      note,
+      onColorChanged: onColorChanged,
+      onNoteDeleted: onNoteDeleted,
+    ),
+  );
+}

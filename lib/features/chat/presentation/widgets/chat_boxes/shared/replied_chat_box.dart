@@ -118,6 +118,7 @@ class _MediaReplyWidgetState extends State<_MediaReplyWidget> {
       path = widget.message.repliedMessage.data;
     }
     await player.preparePlayer(path);
+    if (!mounted) return;
     setState(() => duration = TimeFormatter.toTimerString(player.maxDuration));
   }
 

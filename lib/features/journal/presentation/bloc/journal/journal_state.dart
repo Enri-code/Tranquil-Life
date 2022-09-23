@@ -7,16 +7,16 @@ class JournalState extends BlocStateBase {
     super.status = OperationStatus.initial,
   });
 
-  final List<Note> notes;
+  final List<SavedNote> notes;
 
   @override
   JournalState copyWith({
     OperationStatus? status,
     ResolvedError? error,
-    List<Note>? notes,
+    List<SavedNote>? notes,
   }) {
     return JournalState(
-      notes: this.notes..addAll(notes ?? []),
+      notes: notes ?? this.notes,
       status: status ?? this.status,
       error: error ?? this.error,
     );

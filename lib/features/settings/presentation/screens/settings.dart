@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
+import 'package:tranquil_life/features/auth/presentation/widgets/sign_out_dialog.dart';
 import 'package:tranquil_life/features/lock/domain/lock.dart';
 import 'package:tranquil_life/features/settings/presentation/widgets/settings_button.dart';
 import 'package:tranquil_life/features/settings/presentation/widgets/theme_brightness_button.dart';
@@ -103,8 +101,10 @@ class SettingsScreen extends StatelessWidget {
                 label: 'Sign out',
                 prefixIconData: TranquilIcons.sign_out,
                 prefixIconColor: ColorPalette.red,
-                onPressed: () =>
-                    context.read<ClientAuthBloc>().add(const SignOut()),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (_) => const SignOutDialog(),
+                ),
               ),
             ],
           ),

@@ -1,9 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
+import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:tranquil_life/features/profile/presentation/screens/chat_history.dart';
 import 'package:tranquil_life/features/profile/presentation/screens/edit_profile.dart';
 import 'package:tranquil_life/features/settings/presentation/screens/settings.dart';
 
@@ -37,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Center(
                     child: Column(
                       children: [
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 16),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -69,40 +71,40 @@ class ProfileScreen extends StatelessWidget {
                           style: TextStyle(fontSize: 28),
                         ),
                         const SizedBox(height: 6),
-                        const Text(
-                          'San Francisco, CA',
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(fontSize: 20, color: Color(0xFF6E6E6E)),
+                        BlocBuilder<ProfileBloc, ProfileState>(
+                          builder: (_, state) => Text(
+                            state.location ?? 'Somewhere on Earth',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.grey[600],
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 32),
+                        _Button(
+                          icon: Icons.favorite_rounded,
+                          title: 'Favorite consultants',
+                          onPreessed: () {},
+                        ),
+                        const SizedBox(height: 24),
+                        _Button(
+                          icon: TranquilIcons.message_time,
+                          title: 'Chat history',
+                          onPreessed: () => Navigator.of(context).pushNamed(
+                            ChatHistoryScreen.routeName,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
                         _Button(
                           icon: TranquilIcons.card,
                           title: 'Transaction history',
                           onPreessed: () {},
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 24),
                         _Button(
                           icon: TranquilIcons.wallet,
                           title: 'Wallet',
-                          onPreessed: () {},
-                        ),
-                        const SizedBox(height: 20),
-                        _Button(
-                          icon: TranquilIcons.message_time,
-                          title: 'Chat history',
-                          onPreessed: () {},
-                        ),
-                        const SizedBox(height: 20),
-                        _Button(
-                          icon: CupertinoIcons.phone_fill,
-                          title: 'Scheduled meetings',
-                          onPreessed: () {},
-                        ),
-                        const SizedBox(height: 20),
-                        _Button(
-                          icon: Icons.favorite_rounded,
-                          title: 'Favorite consultants',
                           onPreessed: () {},
                         ),
                         const SizedBox(height: 24),

@@ -11,7 +11,6 @@ import 'package:tranquil_life/features/auth/presentation/screens/sign_up/sign_up
 import 'package:tranquil_life/features/auth/presentation/styles.dart';
 import 'package:tranquil_life/app/presentation/widgets/mountain_bg.dart';
 import 'package:tranquil_life/features/auth/presentation/widgets/forgot_pasword.dart';
-import 'package:tranquil_life/features/dashboard/presentation/screens/dashboard.dart';
 import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 
@@ -165,21 +164,24 @@ class _SignInScreenState extends State<SignInScreen> {
                   padding: const EdgeInsets.only(top: 32),
                   child: OutlinedButton(
                     onPressed: () {
-                      context.read<ProfileBloc>().add(const AddUser(Client(
-                            id: 1,
-                            firstName: 'Chappelle',
-                            lastName: 'Eric',
-                            email: 'eric@gmail.com',
-                            displayName: 'Enrique',
-                            phoneNumber: '09069184604',
-                            token: '',
-                            isVerified: false,
-                            hasAnsweredQuestions: false,
-                            usesBitmoji: false,
-                          )));
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        DashboardScreen.routeName,
-                        (_) => false,
+                      context.read<ProfileBloc>().add(const AddUserProfile(
+                            Client(
+                              id: 1,
+                              firstName: 'Chappelle',
+                              lastName: 'Eric',
+                              email: 'eric@gmail.com',
+                              displayName: 'Enrique',
+                              phoneNumber: '09069184604',
+                              token: '',
+                              isVerified: false,
+                              hasAnsweredQuestions: false,
+                              usesBitmoji: false,
+                            ),
+                          ));
+                      SchedulerBinding.instance.addPostFrameCallback(
+                        (_) => context
+                            .read<ClientAuthBloc>()
+                            .add(const RestoreSignIn()),
                       );
                     },
                     child: const Text('Bypass Login'),

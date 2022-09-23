@@ -18,7 +18,8 @@ class _TitleBar extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 2),
             child: UserAvatar(
               size: 44,
-              imageUrl: '',
+              imageUrl:
+                  'https://media-exp1.licdn.com/dms/image/C4D03AQG9RwdZxoR3LA/profile-displayphoto-shrink_800_800/0/1641042314872?e=1664409600&v=beta&t=3i2pGW6GJaM47SVvonYStK24fA_OJO3nMbHq8JcFfZk',
             ),
           ),
           const SizedBox(width: 8),

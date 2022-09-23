@@ -12,7 +12,7 @@ class ApiClient {
   const ApiClient();
 
   static final _client =
-      Dio(BaseOptions(baseUrl: baseUrl, connectTimeout: 10000));
+      Dio(BaseOptions(baseUrl: baseUrl, connectTimeout: 15000));
 
   static Future<ApiData> get(
     String subPath, {

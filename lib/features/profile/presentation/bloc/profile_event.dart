@@ -54,13 +54,20 @@ class UpdateUser extends Client implements ProfileEvent {
   bool? get stringify => false;
 }
 
-class AddUser extends ProfileEvent {
+class AddUserProfile extends ProfileEvent {
   final Client user;
-  const AddUser(this.user);
+  const AddUserProfile(this.user);
 }
 
-class RestoreUser extends ProfileEvent {}
+class RestoreUserProfile extends ProfileEvent {
+  const RestoreUserProfile();
+}
 
-class RemoveUser extends ProfileEvent {
-  const RemoveUser();
+class RemoveUserProfile extends ProfileEvent {
+  const RemoveUserProfile();
+}
+
+class UpdateProfileLocation extends ProfileEvent {
+  const UpdateProfileLocation(this.location);
+  final String? location;
 }

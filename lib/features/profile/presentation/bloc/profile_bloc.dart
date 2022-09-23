@@ -9,13 +9,14 @@ part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(const ProfileState()) {
-    on<AddUser>(_addUser);
+    on<AddUserProfile>(_addUser);
     on<UpdateUser>(_updateUser);
-    on<RemoveUser>(_removeUser);
-    on<RestoreUser>(_restoreUser);
+    on<RemoveUserProfile>(_removeUser);
+    on<RestoreUserProfile>(_restoreUser);
+    on<UpdateProfileLocation>(_updateLocation);
   }
 
-  _addUser(AddUser event, Emitter<ProfileState> emit) {
+  _addUser(AddUserProfile event, Emitter<ProfileState> emit) {
     emit(state.copyWith(user: getIt<IUserDataStore>().user = event.user));
   }
 
@@ -23,11 +24,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(state.copyWith(user: getIt<IUserDataStore>().user = event));
   }
 
-  _removeUser(RemoveUser event, Emitter<ProfileState> emit) {
+  _removeUser(RemoveUserProfile event, Emitter<ProfileState> emit) {
     emit(state.copyWith(user: getIt<IUserDataStore>().user = null));
   }
 
-  _restoreUser(RestoreUser event, Emitter<ProfileState> emit) {
+  _restoreUser(RestoreUserProfile event, Emitter<ProfileState> emit) {
     emit(state.copyWith(user: getIt<IUserDataStore>().user));
+  }
+
+  _updateLocation(UpdateProfileLocation event, Emitter<ProfileState> emit) {
+    emit(state.copyWith(location: event.location));
   }
 }
