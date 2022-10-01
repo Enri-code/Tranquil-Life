@@ -31,16 +31,17 @@ class AppBarButton extends StatelessWidget {
               child: icon,
             ),
           ),
-          Positioned.fill(
-            child: Material(
-              type: MaterialType.transparency,
-              child: InkResponse(
-                onTap: onPressed,
-                containedInkWell: true,
-                highlightShape: BoxShape.rectangle,
+          if (onPressed != null)
+            Positioned.fill(
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkResponse(
+                  onTap: onPressed,
+                  containedInkWell: true,
+                  highlightShape: BoxShape.rectangle,
+                ),
               ),
-            ),
-          )
+            )
         ],
       ),
     );

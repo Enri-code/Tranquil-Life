@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_single_cascade_in_expression_statements
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -17,10 +15,11 @@ import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
 import 'package:tranquil_life/features/calls/data/agora_call.dart';
 import 'package:tranquil_life/features/calls/domain/video_call_repo.dart';
-import 'package:tranquil_life/features/lock/data/lock.dart';
-import 'package:tranquil_life/features/lock/domain/lock.dart';
 import 'package:tranquil_life/features/onboarding/presentation/screens/onboard.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:tranquil_life/features/screen_lock/data/lock.dart';
+import 'package:tranquil_life/features/screen_lock/domain/lock.dart';
+import 'package:tranquil_life/features/wallet/presentation/bloc/wallet/wallet_bloc.dart';
 
 class AppSetup {
   static bool _isInit = false;
@@ -57,9 +56,7 @@ class AppSetup {
   static _goToScreen(NavigatorState navigator) async {
     late final String nextRoute;
     if (getIt<IUserDataStore>().isSignedIn) {
-      final didAuthenticate = await getIt<IScreenLock>().authenticate(
-        setupIfNull: true,
-      );
+      final didAuthenticate = await getIt<IScreenLock>().showLock();
       if (didAuthenticate) getIt<ClientAuthBloc>().add(const RestoreSignIn());
       return;
     } else if (AppData.isOnboardingCompleted) {
@@ -78,7 +75,10 @@ class AppSetup {
     GetIt.instance
       ..registerSingleton(context.read<ClientAuthBloc>())
       ..registerSingleton(context.read<ProfileBloc>())
-      ..registerSingleton<IScreenLock>(ScreenLock()..init(context))
+      ..registerSingleton(context.read<WalletBloc>())
+      ..registerSingleton<IScreenLock>(
+        ScreenLock()..init(Navigator.of(context)),
+      )
       ..registerLazySingleton<CallController>(() => AgoraController());
   }
 }

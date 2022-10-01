@@ -66,10 +66,7 @@ class _NoteScreenState extends State<NoteScreen> {
           else
             AppBarAction(
               isCustomButton: false,
-              child: Icon(
-                Icons.more_vert,
-                color: Theme.of(context).primaryColor,
-              ),
+              child: const Icon(Icons.more_vert),
               onPressed: () async => showNoteDialog(
                 context,
                 _note,

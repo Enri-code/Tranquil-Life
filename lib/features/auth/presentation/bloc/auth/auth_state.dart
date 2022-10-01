@@ -17,12 +17,13 @@ class AuthState extends BlocStateBase {
     OperationStatus? status,
     ResolvedError? error,
     AuthStatus? authStatus,
-  }) =>
-      AuthState(
-        status: status ?? this.status,
-        error: error ?? this.error,
-        authStatus: authStatus ?? this.authStatus,
-      );
+  }) {
+    return AuthState(
+      status: status ?? this.status,
+      error: error ?? this.error,
+      authStatus: authStatus ?? this.authStatus,
+    );
+  }
 
   @override
   List<Object?> get props => [authStatus, ...super.props];

@@ -1,11 +1,7 @@
 part of 'partner_bloc.dart';
 
 class PartnerState extends BlocStateBase {
-  const PartnerState({
-    super.status,
-    super.error,
-    this.partners,
-  });
+  const PartnerState({super.status, super.error, this.partners});
   final List<Partner>? partners;
 
   @override

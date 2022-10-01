@@ -18,6 +18,7 @@ import 'package:tranquil_life/features/profile/presentation/screens/chat_history
 import 'package:tranquil_life/features/profile/presentation/screens/edit_avatar.dart';
 import 'package:tranquil_life/features/profile/presentation/screens/edit_profile.dart';
 import 'package:tranquil_life/features/questionnaire/presentation/screens/questions.dart';
+import 'package:tranquil_life/features/screen_lock/presentation/screens/lock_screen.dart';
 import 'package:tranquil_life/features/settings/presentation/screens/settings.dart';
 import 'package:tranquil_life/features/wallet/presentation/screens/add_card_screen.dart';
 
@@ -30,6 +31,7 @@ abstract class AppConfig {
     SignInScreen.routeName: (_) => const SignInScreen(),
     SentPasswordResetEmailScreen.routeName: (_) =>
         const SentPasswordResetEmailScreen(),
+    LockScreen.routeName: (_) => const LockScreen(),
     DashboardScreen.routeName: (_) => const DashboardScreen(),
     AddCardScreen.routeName: (_) => const AddCardScreen(),
     QuestionsScreen.routeName: (_) => const QuestionsScreen(),

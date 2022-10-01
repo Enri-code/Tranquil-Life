@@ -3,6 +3,7 @@ import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
+import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
 
 class SignOutDialog extends StatelessWidget {
   const SignOutDialog({Key? key}) : super(key: key);
@@ -14,7 +15,15 @@ class SignOutDialog extends StatelessWidget {
       bodyText: 'You are about to sign out of your account on this device.',
       yesDialog: DialogOption(
         'Sign Out',
-        onPressed: () => getIt<ClientAuthBloc>().add(const SignOut()),
+        onPressed: () {
+          final clientBloc = getIt<ClientAuthBloc>()..add(const SignOut());
+          if (clientBloc.state.authStatus == AuthStatus.signedOut) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              SignInScreen.routeName,
+              (_) => false,
+            );
+          }
+        },
       ),
     );
   }

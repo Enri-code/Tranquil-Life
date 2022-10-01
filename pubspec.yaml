@@ -27,12 +27,12 @@ dependencies:
   dotted_line: ^3.1.0
   draggable_widget: ^2.0.0
   dropdown_button2: ^1.7.2
-  equatable: ^2.0.3
+  equatable: ^2.0.5
   fluttermoji: ^1.0.0
   flutter_bloc: ^8.1.1
   flutter_cache_manager: ^3.3.0
   # flutter_native_splash: ^2.2.9
-  flutter_screen_lock: ^7.0.4
+  flutter_neumorphic: ^3.2.0
   flutter_secure_storage: ^6.0.0
   flutter_staggered_grid_view: ^0.6.2
   flutter_speed_dial: ^6.0.0

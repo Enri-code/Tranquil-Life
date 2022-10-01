@@ -5,7 +5,7 @@ import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/auth/presentation/widgets/sign_out_dialog.dart';
-import 'package:tranquil_life/features/lock/domain/lock.dart';
+import 'package:tranquil_life/features/screen_lock/domain/lock.dart';
 import 'package:tranquil_life/features/settings/presentation/widgets/settings_button.dart';
 import 'package:tranquil_life/features/settings/presentation/widgets/theme_brightness_button.dart';
 
@@ -88,10 +88,8 @@ class SettingsScreen extends StatelessWidget {
                   SettingsButton(
                     prefixIconData: Icons.lock,
                     label: 'Reset Pin',
-                    onPressed: () async {
-                      if (await getIt<IScreenLock>().authenticate()) {
-                        await getIt<IScreenLock>().setupPin();
-                      }
+                    onPressed: () {
+                      getIt<IScreenLock>().showLock(LockType.resetPin);
                     },
                   ),
                 ],

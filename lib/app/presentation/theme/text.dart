@@ -10,3 +10,10 @@ abstract class MyTextData {
       )
       .apply(fontFamily: josefinFamily);
 }
+
+abstract class MyTextStyles {
+  static const underline = TextStyle(
+    fontWeight: FontWeight.normal,
+    decoration: TextDecoration.underline,
+  );
+}

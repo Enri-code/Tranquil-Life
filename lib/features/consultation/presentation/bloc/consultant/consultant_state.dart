@@ -10,13 +10,8 @@ class ConsultantState extends BlocStateBase {
   final List<Consultant> consultants;
 
   @override
-  ConsultantState copyWith({
-    OperationStatus? status,
-    ResolvedError? error,
-    List<Consultant>? consultants,
-  }) {
+  ConsultantState copyWith({OperationStatus? status, ResolvedError? error}) {
     return ConsultantState(
-      consultants: this.consultants..addAll(consultants ?? []),
       status: status ?? this.status,
       error: error ?? this.error,
     );

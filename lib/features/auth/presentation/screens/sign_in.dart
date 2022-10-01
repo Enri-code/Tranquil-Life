@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
+import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/core/utils/services/validators.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
@@ -13,6 +14,7 @@ import 'package:tranquil_life/app/presentation/widgets/mountain_bg.dart';
 import 'package:tranquil_life/features/auth/presentation/widgets/forgot_pasword.dart';
 import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:tranquil_life/features/screen_lock/domain/lock.dart';
 
 class SignInScreen extends StatefulWidget {
   static const routeName = 'sign_in';
@@ -163,7 +165,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 32),
                   child: OutlinedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       context.read<ProfileBloc>().add(const AddUserProfile(
                             Client(
                               id: 1,
@@ -178,11 +180,13 @@ class _SignInScreenState extends State<SignInScreen> {
                               usesBitmoji: false,
                             ),
                           ));
-                      SchedulerBinding.instance.addPostFrameCallback(
-                        (_) => context
-                            .read<ClientAuthBloc>()
-                            .add(const RestoreSignIn()),
-                      );
+                      SchedulerBinding.instance.addPostFrameCallback((_) {
+                        context.read<ClientAuthBloc>().add(
+                              const RestoreSignIn(),
+                            );
+                      });
+                      await Future.delayed(kThemeChangeDuration);
+                      getIt<IScreenLock>().showLock(LockType.setupPin);
                     },
                     child: const Text('Bypass Login'),
                   ),

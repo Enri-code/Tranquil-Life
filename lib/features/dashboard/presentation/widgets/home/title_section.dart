@@ -45,8 +45,8 @@ class _AppBarState extends State<_AppBar> {
                   TextSpan(
                     text: 'verify your account.',
                     style: const TextStyle(
-                      color: ColorPalette.red,
                       fontSize: 16,
+                      color: ColorPalette.red,
                       decoration: TextDecoration.underline,
                     ),
                     recognizer: onVerifyRecognizer,

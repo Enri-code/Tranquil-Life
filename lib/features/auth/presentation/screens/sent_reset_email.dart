@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tranquil_life/app/presentation/theme/text.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
 
 ///Arguments should be email address
@@ -22,7 +23,7 @@ class SentPasswordResetEmailScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                'We have sent a password reset link to ${ModalRoute.of(context)!.settings.arguments ?? 'your email address'}.',
+                'A password reset link has been sent to ${ModalRoute.of(context)!.settings.arguments}.',
                 style: const TextStyle(fontSize: 20, height: 1.5),
                 textAlign: TextAlign.center,
               ),
@@ -36,10 +37,7 @@ class SentPasswordResetEmailScreen extends StatelessWidget {
                 },
                 child: const Text(
                   'Back to the log in page',
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    decoration: TextDecoration.underline,
-                  ),
+                  style: MyTextStyles.underline,
                 ),
               ),
             ],

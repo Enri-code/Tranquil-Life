@@ -104,11 +104,14 @@ class _NavBarState extends State<NavBar> {
                 padding: const EdgeInsets.all(9),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: ColorPalette.yellow,
+                  color: ColorPalette.green[800],
                   border: Border.all(width: 7, color: Colors.white),
                 ),
-                child: const Icon(TranquilIcons.messages,
-                    size: 32, color: Colors.white),
+                child: const Icon(
+                  TranquilIcons.messages,
+                  color: Colors.white,
+                  size: 32,
+                ),
               ),
             ),
           ),

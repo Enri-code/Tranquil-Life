@@ -10,13 +10,14 @@ class AppBarAction {
 
   const AppBarAction({
     required this.child,
-    required this.onPressed,
+    this.onPressed,
     this.isCustomButton = true,
   });
 }
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
+  final bool hideBackButton;
   final Color? titleColor;
   final List<AppBarAction>? actions;
   final Function()? onBackPressed;
@@ -25,6 +26,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     Key? key,
     this.title,
     this.titleColor,
+    this.hideBackButton = false,
     this.actions,
     this.onBackPressed,
   }) : super(key: key);
@@ -39,7 +41,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         color: ColorPalette.green[800],
         fontFamily: MyTextData.josefinFamily,
       ),
-      leading: Navigator.of(context).canPop() || onBackPressed != null
+      leading: (Navigator.of(context).canPop() || onBackPressed != null) &&
+              !hideBackButton
           ? Hero(
               tag: 'back_button',
               child: Center(
@@ -56,7 +59,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 ),
               ),
             )
-          : null,
+          : const SizedBox.shrink(),
       title: title != null
           ? Padding(
               padding: const EdgeInsets.only(top: 4),
@@ -75,7 +78,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
           child: Center(
             child: e.isCustomButton
                 ? AppBarButton(icon: e.child, onPressed: e.onPressed)
-                : GestureDetector(onTap: e.onPressed, child: e.child),
+                : _NormalButton(e),
           ),
         );
       }).toList()
@@ -85,4 +88,19 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class _NormalButton extends StatelessWidget {
+  const _NormalButton(this.data, {Key? key}) : super(key: key);
+  final AppBarAction data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        iconTheme: IconThemeData(color: ColorPalette.green[800], size: 24),
+      ),
+      child: GestureDetector(onTap: data.onPressed, child: data.child),
+    );
+  }
 }

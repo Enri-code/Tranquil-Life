@@ -20,11 +20,11 @@ import 'package:tranquil_life/features/dashboard/presentation/screens/dashboard.
 import 'package:tranquil_life/features/journal/data/repos/journal_repo.dart';
 import 'package:tranquil_life/features/journal/presentation/bloc/journal/journal_bloc.dart';
 import 'package:tranquil_life/features/journal/presentation/bloc/note/note_bloc.dart';
-import 'package:tranquil_life/features/lock/domain/lock.dart';
 import 'package:tranquil_life/features/onboarding/presentation/screens/splash.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/questionnaire/data/repos/questionnaire_repo.dart';
 import 'package:tranquil_life/features/questionnaire/presentation/bloc/questionnaire_bloc.dart';
+import 'package:tranquil_life/features/screen_lock/domain/lock.dart';
 import 'package:tranquil_life/features/wallet/presentation/bloc/edit_card/edit_card_bloc.dart';
 import 'package:tranquil_life/features/wallet/presentation/bloc/wallet/wallet_bloc.dart';
 import 'package:tranquil_life/samples/notes.dart';
@@ -38,7 +38,6 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> with WidgetsBindingObserver {
   final _navigatorKey = GlobalKey<NavigatorState>();
-
   NavigatorState get _navigator => _navigatorKey.currentState!;
 
   _onSignIn(BuildContext context) {
@@ -52,10 +51,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     });
   }
 
-  _onSignOut(BuildContext context) {
-    context.read<WalletBloc>().add(const ClearWallet());
-  }
-
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
@@ -65,7 +60,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) getIt<IScreenLock>().authenticate();
+    if (state == AppLifecycleState.resumed) getIt<IScreenLock>().showLock();
   }
 
   @override
@@ -94,10 +89,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         ),
       ],
       child: BlocListener<ClientAuthBloc, AuthState>(
-        listenWhen: (prev, curr) {
-          if (curr.authStatus == AuthStatus.signedOut) return true;
-          return prev.authStatus != curr.authStatus;
-        },
+        listenWhen: (prev, curr) => prev.authStatus != curr.authStatus,
         listener: (context, state) {
           if (state.authStatus == AuthStatus.signedIn) {
             _onSignIn(context);
@@ -106,7 +98,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
               (_) => false,
             );
           } else if (state.authStatus == AuthStatus.signedOut) {
-            _onSignOut(context);
             _navigator.pushNamedAndRemoveUntil(
               SignInScreen.routeName,
               (_) => false,
