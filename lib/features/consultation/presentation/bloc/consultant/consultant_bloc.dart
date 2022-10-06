@@ -12,13 +12,18 @@ part 'consultant_state.dart';
 class ConsultantBloc extends Bloc<ConsultantEvent, ConsultantState> {
   ConsultantBloc(this._repo) : super(const ConsultantState()) {
     on(_getConsultants);
+    on(_getHours);
     on(_rateConsultants);
-    on(_bookConsultation);
+    on(_bookMeeting);
   }
+
   final ConsultantRepo _repo;
 
   _getConsultants(GetConsultants event, Emitter<ConsultantState> emit) async {}
+  _getHours(GetConsultantHours event, Emitter<ConsultantState> emit) async {
+    emit(state.copyWith(date: event.date, consultantId: event.id));
+  }
+
   _rateConsultants(RateConsultant event, Emitter<ConsultantState> emit) async {}
-  _bookConsultation(
-      BookConsultation event, Emitter<ConsultantState> emit) async {}
+  _bookMeeting(BookMeeting event, Emitter<ConsultantState> emit) async {}
 }

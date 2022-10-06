@@ -19,6 +19,8 @@ class ClientModel extends Client {
     super.avatarUrl,
     super.birthDate,
     super.gender,
+    super.staffId,
+    super.companyName,
   });
 
   factory ClientModel.fromJson(Map<String, dynamic> json) =>

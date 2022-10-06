@@ -62,7 +62,10 @@ class _TitleBar extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pushNamed(
                 CallScreen.routeName,
-                arguments: const CallPageData('', false),
+                arguments: CallPageData(
+                  context.read<ChatBloc>().state.consultant!.id.toString(),
+                  false,
+                ),
               );
             },
           ),
@@ -75,7 +78,9 @@ class _TitleBar extends StatelessWidget {
             ),
             onPressed: () => Navigator.of(context).pushNamed(
               CallScreen.routeName,
-              arguments: const CallPageData(''),
+              arguments: CallPageData(
+                context.read<ChatBloc>().state.consultant!.id.toString(),
+              ),
             ),
           ),
           const MoreOptions(),

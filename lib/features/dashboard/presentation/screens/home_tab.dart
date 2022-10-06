@@ -1,7 +1,8 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
+import 'package:tranquil_life/app/presentation/theme/properties.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_icon_button.dart';
 import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';

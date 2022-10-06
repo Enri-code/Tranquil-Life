@@ -3,6 +3,7 @@ import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
+import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/schedule_meeting_screen.dart';
@@ -60,11 +61,22 @@ class _PageBody extends StatelessWidget {
       type: MaterialType.transparency,
       child: Stack(
         children: [
-          Image.network(
-            consultant.avatarUrl,
-            fit: BoxFit.cover,
+          SizedBox(
             height: MediaQuery.of(context).size.height - 432,
-            width: double.infinity,
+            child: Image.network(
+              consultant.avatarUrl,
+              fit: BoxFit.cover,
+              frameBuilder: (_, img, val, ___) => CustomLoader.widget(),
+              errorBuilder: (_, __, ___) => Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Icon(TranquilIcons.profile, color: Colors.grey[600]),
+                  ),
+                ),
+              ),
+            ),
           ),
           Container(
             height: MediaQuery.of(context).viewPadding.top + 24,
@@ -149,7 +161,7 @@ class _PageBody extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 16),
                     SizedBox(
                       height: 48,
                       child: ElevatedButton(
@@ -201,7 +213,7 @@ class _InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       margin: const EdgeInsets.symmetric(vertical: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -218,13 +230,13 @@ class _InfoCard extends StatelessWidget {
             child: Icon(
               icon,
               color: Colors.white,
-              size: 30,
+              size: 26,
             ),
           ),
           const SizedBox(width: 16),
           Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -234,7 +246,6 @@ class _InfoCard extends StatelessWidget {
                   fontSize: 17,
                 ),
               ),
-              const SizedBox(height: 6),
               Text(
                 subTitle,
                 style: const TextStyle(

@@ -11,7 +11,7 @@ final signInCase = SignInCase();
 final signOutCase = SignOutCase();
 
 class SignInCase {
-  Future call(Client user) async {
+  void call(Client user) async {
     getIt<ProfileBloc>().add(AddUserProfile(user));
     await Future.delayed(kThemeChangeDuration);
     getIt<IScreenLock>().showLock(LockType.setupPin);

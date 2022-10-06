@@ -1,4 +1,5 @@
 import 'package:tranquil_life/app/data/repos/store.dart';
+import 'package:tranquil_life/app/domain/repos/store.dart';
 import 'package:tranquil_life/features/profile/data/models/client_model.dart';
 import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 import 'package:tranquil_life/features/profile/domain/repos/user_data.dart';
@@ -13,7 +14,7 @@ class UserDataStore extends IUserDataStore {
     init();
   }
 
-  static final _store = HiveStore('user_data');
+  static final IStore _store = HiveStore('user_data');
 
   @override
   Client? get user {
@@ -32,8 +33,8 @@ class UserDataStore extends IUserDataStore {
   set isUsingAvatar(bool val) => _store.set(_Keys.usingAvatar, val);
 
   @override
-  Future init() => _store.init();
+  Future<void> init() => _store.init();
 
   @override
-  Future deleteUser() => _store.deleteAll();
+  Future<void> deleteUser() => _store.deleteAll();
 }

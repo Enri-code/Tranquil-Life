@@ -10,7 +10,7 @@ SavedNoteModel _$SavedNoteModelFromJson(Map<String, dynamic> json) =>
     SavedNoteModel(
       id: json['id'] as String,
       dateUpdated: dateTimeFromString(json['updated_at'] as String),
-      title: json['heading'] as String? ?? '',
+      title: json['title'] as String? ?? '',
       description: json['body'] as String? ?? '',
       emoji: json['emoji'] as String?,
       hexColor: json['color'] as String?,

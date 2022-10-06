@@ -3,26 +3,30 @@ part of 'lock_screen_bloc.dart';
 class LockScreenState extends BlocStateBase {
   const LockScreenState({
     super.status,
+    this.tries = 0,
     this.pin = const [],
     this.isConfirmStep = false,
   });
 
-  final List<String> pin;
+  final int tries;
   final bool isConfirmStep;
+  final List<String> pin;
 
   @override
   LockScreenState copyWith({
-    OperationStatus? status,
+    int? tries,
     bool? isConfirmStep,
+    OperationStatus? status,
     List<String>? pin,
   }) {
     return LockScreenState(
-      status: status ?? this.status,
       pin: pin ?? this.pin,
+      tries: tries ?? this.tries,
       isConfirmStep: isConfirmStep ?? this.isConfirmStep,
+      status: status ?? this.status,
     );
   }
 
   @override
-  List<Object?> get props => [status, pin, isConfirmStep, ...super.props];
+  List<Object?> get props => [tries, pin, isConfirmStep, ...super.props];
 }

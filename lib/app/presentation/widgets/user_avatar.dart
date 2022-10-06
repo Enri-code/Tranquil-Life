@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
+import 'package:tranquil_life/app/presentation/widgets/pulsing_widget.dart';
 import 'package:tranquil_life/core/constants/constants.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 
@@ -19,38 +19,33 @@ class UserAvatar extends StatelessWidget {
     this.decoration,
   }) : super(key: key);
 
-  final double size;
+  final double? size;
   final String? imageUrl;
   final AvatarSource? source;
   final BoxDecoration? decoration;
 
-  Widget get placeHolder => Center(
-        child: _PulsingWidget(
-          child: Icon(Icons.image_search, size: size * 0.7),
+  static const Widget _placeHolder = PulsingWidget(
+    child: Padding(
+      padding: EdgeInsets.all(12),
+      child: FittedBox(fit: BoxFit.contain, child: Icon(Icons.image_search)),
+    ),
+  );
+
+  Widget errorBuilder(_, __, ___) => Padding(
+        padding: const EdgeInsets.all(8),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Icon(TranquilIcons.profile, color: Colors.grey[600]),
         ),
       );
 
-  Widget _errorBuilder(_, __, ___) => Icon(
-        TranquilIcons.profile,
-        color: Colors.grey[600],
-        size: size * 0.9 - 4,
-      );
-
-  Widget _frameBuilder(_, img, val, [___]) {
-    return AnimatedCrossFade(
-      alignment: Alignment.center,
-      firstChild: placeHolder,
-      secondChild: img,
-      crossFadeState:
-          val == null ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-      duration: kThemeAnimationDuration,
-    );
+  Widget frameBuilder(_, img, val, ___) {
+    return val == null ? _placeHolder : img;
   }
 
   @override
   Widget build(BuildContext context) {
-    String value =
-        imageUrl ?? context.read<ProfileBloc>().state.user?.avatarUrl ?? '';
+    String value = imageUrl ?? '';
     return Container(
       width: size,
       height: size,
@@ -66,61 +61,24 @@ class UserAvatar extends StatelessWidget {
             return Image.network(
               value,
               fit: BoxFit.cover,
-              errorBuilder: _errorBuilder,
-              frameBuilder: _frameBuilder,
+              errorBuilder: errorBuilder,
+              frameBuilder: frameBuilder,
             );
           case AvatarSource.file:
             return Image.file(
               File(value),
               fit: BoxFit.cover,
-              errorBuilder: _errorBuilder,
-              frameBuilder: _frameBuilder,
+              errorBuilder: errorBuilder,
+              frameBuilder: frameBuilder,
             );
           case AvatarSource.bitmojiUrl:
             return SvgPicture.string(
               fluttermojiFunctions.decodeFluttermojifromString(value),
               fit: BoxFit.cover,
-              placeholderBuilder: (_) => placeHolder,
+              placeholderBuilder: (_) => _placeHolder,
             );
         }
       }),
-    );
-  }
-}
-
-class _PulsingWidget extends StatefulWidget {
-  const _PulsingWidget({Key? key, required this.child}) : super(key: key);
-
-  final Widget child;
-
-  @override
-  State<_PulsingWidget> createState() => _PulsingWidgetState();
-}
-
-class _PulsingWidgetState extends State<_PulsingWidget> {
-  bool atEnd = true;
-  static const _minOpacity = 0.2;
-  static const _maxOpacity = 0.5;
-  double opacity = _minOpacity;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    SchedulerBinding.instance
-        .addPostFrameCallback((_) => setState(() => opacity = _maxOpacity));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      opacity: opacity,
-      curve: Curves.easeOut,
-      duration: const Duration(milliseconds: 600),
-      onEnd: () {
-        setState(() => opacity = atEnd ? _minOpacity : _maxOpacity);
-        atEnd = !atEnd;
-      },
-      child: widget.child,
     );
   }
 }

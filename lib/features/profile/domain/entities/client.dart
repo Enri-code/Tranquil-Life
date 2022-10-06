@@ -19,6 +19,8 @@ class Client extends User {
     super.avatarUrl,
     this.birthDate,
     this.gender,
+    this.staffId,
+    this.companyName,
   });
 
   @JsonKey(name: 'f_name')
@@ -29,16 +31,12 @@ class Client extends User {
 
   @JsonKey(name: 'phone')
   final String phoneNumber;
-  final String? birthDate;
-  final String? gender;
-
+  final String? birthDate, gender, staffId, companyName;
   final String token;
+
   final bool hasAnsweredQuestions, usesBitmoji;
 
-  @JsonKey(name: 'email_verified_at', fromJson: isVerifiedFromJson)
   final bool isVerified;
 
   Map<String, dynamic> toJson() => _$ClientToJson(this);
 }
-
-isVerifiedFromJson(dynamic jsonValue) => jsonValue != null;

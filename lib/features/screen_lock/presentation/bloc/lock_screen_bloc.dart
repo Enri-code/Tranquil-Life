@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,44 +12,86 @@ part 'lock_screen_event.dart';
 part 'lock_screen_state.dart';
 
 class LockScreenBloc extends Bloc<LockScreenEvent, LockScreenState> {
-  LockScreenBloc(this.lockType) : super(const LockScreenState()) {
+  LockScreenBloc(this._lockType, {this.maxTries = 3})
+      : super(const LockScreenState()) {
+    on<_RestoreLock>(_restoreLock);
     on<AddLockInput>(_addInput);
     on<RemoveLockInput>(_removeInput);
+    on<ResetLockInput>(_resetInput);
 
-    needsAuth =
-        lockType == LockType.authenticate || lockType == LockType.resetPin;
-    if (needsAuth) {
-      (() async => correctPin = await lockController.getPin() ?? '')();
+    if (_lockType == LockType.authenticate || _lockType == LockType.resetPin) {
+      lockController.getPin().then((value) => _correctPin = value ?? '');
     }
+    add(const _RestoreLock());
   }
 
-  final LockType lockType;
-  late bool needsAuth;
-  String correctPin = '';
+  final int maxTries;
+  final LockType _lockType;
 
+  StreamController<String>? _timeStream;
+  Stream<String> get timeLeft => _timeStream!.stream;
+
+  String _correctPin = '';
   String get _pin => state.pin.fold('', (prev, curr) => '$prev$curr');
 
-  _onPinComplete(Emitter<LockScreenState> emit) {
-    _emitResultStatus() {
-      emit(state.copyWith(
-        status: _pin == correctPin
-            ? OperationStatus.success
-            : OperationStatus.error,
-      ));
-    }
+  Future _onPinComplete(Emitter<LockScreenState> emit) async {
+    bool correct = _pin == _correctPin;
 
-    if (needsAuth) {
-      _emitResultStatus();
-    } else if (lockType == LockType.setupPin) {
+    await Future.delayed(kRadialReactionDuration);
+
+    if (_lockType == LockType.setupPin) {
       if (state.isConfirmStep) {
-        _emitResultStatus();
-        lockController.setPin(_pin);
+        emit(state.copyWith(
+          status: correct ? OperationStatus.success : OperationStatus.error,
+        ));
+        if (correct) lockController.setPin(_pin);
       } else {
-        correctPin = _pin;
-        emit(state.copyWith(isConfirmStep: true));
+        _correctPin = _pin;
+        emit(state.copyWith(
+          isConfirmStep: true,
+          status: OperationStatus.initial,
+        ));
       }
+    } else if (correct) {
+      lockController.tries = null;
+      emit(state.copyWith(status: OperationStatus.success, tries: 0));
+    } else if (state.tries < maxTries - 1) {
+      emit(state.copyWith(
+        tries: lockController.tries = state.tries + 1,
+        status: OperationStatus.error,
+      ));
+    } else {
+      _startTimer(emit);
+      lockController.lockInput();
     }
     add(const RemoveLockInput(true));
+  }
+
+  _startTimer(Emitter<LockScreenState> emit) {
+    _timeStream?.close();
+    _timeStream = StreamController();
+    emit(state.copyWith(status: OperationStatus.customLoading));
+    _timeStream!.add('Try again in 60 seconds.');
+    Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        if (timer.tick >= 60 || isClosed) {
+          if (!isClosed) add(const ResetLockInput());
+          return timer.cancel();
+        }
+        final time = 60 - timer.tick;
+        _timeStream!.add('Try again in $time second${time > 1 ? 's' : ''}.');
+      },
+    );
+  }
+
+  _restoreLock(_RestoreLock event, Emitter<LockScreenState> emit) async {
+    await lockController.init();
+    final timeOfLock = await lockController.timeOfLock;
+    emit(state.copyWith(tries: lockController.tries));
+    if (timeOfLock == null) return;
+    final diff = DateTime.now().difference(timeOfLock);
+    if (diff < const Duration(seconds: 60)) _startTimer(emit);
   }
 
   _addInput(AddLockInput event, Emitter<LockScreenState> emit) async {
@@ -55,8 +99,7 @@ class LockScreenBloc extends Bloc<LockScreenEvent, LockScreenState> {
     emit(state.copyWith(pin: [...state.pin, event.pin]));
     if (state.pin.length > 3) {
       emit(state.copyWith(status: OperationStatus.loading));
-      await Future.delayed(kThemeChangeDuration);
-      _onPinComplete(emit);
+      await _onPinComplete(emit);
     }
   }
 
@@ -66,5 +109,9 @@ class LockScreenBloc extends Bloc<LockScreenEvent, LockScreenState> {
     } else if (state.pin.isNotEmpty) {
       emit(state.copyWith(pin: state.pin.sublist(0, state.pin.length - 1)));
     }
+  }
+
+  _resetInput(ResetLockInput event, Emitter<LockScreenState> emit) {
+    emit(const LockScreenState());
   }
 }

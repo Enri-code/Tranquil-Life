@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
@@ -39,6 +40,7 @@ class _ShareNotesDialogState extends State<ShareNotesDialog> {
                 ),
                 const SizedBox(width: 24),
                 Switch.adaptive(
+                  activeColor: Theme.of(context).primaryColor,
                   value: allowUpdates,
                   onChanged: (val) => setState(() => allowUpdates = val),
                 ),

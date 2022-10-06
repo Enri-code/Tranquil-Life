@@ -17,7 +17,7 @@ class SignOutDialog extends StatelessWidget {
         'Sign Out',
         onPressed: () {
           final clientBloc = getIt<ClientAuthBloc>()..add(const SignOut());
-          if (clientBloc.state.authStatus == AuthStatus.signedOut) {
+          if (!clientBloc.state.isSignedIn) {
             Navigator.of(context).pushNamedAndRemoveUntil(
               SignInScreen.routeName,
               (_) => false,

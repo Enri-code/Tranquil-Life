@@ -6,6 +6,7 @@ import 'package:tranquil_life/features/questionnaire/domain/entities/question.da
 
 final questions = <Question>[
   Question(
+    0,
     title: 'What is your gender?',
     options: const [...genders, Option('Choose not to say')],
     onAnswer: (answer) {
@@ -14,6 +15,7 @@ final questions = <Question>[
     },
   ),
   Question(
+    1,
     title: 'What is your relationship status?',
     options: const [
       Option('Single'),
@@ -25,11 +27,13 @@ final questions = <Question>[
     ],
   ),
   Question(
+    2,
     title: 'Do you consider yourself to be religious?',
     options: [
       Option(
         'Yes',
         subQuestion: Question(
+          0,
           title: 'What religion do you identify with?',
           options: const [
             Option('Christianity'),
@@ -44,14 +48,17 @@ final questions = <Question>[
     ],
   ),
   Question(
+    3,
     title: 'Have you ever had professional counselling or therapy?',
     options: const [Option('Yes'), Option('No')],
   ),
   Question(
+    4,
     title: 'Have you ever had a group therapy session?',
     options: const [Option('Yes'), Option('No')],
   ),
   Question(
+    5,
     title: 'How have you been feeling lately?',
     options: const [
       Option('Good'),
@@ -61,6 +68,7 @@ final questions = <Question>[
     ],
   ),
   Question(
+    6,
     title: 'What is typically the largest source of your stress and sadness?',
     options: const [
       Option('Finances'),
@@ -71,6 +79,7 @@ final questions = <Question>[
     ],
   ),
   Question(
+    7,
     title: 'How does stress usually affect you?',
     options: const [
       Option('Moodiness'),
@@ -81,10 +90,12 @@ final questions = <Question>[
     ],
   ),
   Question(
+    8,
     title: 'Are you currently taking any medication?',
     options: const [Option('Yes'), Option('No')],
   ),
   Question(
+    9,
     title: 'What referred you to ${AppConfig.appName}?',
     options: const [
       Option('Friend or Family member'),

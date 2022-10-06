@@ -196,10 +196,7 @@ class _AttachmentSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 24),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
+      decoration: bottomSheetDecoration,
       child: SafeArea(
         child: FractionallySizedBox(
           widthFactor: 0.75,

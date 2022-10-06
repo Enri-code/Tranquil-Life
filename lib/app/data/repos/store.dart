@@ -17,10 +17,10 @@ class HiveStore extends IStore {
   T? get<T>(String key, {T? defaultValue}) => _box!.get(key) ?? defaultValue;
 
   @override
-  Future set<T>(String key, T value) => _box!.put(key, value);
+  Future<void> set<T>(String key, T value) => _box!.put(key, value);
 
   @override
-  Future deleteAll({List<String>? keys, bool closeBox = false}) async {
+  Future<void> deleteAll({List<String>? keys, bool closeBox = false}) async {
     await (keys == null ? _box!.clear() : _box!.deleteAll(keys));
     if (closeBox) return _box!.close();
   }

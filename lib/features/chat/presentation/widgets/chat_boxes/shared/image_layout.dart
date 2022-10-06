@@ -11,6 +11,7 @@ class ChatImageLayout extends StatelessWidget {
   ChatImageLayout({Key? key, required this.message}) : super(key: key);
 
   final Message message;
+
   bool canOpenFullview = true;
 
   static final _errorWidget = Container(

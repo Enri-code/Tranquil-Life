@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/core/utils/services/validators.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
@@ -14,10 +13,9 @@ import 'package:tranquil_life/app/presentation/widgets/mountain_bg.dart';
 import 'package:tranquil_life/features/auth/presentation/widgets/forgot_pasword.dart';
 import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
-import 'package:tranquil_life/features/screen_lock/domain/lock.dart';
 
 class SignInScreen extends StatefulWidget {
-  static const routeName = 'sign_in';
+  static const routeName = 'sign_in_screen';
 
   const SignInScreen({Key? key}) : super(key: key);
 
@@ -36,6 +34,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return CustomBGWidget(
       title: 'Sign In',
       child: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(
             child: Column(
@@ -96,6 +95,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: TextFormField(
                           autocorrect: false,
                           obscureText: isPasswordVisible,
+                          textInputAction: TextInputAction.done,
                           keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
                             hintText: 'Password',
@@ -151,45 +151,36 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(height: 32),
                 ElevatedButton(
                   onPressed: () {
-                    context.read<ClientAuthBloc>().add(const RemoveError());
+                    /*context.read<ClientAuthBloc>().add(const RemoveError());
                     SchedulerBinding.instance.addPostFrameCallback((_) {
                       if (_formKey.currentState!.validate()) {
                         context.read<ClientAuthBloc>().add(
                               SignIn(email, password),
                             );
                       }
+                    }); */
+                    context.read<ProfileBloc>().add(const AddUserProfile(
+                          Client(
+                            id: 1,
+                            firstName: 'Chappelle',
+                            lastName: 'Eric',
+                            email: 'eric@gmail.com',
+                            displayName: 'Enrique',
+                            phoneNumber: '09069184604',
+                            token: '',
+                            isVerified: false,
+                            hasAnsweredQuestions: false,
+                            usesBitmoji: false,
+                            companyName: '',
+                          ),
+                        ));
+                    SchedulerBinding.instance.addPostFrameCallback((_) {
+                      context.read<ClientAuthBloc>().add(
+                            const RestoreSignIn(),
+                          );
                     });
                   },
                   child: const Text('Sign In'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 32),
-                  child: OutlinedButton(
-                    onPressed: () async {
-                      context.read<ProfileBloc>().add(const AddUserProfile(
-                            Client(
-                              id: 1,
-                              firstName: 'Chappelle',
-                              lastName: 'Eric',
-                              email: 'eric@gmail.com',
-                              displayName: 'Enrique',
-                              phoneNumber: '09069184604',
-                              token: '',
-                              isVerified: false,
-                              hasAnsweredQuestions: false,
-                              usesBitmoji: false,
-                            ),
-                          ));
-                      SchedulerBinding.instance.addPostFrameCallback((_) {
-                        context.read<ClientAuthBloc>().add(
-                              const RestoreSignIn(),
-                            );
-                      });
-                      await Future.delayed(kThemeChangeDuration);
-                      getIt<IScreenLock>().showLock(LockType.setupPin);
-                    },
-                    child: const Text('Bypass Login'),
-                  ),
                 ),
               ],
             ),

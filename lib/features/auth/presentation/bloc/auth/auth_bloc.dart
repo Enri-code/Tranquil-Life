@@ -8,14 +8,14 @@ import 'package:tranquil_life/core/utils/errors/api_error.dart';
 import 'package:tranquil_life/app/domain/entities/query_params.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/features/auth/data/use_cases.dart';
+import 'package:tranquil_life/features/auth/domain/entities/register_data.dart';
 import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 import 'package:tranquil_life/features/auth/domain/repos/auth.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
-abstract class AuthBloc<P extends QueryParams>
-    extends Bloc<AuthEvent, AuthState> {
+abstract class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(const AuthState()) {
     on<RemoveError>(_resetError);
     on<RestoreSignIn>(_restoreSignIn);
@@ -25,14 +25,16 @@ abstract class AuthBloc<P extends QueryParams>
     on<ResetPassword>(_resetPassword);
   }
 
-  P get params;
+  RegisterData params = RegisterData();
+
   AuthRepo<Client, QueryParams> get repo;
 
   AuthState _onSignIn(Client user) {
     signInCase(user);
+    params = RegisterData();
     return state.copyWith(
       status: OperationStatus.success,
-      authStatus: AuthStatus.signedIn,
+      isSignedIn: true,
       error: null,
     );
   }
@@ -44,7 +46,7 @@ abstract class AuthBloc<P extends QueryParams>
     emit(state.copyWith(
       error: null,
       status: OperationStatus.initial,
-      authStatus: AuthStatus.signedIn,
+      isSignedIn: true,
     ));
   }
 
@@ -71,7 +73,7 @@ abstract class AuthBloc<P extends QueryParams>
     await signOutCase();
     emit(state.copyWith(
       status: OperationStatus.success,
-      authStatus: AuthStatus.signedOut,
+      isSignedIn: false,
       error: null,
     ));
   }

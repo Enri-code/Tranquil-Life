@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
+import 'package:tranquil_life/app/presentation/theme/properties.dart';
 import 'package:tranquil_life/features/questionnaire/domain/entities/question.dart';
 
 class QuestionBottomSheet extends StatefulWidget {
@@ -23,17 +24,7 @@ class _QuestionBottomSheetState extends State<QuestionBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 28, 24, 12),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 12,
-            color: Colors.black26,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
+      decoration: bottomSheetDecoration,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -9,26 +9,24 @@ class CustomIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
+    return Container(
       clipBehavior: Clip.hardEdge,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 4,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkResponse(
-            onTap: onPressed,
-            child: Padding(padding: const EdgeInsets.all(6), child: icon),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 5,
+            offset: Offset(0, 3),
+            color: Colors.black12,
           ),
+        ],
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkResponse(
+          onTap: onPressed,
+          child: Padding(padding: const EdgeInsets.all(6), child: icon),
         ),
       ),
     );

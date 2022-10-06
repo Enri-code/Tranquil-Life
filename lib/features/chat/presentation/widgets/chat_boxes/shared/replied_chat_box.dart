@@ -27,7 +27,7 @@ class RepliedChatBox extends StatelessWidget {
     switch (message.repliedMessage.type) {
       case MessageType.image:
       case MessageType.video:
-      case MessageType.voiceNote:
+      case MessageType.audio:
         return _MediaReplyWidget(message: message);
       default:
         return Padding(
@@ -100,7 +100,7 @@ class _MediaReplyWidgetState extends State<_MediaReplyWidget> {
 
   @override
   void initState() {
-    if (widget.message.repliedMessage.type == MessageType.voiceNote) {
+    if (widget.message.repliedMessage.type == MessageType.audio) {
       _initAudio();
     }
     super.initState();
@@ -126,7 +126,7 @@ class _MediaReplyWidgetState extends State<_MediaReplyWidget> {
     switch (widget.message.repliedMessage.type) {
       case MessageType.video:
         return _MediaWidget(text: 'Video', icon: Icons.image, color: color);
-      case MessageType.voiceNote:
+      case MessageType.audio:
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -175,7 +175,7 @@ class _MediaReplyWidgetState extends State<_MediaReplyWidget> {
             ),
           ),
           const SizedBox(width: 16),
-          if (widget.message.repliedMessage.type != MessageType.voiceNote)
+          if (widget.message.repliedMessage.type != MessageType.audio)
             SizedBox(
               width: 56,
               child: Builder(builder: (_) {

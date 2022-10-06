@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
+import 'package:tranquil_life/app/presentation/theme/properties.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
@@ -13,10 +14,7 @@ class ShareNotesBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-      ),
+      decoration: bottomSheetDecoration,
       child: SafeArea(
         child: MyDefaultTextStyle(
           style: const TextStyle(fontSize: 20),

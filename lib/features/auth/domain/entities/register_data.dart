@@ -10,6 +10,7 @@ class RegisterData extends QueryParams {
   String phone = '';
   String birthDate = '';
   String password = '';
+  String? staffId;
   int? companyId;
 
   @override
@@ -17,12 +18,13 @@ class RegisterData extends QueryParams {
     return <String, dynamic>{
       'f_name': firstName,
       'l_name': lastName,
-      'username': displayName,
+      'display_name': displayName,
+      'birth_date': birthDate,
+      'phone': phone,
+      'staff_id': staffId,
+      'company_id': companyId,
       'email': email,
       'password': password,
-      'phone': phone,
-      'company_id': companyId,
-      'birth_date': birthDate,
     };
   }
 }

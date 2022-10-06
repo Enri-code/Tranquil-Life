@@ -36,76 +36,79 @@ class _ClientSignUpScreen1State extends State<SignUp2Screen> {
   Widget build(BuildContext context) {
     return CustomBGWidget(
       title: 'Sign Up',
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 32, bottom: 20),
-            child: Text(
-              'Register Account',
-              style: TextStyle(fontSize: 36),
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 32, bottom: 20),
+              child: Text(
+                'Register Account',
+                style: TextStyle(fontSize: 36),
+              ),
             ),
-          ),
-          const Text(
-            'Complete your profile',
-            style: TextStyle(fontSize: 18),
-          ),
-          const SizedBox(height: 24),
-          Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                  ),
-                  child: IntlPhoneField(
-                    initialValue: params.phone,
-                    dropdownTextStyle: const TextStyle(color: Colors.black),
-                    pickerDialogStyle: PickerDialogStyle(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 16),
-                    ),
-                    autovalidateMode: AutovalidateMode.disabled,
-                    dropdownIconPosition: IconPosition.trailing,
-                    flagsButtonPadding: const EdgeInsets.only(left: 12),
-                    decoration: const InputDecoration(
-                      hintText: 'Phone number',
-                      errorStyle: authScreensErrorStyle,
-                    ),
-                    onChanged: (val) {
-                      var number = val.number.startsWith('0')
-                          ? val.number.substring(1)
-                          : val.number;
-                      params.phone = '${val.countryCode}$number';
-                    },
-                  ),
-                ),
-                const SizedBox(height: 8),
-                _OrganizationSection(params: params),
-              ],
+            const Text(
+              'Complete your profile',
+              style: TextStyle(fontSize: 18),
             ),
-          ),
-          const SizedBox(height: 20),
-          BlocBuilder<ClientAuthBloc, AuthState>(
-            builder: (context, state) {
-              return Text(
-                state.status == OperationStatus.error
-                    ? state.error!.message
-                    : '',
-                style: TextStyle(color: Colors.red[100]),
-              );
-            },
-          ),
-          const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                context.read<ClientAuthBloc>().add(const SignUp());
-              }
-            },
-            child: const Text('Sign Up'),
-          ),
-        ],
+            const SizedBox(height: 24),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                    ),
+                    child: IntlPhoneField(
+                      initialValue: params.phone,
+                      dropdownTextStyle: const TextStyle(color: Colors.black),
+                      pickerDialogStyle: PickerDialogStyle(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 16),
+                      ),
+                      autovalidateMode: AutovalidateMode.disabled,
+                      dropdownIconPosition: IconPosition.trailing,
+                      flagsButtonPadding: const EdgeInsets.only(left: 12),
+                      decoration: const InputDecoration(
+                        hintText: 'Phone number',
+                        errorStyle: authScreensErrorStyle,
+                      ),
+                      onChanged: (val) {
+                        var number = val.number.startsWith('0')
+                            ? val.number.substring(1)
+                            : val.number;
+                        params.phone = '${val.countryCode}$number';
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _OrganizationSection(params: params),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            BlocBuilder<ClientAuthBloc, AuthState>(
+              builder: (context, state) {
+                return Text(
+                  state.status == OperationStatus.error
+                      ? state.error!.message
+                      : '',
+                  style: TextStyle(color: Colors.red[100]),
+                );
+              },
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  context.read<ClientAuthBloc>().add(const SignUp());
+                }
+              },
+              child: const Text('Sign Up'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -205,10 +208,9 @@ class _OrganizationSectionState extends State<_OrganizationSection>
                 textCapitalization: TextCapitalization.words,
                 decoration: const InputDecoration(hintText: 'Staff ID'),
                 validator: (val) {
-                  if ((widget.params.companyId ?? _noneValue) == _noneValue) {
-                    return null;
-                  }
+                  if (widget.params.companyId == _noneValue) return null;
                   if (val!.isEmpty) return 'Your staff ID is required';
+                  widget.params.staffId = val;
                   return null;
                 },
               ),
@@ -236,6 +238,8 @@ class _OrganizationItemWidget extends StatelessWidget {
           child: Image.network(
             partner.logoUrl,
             fit: BoxFit.cover,
+            frameBuilder: (_, img, frame, ____) =>
+                frame == null ? const Icon(Icons.business) : img,
             errorBuilder: (_, __, ___) => const Icon(Icons.business),
           ),
         ),

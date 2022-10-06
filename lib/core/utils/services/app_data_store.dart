@@ -1,4 +1,5 @@
 import 'package:tranquil_life/app/data/repos/store.dart';
+import 'package:tranquil_life/app/domain/repos/store.dart';
 
 abstract class _Keys {
   static const isOnboardingCompleted = 'isOnboardingCompleted';
@@ -6,7 +7,7 @@ abstract class _Keys {
 }
 
 abstract class AppData {
-  static final _store = HiveStore('app_data');
+  static final IStore _store = HiveStore('app_data');
 
   static Future init() => _store.init();
 

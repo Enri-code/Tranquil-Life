@@ -17,7 +17,9 @@ class _MeetingsState extends State<_Meetings> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: const [BoxShadow(blurRadius: 8, color: Colors.black12)],
+        boxShadow: const [
+          BoxShadow(blurRadius: 6, color: Colors.black12, offset: Offset(0, 3)),
+        ],
       ),
       child: Column(
         children: [
@@ -25,7 +27,7 @@ class _MeetingsState extends State<_Meetings> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Your scheduled meetings',
+                'My scheduled meetings',
                 style: TextStyle(fontSize: 20),
               ),
               Container(

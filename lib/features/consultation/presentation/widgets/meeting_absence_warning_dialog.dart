@@ -6,7 +6,9 @@ import 'package:tranquil_life/core/utils/services/app_data_store.dart';
 import 'package:tranquil_life/features/consultation/presentation/bloc/consultant/consultant_bloc.dart';
 
 class MeetingAbsenceWarningDialog extends StatelessWidget {
-  const MeetingAbsenceWarningDialog({Key? key}) : super(key: key);
+  const MeetingAbsenceWarningDialog({Key? key, required this.meetingTime})
+      : super(key: key);
+  final String meetingTime;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class MeetingAbsenceWarningDialog extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               AppData.hasReadMeetingAbsenceMessage = true;
-              context.read<ConsultantBloc>().add(const BookConsultation());
+              context.read<ConsultantBloc>().add(BookMeeting(meetingTime));
               Navigator.of(context).pop();
             },
             child: const Text('Continue'),

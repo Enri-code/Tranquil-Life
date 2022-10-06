@@ -7,6 +7,10 @@ abstract class LockScreenEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class _RestoreLock extends LockScreenEvent {
+  const _RestoreLock();
+}
+
 class AddLockInput extends LockScreenEvent {
   const AddLockInput(this.pin);
   final String pin;
@@ -15,4 +19,8 @@ class AddLockInput extends LockScreenEvent {
 class RemoveLockInput extends LockScreenEvent {
   const RemoveLockInput([this.removeAll = false]);
   final bool removeAll;
+}
+
+class ResetLockInput extends LockScreenEvent {
+  const ResetLockInput();
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tranquil_life/app/presentation/theme/properties.dart';
 import 'package:tranquil_life/core/constants/note_colors.dart';
 import 'package:tranquil_life/core/utils/extensions/hex_color.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
@@ -42,10 +43,7 @@ class _NoteBottomSheetState extends State<NoteBottomSheet> {
     final bool isSaved = widget.note is SavedNote;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-      ),
+      decoration: bottomSheetDecoration,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

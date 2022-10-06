@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum MessageType { text, image, video, voiceNote }
+enum MessageType { text, image, video, audio }
 
 class Message extends Equatable {
   final int? id;

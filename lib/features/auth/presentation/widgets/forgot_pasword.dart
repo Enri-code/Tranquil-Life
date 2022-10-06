@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tranquil_life/app/presentation/theme/properties.dart';
 import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/core/utils/services/validators.dart';
@@ -32,10 +33,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(38),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-      ),
+      decoration: bottomSheetDecoration,
       child: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,

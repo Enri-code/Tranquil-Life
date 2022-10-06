@@ -45,6 +45,8 @@ class UpdateUser extends Client implements ProfileEvent {
               oldData?.hasAnsweredQuestions ??
               _profileData.hasAnsweredQuestions,
           gender: gender ?? oldData?.gender ?? _profileData.gender,
+          staffId: oldData?.staffId ?? _profileData.staffId,
+          companyName: oldData?.companyName ?? _profileData.companyName,
         );
 
   @override

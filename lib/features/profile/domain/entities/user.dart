@@ -8,6 +8,7 @@ class User {
   });
 
   final int id;
+  @JsonKey(name: 'username')
   final String displayName;
   @JsonKey()
   final String avatarUrl;

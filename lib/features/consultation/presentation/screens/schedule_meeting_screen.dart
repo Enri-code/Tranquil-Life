@@ -6,10 +6,10 @@ import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
 import 'package:tranquil_life/core/utils/services/app_data_store.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
 import 'package:tranquil_life/features/consultation/presentation/bloc/consultant/consultant_bloc.dart';
 import 'package:tranquil_life/features/consultation/presentation/widgets/meeting_absence_warning_dialog.dart';
+import 'package:tranquil_life/features/consultation/presentation/widgets/meeting_date_sheet.dart';
 
 part '../widgets/schedule_meeting_widgets.dart';
 
@@ -24,7 +24,6 @@ class ScheduleMeetingScreen extends StatefulWidget {
 
 class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
   late Consultant consultant;
-  String? date;
   String? time;
 
   @override
@@ -48,9 +47,7 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: _TimePickerWidget(
-                  date: date,
-                  onTimeChosen: (chosenTime) =>
-                      setState(() => time = chosenTime),
+                  onTimeChosen: (newTime) => setState(() => time = newTime),
                 ),
               ),
               SizedBox(
@@ -66,18 +63,21 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
                     surfaceTintColor: Colors.white,
                     shadowColor: Colors.black.withOpacity(0.5),
                   ),
-                  onPressed: () async {
-                    var chosenDate = await showCustomDatePicker(
-                      context,
-                      minDateFromNow: DateTime(0, 0),
-                      maxDateFromNow: DateTime(0),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (_) => MeetingDateSheet(consultant),
                     );
-                    setState(() => date = chosenDate?.folded);
                   },
-                  child: _CardInfo(
-                    icon: Icons.calendar_today,
-                    title: 'Date',
-                    info: date ?? 'Select a date',
+                  child: BlocBuilder<ConsultantBloc, ConsultantState>(
+                    builder: (context, state) {
+                      return _CardInfo(
+                        icon: Icons.calendar_today,
+                        title: 'Date',
+                        info: state.date?.folded ?? 'Select a date',
+                      );
+                    },
                   ),
                 ),
               ),
@@ -96,23 +96,30 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
                 ),
               ),
               const SizedBox(height: 40),
-              ElevatedButton(
-                onPressed: date == null || time == null
-                    ? null
-                    : () {
-                        if (!AppData.hasReadMeetingAbsenceMessage) {
-                          showDialog(
-                            context: context,
-                            barrierColor: const Color(0x9D000000),
-                            builder: (_) => const MeetingAbsenceWarningDialog(),
-                          );
-                          return;
-                        }
-                        context
-                            .read<ConsultantBloc>()
-                            .add(const BookConsultation());
-                      },
-                child: const Text('Confirm Booking'),
+              BlocBuilder<ConsultantBloc, ConsultantState>(
+                builder: (context, state) {
+                  return ElevatedButton(
+                    onPressed: state.date == null || time == null
+                        ? null
+                        : () {
+                            final meetingTime = time!;
+                            if (AppData.hasReadMeetingAbsenceMessage) {
+                              context.read<ConsultantBloc>().add(
+                                    BookMeeting(meetingTime),
+                                  );
+                              return;
+                            }
+                            showDialog(
+                              context: context,
+                              barrierColor: const Color(0x9D000000),
+                              builder: (_) => MeetingAbsenceWarningDialog(
+                                meetingTime: meetingTime,
+                              ),
+                            );
+                          },
+                    child: const Text('Confirm Booking'),
+                  );
+                },
               ),
             ],
           ),
@@ -123,13 +130,9 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
 }
 
 class _TimePickerWidget extends StatefulWidget {
-  const _TimePickerWidget({
-    Key? key,
-    required this.date,
-    required this.onTimeChosen,
-  }) : super(key: key);
+  const _TimePickerWidget({Key? key, required this.onTimeChosen})
+      : super(key: key);
 
-  final String? date;
   final Function(String time) onTimeChosen;
 
   @override
@@ -146,31 +149,29 @@ class _TimePickerWidgetState extends State<_TimePickerWidget> {
       alignment: Alignment.centerLeft,
       child: MyDefaultTextStyle(
         style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        child: widget.date == null
-            ? const SizedBox(height: 16)
-            : Padding(
-                padding: const EdgeInsets.only(bottom: 32),
-                child: Wrap(
-                  spacing: 20,
-                  runSpacing: 20,
-                  children: List.generate(
-                    12,
-                    (i) {
-                      var time = '06:00 PM';
-                      return GestureDetector(
-                        onTap: () {
-                          widget.onTimeChosen(time);
-                          setState(() => selectedIndex = i);
-                        },
-                        child: _TimeWidget(
-                          text: time,
-                          isSelected: selectedIndex == i,
-                        ),
-                      );
-                    },
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 32),
+          child: Wrap(
+            spacing: 20,
+            runSpacing: 20,
+            children: List.generate(
+              12,
+              (i) {
+                var time = '06:00 PM';
+                return GestureDetector(
+                  onTap: () {
+                    widget.onTimeChosen(time);
+                    setState(() => selectedIndex = i);
+                  },
+                  child: _TimeWidget(
+                    text: time,
+                    isSelected: selectedIndex == i,
                   ),
-                ),
-              ),
+                );
+              },
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -196,9 +197,7 @@ class _DayTimePickerState extends State<_DayTimePicker> {
             title: 'Daytime',
             icon: TranquilIcons.bright,
             isSelected: !isNightSelected,
-            onPressed: () {
-              setState(() => isNightSelected = false);
-            },
+            onPressed: () => setState(() => isNightSelected = false),
           ),
         ),
         const SizedBox(width: 24),
@@ -207,9 +206,7 @@ class _DayTimePickerState extends State<_DayTimePicker> {
             title: 'Nighttime',
             icon: TranquilIcons.night,
             isSelected: isNightSelected,
-            onPressed: () {
-              setState(() => isNightSelected = true);
-            },
+            onPressed: () => setState(() => isNightSelected = true),
           ),
         ),
       ],

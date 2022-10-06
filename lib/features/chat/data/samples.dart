@@ -15,7 +15,7 @@ const _videoMessage = Message(
 const _audioMessage = Message(
   id: 5,
   data: 'https://sounds-mp3.com/mp3/0001961.mp3',
-  type: MessageType.voiceNote,
+  type: MessageType.audio,
   fromYou: false,
 );
 
@@ -43,7 +43,7 @@ const messages = [
     id: 4,
     data: 'https://sounds-mp3.com/mp3/0001961.mp3',
     repliedMessage: _videoMessage,
-    type: MessageType.voiceNote,
+    type: MessageType.audio,
   ),
   _textMessage,
   _audioMessage,

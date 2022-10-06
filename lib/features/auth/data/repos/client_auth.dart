@@ -17,23 +17,22 @@ class AuthRepoImpl extends AuthRepo<Client, RegisterData> {
     try {
       var result = await ApiClient.post(AuthEndPoints.login,
           body: {"email": email, "password": password});
-      var userData = result.data['user'];
-      if (userData == null) {
-        return const Left(ResolvedError(
-          message: 'There is no user associated with this email address',
-          cause: EmailError(),
-        ));
-      }
       final List<String>? errors = (result.data['errors'] as List?)?.cast();
       if (errors != null) {
         return Left(ResolvedError(
           message: errors.fold('', (prev, next) => '$prev\n$next').trim(),
         ));
       }
+      final userData = result.data['user'];
+      if (userData == null) {
+        return const Left(ResolvedError(
+          message: 'There is no user associated with this email',
+          cause: EmailError(),
+        ));
+      }
       return Right(ClientModel.fromJson(userData));
-    } catch (e, s) {
+    } catch (e) {
       print(e);
-      print(s);
       return const Left(ResolvedError(
         message: 'There was a problem logging you in. Try again later',
       ));

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
@@ -155,13 +154,55 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           suffix: Text(newUserData.gender ?? 'Not set'),
                         ),
                       ),
-                      _bigPadding,
                       BlocBuilder<ProfileBloc, ProfileState>(
-                        builder: (_, state) => EditProfileTile(
-                          title: 'Location',
-                          suffixFieldValue:
-                              state.location ?? 'Somewhere on Earth',
-                        ),
+                        buildWhen: (prev, curr) =>
+                            prev.location != curr.location,
+                        builder: (_, state) {
+                          if (state.location == null) return const SizedBox();
+                          return Column(
+                            children: [
+                              _bigPadding,
+                              EditProfileTile(
+                                title: 'Location',
+                                suffix: Text(state.location!),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      BlocBuilder<ProfileBloc, ProfileState>(
+                        buildWhen: (prev, curr) =>
+                            prev.user!.companyName != curr.user!.companyName,
+                        builder: (_, state) {
+                          final name = state.user!.companyName;
+                          if (name == null) return const SizedBox();
+                          return Column(
+                            children: [
+                              _smallPadding,
+                              EditProfileTile(
+                                title: 'Current Company',
+                                suffix: Text(name),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      BlocBuilder<ProfileBloc, ProfileState>(
+                        buildWhen: (prev, curr) =>
+                            prev.user!.staffId != curr.user!.staffId,
+                        builder: (_, state) {
+                          final id = state.user!.staffId;
+                          if (id == null) return const SizedBox();
+                          return Column(
+                            children: [
+                              _smallPadding,
+                              EditProfileTile(
+                                title: 'Staff ID',
+                                suffix: Text(id),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ],
                   ),

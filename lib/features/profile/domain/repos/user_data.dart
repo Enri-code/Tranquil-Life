@@ -9,6 +9,6 @@ abstract class IUserDataStore {
 
   bool get isSignedIn => user != null;
 
-  Future init();
-  Future deleteUser();
+  Future<void> init();
+  Future<void> deleteUser();
 }

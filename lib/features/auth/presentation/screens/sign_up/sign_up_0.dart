@@ -8,6 +8,7 @@ import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/core/utils/services/validators.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
+import 'package:tranquil_life/features/auth/presentation/bloc/partner/partner_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_up/sign_up_1.dart';
 import 'package:tranquil_life/features/auth/presentation/styles.dart';
 import 'package:tranquil_life/app/presentation/widgets/mountain_bg.dart';
@@ -26,12 +27,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final termsOfServiceGS = TapGestureRecognizer();
   final privacyPolicyGS = TapGestureRecognizer();
 
-  bool isPasswordVisible = true;
+  bool isPasswordVisible = false;
 
   @override
   void initState() {
     termsOfServiceGS.onTap = () {};
     privacyPolicyGS.onTap = () {};
+    context.read<PartnerBloc>().add(const GetPartnersEvent());
     super.initState();
   }
 
@@ -48,7 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return CustomBGWidget(
       title: 'Sign Up',
       child: CustomScrollView(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(
             child: Column(
@@ -106,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: TextFormField(
                           autocorrect: false,
-                          obscureText: isPasswordVisible,
+                          obscureText: !isPasswordVisible,
                           keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
                             hintText: 'Password',
@@ -115,11 +117,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onPressed: () => setState(
                                   () => isPasswordVisible = !isPasswordVisible),
                               icon: isPasswordVisible
-                                  ? const Icon(Icons.visibility_off)
-                                  : Icon(
+                                  ? Icon(
                                       Icons.visibility,
                                       color: Theme.of(context).primaryColor,
-                                    ),
+                                    )
+                                  : const Icon(Icons.visibility_off),
                             ),
                           ),
                           validator: (val) {
@@ -138,7 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: TextFormField(
                           autocorrect: false,
-                          obscureText: true,
+                          obscureText: !isPasswordVisible,
                           keyboardType: TextInputType.visiblePassword,
                           decoration: const InputDecoration(
                             hintText: 'Confirm Password',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tranquil_life/app/presentation/theme/properties.dart';
 import 'package:tranquil_life/core/constants/genders.dart';
 
 class SelectGenderSheet extends StatelessWidget {
@@ -13,10 +14,7 @@ class SelectGenderSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-      ),
+      decoration: bottomSheetDecoration,
       child: SafeArea(
         child: Material(
           type: MaterialType.transparency,

@@ -8,7 +8,7 @@ import 'package:tranquil_life/features/profile/presentation/screens/profile_tab.
 import 'package:tranquil_life/features/wallet/presentation/screens/wallet_tab.dart';
 
 class DashboardScreen extends StatefulWidget {
-  static const routeName = 'client_dashboard';
+  static const routeName = 'dashboard_screen';
 
   const DashboardScreen({Key? key}) : super(key: key);
 
@@ -56,7 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               FocusManager.instance.primaryFocus?.unfocus();
               switch (page) {
                 case 3:
-                  if (true) //TODO: if in a meeting
+                  if (false) //TODO: if in a meeting
                   {
                     Navigator.of(context).pushNamed(ChatScreen.routeName);
                   } else {

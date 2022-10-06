@@ -26,6 +26,8 @@
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Tranquil Life requires permission to your gallery.</string>
 		<key>NSCameraUsageDescription</key>
 		<string>Tranquil Life requires permission to your camera to make calls and to take pictures and videos.</string>
 		<key>NSMicrophoneUsageDescription</key>

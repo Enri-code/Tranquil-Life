@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -9,67 +11,53 @@ import 'package:tranquil_life/features/screen_lock/presentation/screens/lock_scr
 
 class ScreenLock extends IScreenLock {
   final _auth = LocalAuthentication();
-  bool _isDeviceAuthAvailable = false;
+
   NavigatorState? _navigator;
+  Timer? _timer;
 
   @override
-  Future init(NavigatorState navigator) async {
-    _navigator = navigator;
-    _isDeviceAuthAvailable = (await _auth.getAvailableBiometrics()).isNotEmpty;
-  }
-
-  Future<bool> _tryDeviceAuth() async {
-    assert(
-      _navigator != null,
-      'init() needs to be called before the authenticate function can be used',
-    );
-
-    const reason = 'Please authenticate to access ${AppConfig.appName}';
-    bool didAuth = await _auth
-        .authenticate(
-          localizedReason: reason,
-          options: const AuthenticationOptions(
-            useErrorDialogs: false,
-            biometricOnly: true,
-            stickyAuth: true,
-          ),
-        )
-        .catchError((_, __) => false);
-    if (didAuth) return true;
-    didAuth = await _auth
-        .authenticate(
-          localizedReason: reason,
-          options: const AuthenticationOptions(
-            useErrorDialogs: false,
-            stickyAuth: true,
-          ),
-        )
-        .catchError((_, __) => false);
-    if (didAuth) return true;
-    return false;
-  }
+  void init(NavigatorState navigator) => _navigator = navigator;
 
   @override
-  Future<bool> showLock([LockType lockType = LockType.authenticate]) async {
-    late bool hasSetupPin;
-    bool didAuthWithDevice = false;
+  void resetTimer() {
+    _timer?.cancel();
+    _timer = Timer(const Duration(minutes: 5), () {
+      _showLockScreen(LockType.authenticate, false);
+    });
+  }
 
-    await Future.wait([
-      if (_isDeviceAuthAvailable && lockType == LockType.authenticate)
-        _tryDeviceAuth().then((value) => didAuthWithDevice = value),
-      lockController.getPin().then((value) => hasSetupPin = value != null)
-    ]);
-
-    if (didAuthWithDevice) return true;
-    if (lockType == LockType.authenticate && !hasSetupPin) {
+  Future<bool?> _showLockScreen(LockType lockType,
+      [bool setupIfUnset = true]) async {
+    if (lockType == LockType.authenticate &&
+        !(await lockController.hasSetupPin)) {
+      if (!setupIfUnset) return true;
       lockType = LockType.setupPin;
     }
+
     final result = await _navigator!.pushNamed(
       LockScreen.routeName,
       arguments: lockType,
     );
+    return result as bool?;
+  }
 
-    return result as bool? ?? false;
+  @override
+  Future<bool> showLock([LockType lockType = LockType.authenticate]) async {
+    if (lockType == LockType.authenticate && await lockController.hasSetupPin) {
+      final didAuthWithDevice = await _auth
+          .authenticate(
+            localizedReason:
+                'Please authenticate to access ${AppConfig.appName}',
+            options: const AuthenticationOptions(
+              biometricOnly: true,
+              stickyAuth: true,
+            ),
+          )
+          .catchError((_, __) => false);
+      if (didAuthWithDevice) return true;
+    }
+
+    return await _showLockScreen(lockType) ?? false;
   }
 
   @override

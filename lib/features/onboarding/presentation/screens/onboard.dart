@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tranquil_life/app/config.dart';
 import 'package:tranquil_life/core/utils/services/app_data_store.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
 
@@ -12,7 +13,7 @@ class OnboardScreen extends StatefulWidget {
 
 class _OnboardScreenState extends State<OnboardScreen> {
   static const _text = [
-    'Let\'s connect and get you to a brighter state. What brings you to Tranquil Life?',
+    'Let\'s connect and get you to a brighter state. What brings you to ${AppConfig.appName}?',
     'We create an all day access to Psychologists, Counsellors and Therapists.'
   ];
   final _pageController = PageController();

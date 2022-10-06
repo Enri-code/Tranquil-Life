@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
+import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/consultant_details.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/schedule_meeting_screen.dart';
+import 'package:tranquil_life/features/consultation/presentation/widgets/meeting_date_sheet.dart';
 
 class ConsultantCard extends StatelessWidget {
   const ConsultantCard({Key? key, required this.consultant}) : super(key: key);
@@ -20,7 +22,7 @@ class ConsultantCard extends StatelessWidget {
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 200),
             child: Container(
-              width: size.width * 0.31,
+              width: size.width * 0.32,
               height: 164,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -36,23 +38,9 @@ class ConsultantCard extends StatelessWidget {
                     child: Hero(
                       tag: '${consultant.id}-img',
                       transitionOnUserGestures: true,
-                      child: Image.network(
-                        consultant.avatarUrl,
-                        fit: BoxFit.fitHeight,
-                        errorBuilder: (_, __, ___) => const Icon(
-                          TranquilIcons.profile,
-                          color: Colors.grey,
-                          size: 120,
-                        ),
-                        frameBuilder: (_, img, val, ___) {
-                          if (val == null) {
-                            return const SizedBox.square(
-                              dimension: 120,
-                              child: Center(child: CircularProgressIndicator()),
-                            );
-                          }
-                          return img;
-                        },
+                      child: UserAvatar(
+                        imageUrl: consultant.avatarUrl,
+                        decoration: const BoxDecoration(),
                       ),
                     ),
                   ),
@@ -97,7 +85,7 @@ class ConsultantCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 _Button(
-                  label: 'View Profile',
+                  label: 'View profile',
                   icon: Icon(TranquilIcons.tag_user,
                       color: Theme.of(context).primaryColor),
                   onPressed: () {
@@ -112,10 +100,22 @@ class ConsultantCard extends StatelessWidget {
                   label: 'Schedule a meeting',
                   icon: Icon(TranquilIcons.calendar_tick,
                       color: Theme.of(context).primaryColor),
-                  onPressed: () => Navigator.of(context).pushNamed(
-                    ScheduleMeetingScreen.routeName,
-                    arguments: consultant,
-                  ),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (_) => MeetingDateSheet(
+                        consultant,
+                        onChosen: () => Future.delayed(
+                          kThemeChangeDuration,
+                          () => Navigator.of(context).popAndPushNamed(
+                            ScheduleMeetingScreen.routeName,
+                            arguments: consultant,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 4),
               ],

@@ -12,4 +12,7 @@ class ReplyMessage extends Message {
     super.isSent,
     super.timeSent,
   });
+
+  @override
+  List<Object?> get props => [...super.props, repliedMessage];
 }

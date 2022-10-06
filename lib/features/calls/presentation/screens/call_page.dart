@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:agora_rtc_engine/rtc_local_view.dart' as local;
-// import 'package:agora_rtc_engine/rtc_remote_view.dart' as remote;
+import 'package:agora_rtc_engine/rtc_remote_view.dart';
 import 'package:tranquil_life/app/presentation/widgets/back_button_white.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
@@ -12,10 +11,10 @@ import 'package:tranquil_life/features/calls/presentation/widgets/small_view.dar
 import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
 
 class CallPageData {
-  final String callRoomId;
+  final String consultantId;
   final bool isVideoEnabled;
 
-  const CallPageData(this.callRoomId, [this.isVideoEnabled = true]);
+  const CallPageData(this.consultantId, [this.isVideoEnabled = true]);
 }
 
 class CallScreen extends StatefulWidget {
@@ -29,19 +28,23 @@ class CallScreen extends StatefulWidget {
 
 class _CallScreenState extends State<CallScreen> {
   final controller = getIt<CallController>();
+  bool joinCalled = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     setStatusBarBrightness(false);
+    if (joinCalled) return;
+    joinCalled = true;
     final data = ModalRoute.of(context)!.settings.arguments as CallPageData;
-    controller.join(data.callRoomId, startWithVideo: data.isVideoEnabled);
+    controller.join(data.consultantId, startWithVideo: data.isVideoEnabled);
   }
 
   @override
   void dispose() {
     super.dispose();
-    controller.dispose();
+    controller.leave();
+    controller.clear();
   }
 
   @override
@@ -53,21 +56,21 @@ class _CallScreenState extends State<CallScreen> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            /*  Column(
+            Column(
               children: controller.remoteIds
                   .map((e) => Expanded(
-                        child: remote.SurfaceView(
+                        child: SurfaceView(
                           uid: e,
                           channelId: controller.callRoomId,
                         ),
                       ))
                   .toList(),
-            ), */
+            ),
             Column(
               children: [
                 Expanded(
                   child: SmallView(
-                    channelId: '',
+                    channelId: controller.callRoomId,
                     onPlatformViewCreated: (val) {
                       print(val);
                     },

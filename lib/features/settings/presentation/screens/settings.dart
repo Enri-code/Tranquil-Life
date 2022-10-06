@@ -80,19 +80,14 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 onPressed: () {},
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 28),
-                  const _SectionTitle('Security'),
-                  SettingsButton(
-                    prefixIconData: Icons.lock,
-                    label: 'Reset Pin',
-                    onPressed: () {
-                      getIt<IScreenLock>().showLock(LockType.resetPin);
-                    },
-                  ),
-                ],
+              const SizedBox(height: 28),
+              const _SectionTitle('Security'),
+              SettingsButton(
+                prefixIconData: Icons.lock,
+                label: 'Reset Pin',
+                onPressed: () {
+                  getIt<IScreenLock>().showLock(LockType.resetPin);
+                },
               ),
               const SizedBox(height: 28),
               SettingsButton(

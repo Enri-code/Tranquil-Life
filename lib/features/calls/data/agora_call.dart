@@ -3,30 +3,30 @@ import 'dart:io';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tranquil_life/core/constants/constants.dart';
+import 'package:tranquil_life/core/utils/helpers/api_client.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/calls/domain/video_call_repo.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 
 class AgoraController extends CallController {
   AgoraController() {
-    _initFuture = init();
+    _initFuture = _init();
   }
-
-  bool _isAudioOn = true, _isFrontCamera = true;
-  Set<int> _remoteIds = {};
 
   Future? _initFuture;
   RtcEngine? _engine;
 
-  Future<String?> get _token async {
-    return '';
+  @override
+  String callRoomId = '';
+
+  Future<String> get _token async {
+    final result = await ApiClient.get('');
+    return result.data;
   }
 
-  @override
-  Future init() async {
-    // _engine = await RtcEngine.create(agoraId);
-    _engine = await RtcEngine.createWithContext(RtcEngineContext(agoraId));
-    print('created');
+  Future _init() async {
+    if (_engine != null) return;
+    _engine = await RtcEngine.create(agoraId);
     _engine!.setEventHandler(RtcEngineEventHandler(
       error: (errorCode) {
         print(errorCode);
@@ -36,39 +36,37 @@ class AgoraController extends CallController {
       },
       joinChannelSuccess: (channel, uid, elapsed) {},
       userJoined: (uid, elapsed) {
-        _remoteIds.add(uid);
+        remoteIds.add(uid);
       },
       userOffline: (uid, reason) {
-        _remoteIds.remove(uid);
+        remoteIds.remove(uid);
       },
     ));
     await Future.wait([
       _engine!.setChannelProfile(ChannelProfile.Communication),
       _engine!.setClientRole(ClientRole.Broadcaster),
+      _engine!.setVideoEncoderConfiguration(
+        VideoEncoderConfiguration()
+          ..dimensions = const VideoDimensions(height: 1920, width: 1080),
+      ),
     ]);
   }
 
   @override
-  Future join(String callRoomId, {bool startWithVideo = false}) async {
+  Future join(String consultantId, {bool startWithVideo = false}) async {
+    final userId = getIt<ProfileBloc>().state.user!.id;
+    callRoomId = '$consultantId-$userId';
+
     if (Platform.isIOS || Platform.isAndroid) {
       await [Permission.microphone, Permission.camera].request();
     }
     await _initFuture;
-    await switchVideo(startWithVideo);
-    await _engine?.joinChannel(
-      await _token,
-      callRoomId,
-      null,
-      getIt<ProfileBloc>().state.user!.id,
-    );
+    if (startWithVideo) await switchVideo(true);
+    await _engine?.joinChannel(await _token, callRoomId, null, userId);
   }
 
   @override
-  Future leave() => _engine!.leaveChannel();
-
-  @override
   Future switchCamera() {
-    _isFrontCamera = !_isFrontCamera;
     return _engine!.switchCamera();
   }
 
@@ -89,7 +87,13 @@ class AgoraController extends CallController {
   }
 
   @override
-  void dispose() {
-    _engine?.destroy();
+  Future leave() async {
+    await _engine!.leaveChannel();
+    await switchVideo(false);
+  }
+
+  @override
+  void clear() {
+    remoteIds.clear();
   }
 }

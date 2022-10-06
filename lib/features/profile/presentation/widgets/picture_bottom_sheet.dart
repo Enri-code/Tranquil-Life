@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
+import 'package:tranquil_life/app/presentation/theme/properties.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
@@ -16,10 +17,7 @@ class AddPictureSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 20),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-      ),
+      decoration: bottomSheetDecoration,
       child: SafeArea(
         child: Material(
           type: MaterialType.transparency,

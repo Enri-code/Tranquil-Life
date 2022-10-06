@@ -20,10 +20,7 @@ class _RescheduleMeetingBottomSheetState
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 32, 24, 8),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-      ),
+      decoration: bottomSheetDecoration,
       child: SafeArea(
         top: false,
         child: Column(

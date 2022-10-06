@@ -26,13 +26,11 @@ class NotificationType {
 
 class NotificationData {
   final String? fromUid;
-  //final String? message;
   final NotificationType type;
   final DateTime creationTime;
 
   const NotificationData({
     this.fromUid,
-    //this.message,
     this.type = NotificationType.notification,
     required this.creationTime,
   });

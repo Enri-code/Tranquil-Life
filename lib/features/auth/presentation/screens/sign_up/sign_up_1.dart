@@ -4,7 +4,6 @@ import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/auth/domain/entities/register_data.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/partner/partner_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_up/sign_up_2.dart';
 import 'package:tranquil_life/features/auth/presentation/styles.dart';
 import 'package:tranquil_life/app/presentation/widgets/mountain_bg.dart';
@@ -24,12 +23,6 @@ class _ClientSignUpScreen1State extends State<SignUp1Screen> {
   late RegisterData params;
 
   @override
-  void initState() {
-    context.read<PartnerBloc>().add(const GetPartnersEvent());
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     params = context.read<ClientAuthBloc>().params;
     _dateTextController.text = params.birthDate;
@@ -47,6 +40,7 @@ class _ClientSignUpScreen1State extends State<SignUp1Screen> {
     return CustomBGWidget(
       title: 'Sign Up',
       child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
         child: Column(
           children: [
             const Padding(

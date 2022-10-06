@@ -1,6 +1,8 @@
 class Question {
-  Question({required this.title, required this.options, this.onAnswer});
+  Question(this.id,
+      {required this.title, required this.options, this.onAnswer});
 
+  final int id;
   final String title;
   final List<Option> options;
   final Function(Option)? onAnswer;
@@ -10,6 +12,7 @@ class Question {
     if (answer == null) return null;
     var subQuestion = answer!.subQuestion?.toJson();
     var map = <String, dynamic>{
+      'id': id,
       'question': title,
       'answer': answer!.title,
       if (subQuestion != null) 'sub_question': subQuestion,

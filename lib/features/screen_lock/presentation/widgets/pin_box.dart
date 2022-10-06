@@ -10,7 +10,11 @@ class PinBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Neumorphic(
-      style: NeumorphicStyle(color: Colors.grey[100], depth: -3),
+      style: NeumorphicStyle(
+        depth: -3,
+        intensity: 0.8,
+        color: Colors.grey[100],
+      ),
       child: SizedBox.square(
         dimension: keyPadSize,
         child: BlocBuilder<LockScreenBloc, LockScreenState>(

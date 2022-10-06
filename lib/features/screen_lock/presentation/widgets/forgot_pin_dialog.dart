@@ -3,6 +3,7 @@ import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/core/utils/services/functions.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
+import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
 
 class ForgotPinDialog extends StatelessWidget {
   const ForgotPinDialog({Key? key}) : super(key: key);
@@ -15,7 +16,15 @@ class ForgotPinDialog extends StatelessWidget {
           'To unregister this pin from your account, you have to sign out, and then sign back in.',
       yesDialog: DialogOption(
         'Sign Out',
-        onPressed: () => getIt<ClientAuthBloc>().add(const SignOut()),
+        onPressed: () {
+          final clientBloc = getIt<ClientAuthBloc>()..add(const SignOut());
+          if (!clientBloc.state.isSignedIn) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              SignInScreen.routeName,
+              (_) => false,
+            );
+          }
+        },
       ),
     );
   }
