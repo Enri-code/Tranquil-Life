@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:agora_rtc_engine/rtc_remote_view.dart';
-import 'package:tranquil_life/app/presentation/widgets/back_button_white.dart';
+import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
-import 'package:tranquil_life/features/calls/domain/video_call_repo.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
+import 'package:tranquil_life/features/chat/domain/repos/video_call_repo.dart';
 
-import 'package:tranquil_life/features/calls/presentation/widgets/buttons.dart';
-import 'package:tranquil_life/features/calls/presentation/widgets/small_view.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/call/call_buttons.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/call/call_small_view.dart';
 import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
 
 class CallPageData {

@@ -6,7 +6,7 @@ import 'package:tranquil_life/app/presentation/theme/theme_data.dart';
 import 'package:tranquil_life/app/presentation/widgets/input_listener.dart';
 import 'package:tranquil_life/core/utils/helpers/app_init.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/core/utils/services/location_service.dart';
 import 'package:tranquil_life/features/auth/data/repos/partners.dart';

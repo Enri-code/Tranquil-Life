@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';

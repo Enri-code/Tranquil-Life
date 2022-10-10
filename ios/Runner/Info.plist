@@ -38,6 +38,8 @@
 		<string>Tranquil Life keeps your location private and only uses it for security and in life-threatening situations.</string>
 		<key>NSLocationAlwaysUsageDescription</key>
 		<string>Tranquil Life keeps your location private and only uses it for security and in life-threatening situations.</string>
+		<key>NSCalendarsUsageDescription</key>
+		<string>Tranquil Life needs this permision to be able to add scheduled meetings to your calendar</string>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>

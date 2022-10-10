@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 import 'package:tranquil_life/features/profile/domain/repos/user_data.dart';
 

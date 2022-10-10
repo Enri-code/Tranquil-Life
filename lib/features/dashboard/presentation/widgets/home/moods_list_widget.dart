@@ -33,7 +33,7 @@ class _MoodsListView extends StatelessWidget {
                 (i) => GestureDetector(
                   onTap: () => Navigator.of(context).pushNamed(
                     NoteScreen.routeName,
-                    arguments: Note(title: '', emoji: moods[i]),
+                    arguments: Note(title: '', mood: moods[i]),
                   ),
                   child: Hero(
                     tag: 'home-${moods[i]}',

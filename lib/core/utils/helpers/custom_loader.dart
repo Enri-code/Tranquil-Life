@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomLoader {
+  const CustomLoader._();
+
   static bool _isDialogOpen = false;
   static late NavigatorState _navigator;
 

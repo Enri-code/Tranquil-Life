@@ -4,8 +4,8 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tranquil_life/core/constants/constants.dart';
 import 'package:tranquil_life/core/utils/helpers/api_client.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
-import 'package:tranquil_life/features/calls/domain/video_call_repo.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
+import 'package:tranquil_life/features/chat/domain/repos/video_call_repo.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 
 class AgoraController extends CallController {

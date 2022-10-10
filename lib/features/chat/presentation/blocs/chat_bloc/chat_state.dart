@@ -2,22 +2,27 @@ part of 'chat_bloc.dart';
 
 class ChatState extends Equatable {
   const ChatState({
-    this.chatIndex = 0,
+    this.highlightIndex = 0,
     this.consultant,
     this.messages = const [],
   });
 
-  final int chatIndex;
+  final int highlightIndex;
   final Consultant? consultant;
   final List<Message> messages;
 
-  ChatState copyWith({int? chatIndex, Consultant? consultant}) {
+  ChatState copyWith({
+    int? highlightIndex,
+    Consultant? consultant,
+    List<Message>? messages,
+  }) {
     return ChatState(
-      chatIndex: chatIndex ?? this.chatIndex,
+      highlightIndex: highlightIndex ?? this.highlightIndex,
       consultant: consultant ?? this.consultant,
+      messages: messages ?? this.messages,
     );
   }
 
   @override
-  List<Object?> get props => [chatIndex, consultant, messages];
+  List<Object?> get props => [highlightIndex, consultant, messages];
 }

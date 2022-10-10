@@ -10,7 +10,7 @@ class SavedNoteModel extends SavedNote {
     required super.dateUpdated,
     super.title,
     super.description,
-    super.emoji,
+    super.mood,
     super.hexColor,
   });
 

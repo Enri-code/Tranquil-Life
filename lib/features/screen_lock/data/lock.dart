@@ -21,7 +21,7 @@ class ScreenLock extends IScreenLock {
   @override
   void resetTimer() {
     _timer?.cancel();
-    _timer = Timer(const Duration(minutes: 5), () {
+    _timer = Timer(const Duration(minutes: 3), () {
       _showLockScreen(LockType.authenticate, false);
     });
   }

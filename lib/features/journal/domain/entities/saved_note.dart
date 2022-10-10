@@ -10,7 +10,7 @@ class SavedNote extends Note {
     required this.dateUpdated,
     super.title,
     super.description,
-    super.emoji,
+    super.mood,
     super.hexColor,
   });
 

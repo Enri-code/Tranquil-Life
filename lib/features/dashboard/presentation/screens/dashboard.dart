@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/chat_screen.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/speak_with_consultant.dart';
 import 'package:tranquil_life/features/dashboard/presentation/screens/home_tab.dart';
@@ -56,7 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               FocusManager.instance.primaryFocus?.unfocus();
               switch (page) {
                 case 3:
-                  if (false) //TODO: if in a meeting
+                  if (true) //TODO: if in a meeting
                   {
                     Navigator.of(context).pushNamed(ChatScreen.routeName);
                   } else {

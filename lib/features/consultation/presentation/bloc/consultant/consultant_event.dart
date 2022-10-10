@@ -19,8 +19,8 @@ class GetConsultantHours extends ConsultantEvent {
 }
 
 class BookMeeting extends ConsultantEvent {
-  const BookMeeting(this.time);
-  final String time;
+  const BookMeeting(this.date);
+  final String date;
 }
 
 class RateConsultant extends ConsultantEvent {

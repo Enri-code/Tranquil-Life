@@ -6,10 +6,12 @@ class MyDefaultTextStyle extends StatelessWidget {
     required this.child,
     required this.style,
     this.inherit = false,
+    this.textAlign,
   }) : super(key: key);
 
   final bool inherit;
   final Widget child;
+  final TextAlign? textAlign;
   final TextStyle style;
 
   @override
@@ -22,6 +24,7 @@ class MyDefaultTextStyle extends StatelessWidget {
               height: textTheme.height,
             )
           : textTheme.merge(style),
+      textAlign: textAlign,
       child: child,
     );
   }

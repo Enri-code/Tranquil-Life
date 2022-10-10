@@ -7,7 +7,7 @@ import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
 import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
 import 'package:tranquil_life/core/utils/extensions/hex_color.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 import 'package:tranquil_life/features/journal/domain/entities/saved_note.dart';
 import 'package:tranquil_life/features/journal/presentation/bloc/note/note_bloc.dart';
@@ -122,14 +122,14 @@ class _NoteScreenState extends State<NoteScreen> {
                             ),
                           ),
                           const Spacer(),
-                          if (_note.emoji != null)
+                          if (_note.mood != null)
                             Hero(
                               tag:
-                                  '${isAlreadySaved ? 'saved' : 'home'}-${_note.emoji!}',
+                                  '${isAlreadySaved ? 'saved' : 'home'}-${_note.mood!}',
                               child: Material(
                                 type: MaterialType.transparency,
                                 child: Text(
-                                  _note.emoji!,
+                                  _note.mood!,
                                   style: Platform.isIOS
                                       ? const TextStyle(fontSize: 48)
                                       : const TextStyle(fontSize: 40),

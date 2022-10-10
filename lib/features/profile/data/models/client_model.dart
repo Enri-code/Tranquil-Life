@@ -9,7 +9,7 @@ class ClientModel extends Client {
     required super.email,
     required super.firstName,
     required super.lastName,
-    required super.token,
+    required super.authToken,
     required super.id,
     required super.displayName,
     required super.phoneNumber,

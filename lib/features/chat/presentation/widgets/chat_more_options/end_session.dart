@@ -11,7 +11,13 @@ class _EndSessionDialog extends StatelessWidget {
           'Do you want to end your current session with ${context.watch<ChatBloc>().state.consultant!.displayName}?',
       yesDialog: DialogOption(
         'End Session',
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pop();
+          showDialog(
+            context: context,
+            builder: (_) => const RateConsultationDialog(),
+          );
+        },
       ),
     );
   }

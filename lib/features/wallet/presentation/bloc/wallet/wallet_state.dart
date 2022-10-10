@@ -11,6 +11,8 @@ class WalletState extends BlocStateBase {
   final int defaultIndex;
   final List<CardData>? cards;
 
+  CardData get defaultCard => cards![defaultIndex];
+
   @override
   List<Object?> get props => [...super.props, cards, defaultIndex];
 

@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tranquil_life/app/config.dart';
 import 'package:tranquil_life/app/presentation/widgets/ios_date_picker.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 import 'package:tranquil_life/features/journal/presentation/widgets/note_bottom_sheet.dart';
@@ -14,6 +16,19 @@ void setStatusBarBrightness(bool dark, [Duration? delayedTime]) async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarIconBrightness: dark ? Brightness.dark : Brightness.light,
     statusBarBrightness: dark ? Brightness.light : Brightness.dark,
+  ));
+}
+
+Future<bool> addMeetingToCalendar(DateTime time) {
+  return Add2Calendar.addEvent2Cal(Event(
+    title: 'TL consultation',
+    description:
+        'This is a scheduled meeting with a consultant on ${AppConfig.appName}',
+    location: AppConfig.appName,
+    startDate: time,
+    endDate: time.add(const Duration(hours: 1)),
+    androidParams: const AndroidParams(),
+    iosParams: const IOSParams(reminder: Duration(hours: 2)),
   ));
 }
 

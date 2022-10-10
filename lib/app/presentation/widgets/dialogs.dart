@@ -2,6 +2,77 @@ import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 
+enum InfoDialogType { warning, success }
+
+class InfoDialog extends StatelessWidget {
+  const InfoDialog({
+    Key? key,
+    this.child,
+    this.okayDialog,
+    this.infoType = InfoDialogType.success,
+  }) : super(key: key);
+
+  final InfoDialogType? infoType;
+  final DialogOption? okayDialog;
+  final Widget? child;
+
+  Widget _iconBuilder() {
+    const padding = EdgeInsets.all(6);
+    const margin = EdgeInsets.only(bottom: 16);
+    switch (infoType!) {
+      case InfoDialogType.success:
+        return Container(
+          margin: margin,
+          padding: padding,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: ColorPalette.green,
+          ),
+          child: const Icon(Icons.check, color: Colors.white),
+        );
+      case InfoDialogType.warning:
+        return Padding(
+          padding: margin,
+          child: Icon(
+            Icons.warning_rounded,
+            color: Colors.orange[400],
+            size: 36,
+          ),
+        );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
+        child: MyDefaultTextStyle(
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (infoType != null) _iconBuilder(),
+              if (child != null) child!,
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () {
+                  okayDialog?.onPressed?.call();
+                  if (okayDialog?.autoClose ?? true) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: Text(okayDialog?.title ?? 'Okay.'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class DialogOption {
   final bool autoClose;
   final String title;
@@ -113,7 +184,13 @@ class ConfirmDialog extends StatelessWidget {
 }
 
 class OptionsDialog extends StatelessWidget {
-  const OptionsDialog(this.options, {Key? key}) : super(key: key);
+  const OptionsDialog({
+    Key? key,
+    required this.options,
+    this.title,
+  }) : super(key: key);
+
+  final Widget? title;
   final List<DialogOption> options;
 
   @override
@@ -122,18 +199,19 @@ class OptionsDialog extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: options
-              .map<Widget>((e) => _DialogButton(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (title != null)
+                Padding(padding: const EdgeInsets.all(8), child: title!),
+              ...options.map<Widget>((e) => _DialogButton(
                     title: e.title,
                     onPressed: () {
                       if (e.autoClose) Navigator.of(context).pop();
                       e.onPressed?.call();
                     },
-                  ))
-              .toList(),
-        ),
+                  )),
+            ]),
       ),
     );
   }

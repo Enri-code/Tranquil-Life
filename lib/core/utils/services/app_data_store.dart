@@ -3,6 +3,7 @@ import 'package:tranquil_life/app/domain/repos/store.dart';
 
 abstract class _Keys {
   static const isOnboardingCompleted = 'isOnboardingCompleted';
+  static const hasShownChatDisableDialog = 'hasShownChatDisableDialog';
   static const hasReadMeetingAbsenceMessage = 'hasReadMeetingAbsenceMessage';
 }
 
@@ -17,6 +18,14 @@ abstract class AppData {
 
   static set isOnboardingCompleted(bool val) {
     _store.set(_Keys.isOnboardingCompleted, val);
+  }
+
+  static bool get hasShownChatDisableDialog {
+    return _store.get(_Keys.hasShownChatDisableDialog) ?? false;
+  }
+
+  static set hasShownChatDisableDialog(bool val) {
+    _store.set(_Keys.hasShownChatDisableDialog, val);
   }
 
   static bool get hasReadMeetingAbsenceMessage {

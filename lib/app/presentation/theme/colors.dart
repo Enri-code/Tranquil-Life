@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 abstract class ColorPalette {
   static const green = MaterialColor(
     0xff43A95D,
-    {200: Color(0xffD9EEDF), 500: Color(0xff43A95D), 800: Color(0xff2D713E)},
+    {
+      100: Color(0xffDDE8E0),
+      200: Color(0xffD9EEDF),
+      500: Color(0xff43A95D),
+      800: Color(0xff2D713E),
+    },
   );
   static const blue = MaterialColor(
     0xff056B9C,

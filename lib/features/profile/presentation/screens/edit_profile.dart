@@ -5,7 +5,7 @@ import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dar
 import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/profile/presentation/widgets/edit_profile_tile.dart';
 import 'package:tranquil_life/features/profile/presentation/widgets/gender_bottom_sheet.dart';

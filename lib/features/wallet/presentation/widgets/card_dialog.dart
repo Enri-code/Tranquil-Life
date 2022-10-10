@@ -12,7 +12,7 @@ class CardDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final walletBloc = context.read<WalletBloc>();
-    return OptionsDialog([
+    return OptionsDialog(options: [
       if (walletBloc.state.defaultIndex !=
           walletBloc.state.cards!.indexOf(card))
         DialogOption(

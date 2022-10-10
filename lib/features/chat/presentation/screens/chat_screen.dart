@@ -1,27 +1,23 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
-import 'package:tranquil_life/app/presentation/theme/properties.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
-import 'package:tranquil_life/app/presentation/widgets/back_button_white.dart';
 import 'package:tranquil_life/app/presentation/widgets/swipeable.dart';
 import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
-import 'package:tranquil_life/core/utils/services/media_service.dart';
+import 'package:tranquil_life/core/utils/services/app_data_store.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/core/utils/services/time_formatter.dart';
-import 'package:tranquil_life/features/calls/presentation/screens/call_page.dart';
+import 'package:tranquil_life/features/chat/presentation/screens/call_page.dart';
 import 'package:tranquil_life/features/chat/data/audio_recorder.dart';
-import 'package:tranquil_life/features/chat/data/samples.dart';
 import 'package:tranquil_life/features/chat/domain/entities/message.dart';
 import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/attachment_sheet.dart';
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/receiver/image.dart';
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/receiver/text.dart';
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/receiver/video.dart';
@@ -31,6 +27,7 @@ import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/send
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender/video.dart';
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/sender/voice_note.dart';
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_more_options.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/dialogs/disable_account_dialog.dart';
 
 part '../widgets/chat_app_bar.dart';
 part '../widgets/input_bar.dart';
@@ -56,15 +53,12 @@ class ChatScreen extends StatelessWidget {
             bottom: false,
             child: Padding(
               padding: const EdgeInsets.all(4),
-              child: BlocProvider(
-                create: (_) => ChatBloc(),
-                child: Column(
-                  children: const [
-                    _TitleBar(),
-                    Expanded(child: _Messages()),
-                    SafeArea(top: false, child: _InputBar()),
-                  ],
-                ),
+              child: Column(
+                children: const [
+                  _TitleBar(),
+                  Expanded(child: _Messages()),
+                  SafeArea(top: false, child: _InputBar()),
+                ],
               ),
             ),
           ),
@@ -75,34 +69,55 @@ class ChatScreen extends StatelessWidget {
 }
 
 class _ChatBox extends StatelessWidget {
-  const _ChatBox(this.message, {Key? key}) : super(key: key);
+  const _ChatBox(
+    this.message, {
+    Key? key,
+    required this.animate,
+    required this.highlightAnim,
+  }) : super(key: key);
+
   final Message message;
+  final bool animate;
+  final Animation<double> highlightAnim;
 
   @override
   Widget build(BuildContext context) {
-    if (message.fromYou) {
-      switch (message.type) {
-        case MessageType.image:
-          return SenderChatImage(message);
-        case MessageType.video:
-          return SenderChatVideo(message);
-        case MessageType.audio:
-          return SenderChatVoiceNote(message);
-        default:
-          return SenderChatText(message);
-      }
-    } else {
-      switch (message.type) {
-        case MessageType.image:
-          return ReceiverChatImage(message);
-        case MessageType.video:
-          return ReceiverChatVideo(message);
-        case MessageType.audio:
-          return ReceiverChatVoiceNote(message);
-        default:
-          return ReceiverChatText(message);
-      }
-    }
+    return AnimatedBuilder(
+      animation: animate ? highlightAnim : const AlwaysStoppedAnimation(0),
+      builder: (context, _) => Container(
+        color: Theme.of(context).primaryColor.withOpacity(
+              animate ? highlightAnim.value * 0.4 : 0.0,
+            ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: () {
+            if (message.fromYou) {
+              switch (message.type) {
+                case MessageType.image:
+                  return SenderChatImage(message);
+                case MessageType.video:
+                  return SenderChatVideo(message);
+                case MessageType.audio:
+                  return SenderChatVoiceNote(message);
+                default:
+                  return SenderChatText(message);
+              }
+            } else {
+              switch (message.type) {
+                case MessageType.image:
+                  return ReceiverChatImage(message);
+                case MessageType.video:
+                  return ReceiverChatVideo(message);
+                case MessageType.audio:
+                  return ReceiverChatVoiceNote(message);
+                default:
+                  return ReceiverChatText(message);
+              }
+            }
+          }(),
+        ),
+      ),
+    );
   }
 }
 
@@ -142,50 +157,51 @@ class _MessagesState extends State<_Messages>
     return UnfocusWidget(
       child: BlocBuilder<ChatBloc, ChatState>(
         builder: (context, state) {
-          if (messages.isEmpty) {
-            return const Center(
+          if (state.messages.isEmpty) {
+            return Center(
               child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Text(
-                  'No messages here yet.\nTalk to your consultant! 👋',
-                  style: TextStyle(color: Colors.white, height: 1.5),
-                  textAlign: TextAlign.center,
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Text(
+                      'No messages here yet.\nTalk to your consultant!',
+                      style: TextStyle(
+                        color: Colors.white,
+                        height: 1.5,
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 16),
+                    Text('👋', style: TextStyle(fontSize: 64)),
+                  ],
                 ),
               ),
             );
           }
-          return BlocListener<ChatBloc, ChatState>(
-            listenWhen: (prev, curr) => prev.chatIndex != curr.chatIndex,
+          return BlocConsumer<ChatBloc, ChatState>(
+            listenWhen: (prev, curr) {
+              return prev.highlightIndex != curr.highlightIndex;
+            },
             listener: (_, __) => animController.forward(from: 0),
-            child: BlocBuilder<ChatBloc, ChatState>(
-              builder: (context, state) => ScrollablePositionedList.builder(
+            builder: (context, state) {
+              return ScrollablePositionedList.builder(
                 reverse: true,
-                itemCount: messages.length,
+                itemCount: state.messages.length,
                 physics: const BouncingScrollPhysics(),
                 itemScrollController: context.read<ChatBloc>().scrollController,
                 padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewPadding.bottom,
                 ),
-                itemBuilder: (_, index) {
-                  final bool animate = index == state.chatIndex;
-                  return AnimatedBuilder(
-                    key: ValueKey(index),
-                    animation: animate
-                        ? highlightAnim
-                        : const AlwaysStoppedAnimation(0),
-                    builder: (context, _) => Container(
-                      color: Theme.of(context).primaryColor.withOpacity(
-                            animate ? highlightAnim.value * 0.4 : 0.0,
-                          ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: _ChatBox(messages[index]),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                itemBuilder: (_, index) => _ChatBox(
+                  // key: ValueKey(messages[index].id ?? 'sending-$index'),
+                  state.messages[index],
+                  highlightAnim: highlightAnim,
+                  animate: index == state.highlightIndex,
+                ),
+              );
+            },
           );
         },
       ),

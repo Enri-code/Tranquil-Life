@@ -19,17 +19,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final scrollController = ItemScrollController();
 
   void _scrollTo(ScrollToChatEvent event, Emitter<ChatState> emit) async {
-    emit(state.copyWith(chatIndex: -1));
+    emit(state.copyWith(highlightIndex: -1));
     await scrollController.scrollTo(
       alignment: 0.5,
       index: event.index,
       curve: Curves.easeOut,
       duration: kTabScrollDuration,
     );
-    emit(state.copyWith(chatIndex: event.index));
+    emit(state.copyWith(highlightIndex: event.index));
   }
 
   void _addMessage(AddMessage event, Emitter<ChatState> emit) async {
-    emit(state..messages.insert(0, event.message));
+    emit(state.copyWith(messages: [event.message, ...state.messages]));
   }
 }

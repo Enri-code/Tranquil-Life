@@ -6,7 +6,7 @@ final notes = [
     id: '7',
     title: 'I never liked therapy, so I was jittery, but my first',
     description: 'Description',
-    emoji: moods[0],
+    mood: moods[0],
     hexColor: '#ffC0E2C9',
     dateUpdated: DateTime.now(),
   ),
@@ -15,7 +15,7 @@ final notes = [
     title:
         'I never liked therapy, so I was jittery, but my first session. This is how I felt before, during, and after my first session.',
     description: 'Long description',
-    emoji: moods[1],
+    mood: moods[1],
     dateUpdated: DateTime.now().add(const Duration(days: 1)),
   ),
   SavedNote(
@@ -37,7 +37,7 @@ final notes = [
     title: 'Short note',
     description: 'Description',
     dateUpdated: DateTime.now().subtract(const Duration(days: 2)),
-    emoji: moods[4],
+    mood: moods[4],
     hexColor: '#ffC0E2C9',
   ),
   SavedNote(

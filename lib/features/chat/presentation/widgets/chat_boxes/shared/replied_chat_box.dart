@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/core/utils/services/time_formatter.dart';
-import 'package:tranquil_life/features/chat/data/samples.dart';
 import 'package:tranquil_life/features/chat/domain/entities/message.dart';
 import 'package:tranquil_life/features/chat/domain/entities/reply.dart';
 import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
@@ -14,11 +13,8 @@ import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/shar
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/shared/video_layout.dart';
 
 class RepliedChatBox extends StatelessWidget {
-  const RepliedChatBox(
-    this.message, {
-    Key? key,
-    required this.backgroundColor,
-  }) : super(key: key);
+  const RepliedChatBox(this.message, {Key? key, required this.backgroundColor})
+      : super(key: key);
 
   final Color backgroundColor;
   final ReplyMessage message;
@@ -69,9 +65,11 @@ class RepliedChatBox extends StatelessWidget {
                 containedInkWell: true,
                 highlightShape: BoxShape.rectangle,
                 onTap: () {
-                  final replyIndex = messages.indexOf(message.repliedMessage);
+                  final chatBloc = context.read<ChatBloc>();
+                  final replyIndex =
+                      chatBloc.state.messages.indexOf(message.repliedMessage);
                   if (replyIndex < 0) return;
-                  context.read<ChatBloc>().add(ScrollToChatEvent(replyIndex));
+                  chatBloc.add(ScrollToChatEvent(replyIndex));
                 },
               ),
             ),

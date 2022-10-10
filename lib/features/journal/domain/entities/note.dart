@@ -8,10 +8,10 @@ class Note {
   String title;
   @JsonKey(name: 'body')
   String description;
-  String? emoji;
+  String? mood;
   String? hexColor;
 
-  Note({this.title = '', this.description = '', this.emoji, this.hexColor});
+  Note({this.title = '', this.description = '', this.mood, this.hexColor});
 
   Map<String, dynamic> toJson() => _$NoteToJson(this);
 }

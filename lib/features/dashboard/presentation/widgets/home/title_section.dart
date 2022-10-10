@@ -84,7 +84,7 @@ class _Title extends StatefulWidget {
 }
 
 class _TitleState extends State<_Title> {
-  int notificationsCount = 1;
+  int count = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -140,32 +140,7 @@ class _TitleState extends State<_Title> {
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
-                      if (notificationsCount > 0)
-                        Transform.translate(
-                          offset: const Offset(8, -2),
-                          child: Container(
-                            padding: const EdgeInsets.all(2.6),
-                            decoration: BoxDecoration(
-                              color: ColorPalette.red,
-                              shape: BoxShape.circle,
-                              border:
-                                  Border.all(color: Colors.white, width: 2.2),
-                            ),
-                            child: SizedBox(
-                              width: 24,
-                              child: Center(
-                                child: Text(
-                                  notificationsCount.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                      if (count > 0) CountIndicator(count),
                     ],
                   ),
                 ),

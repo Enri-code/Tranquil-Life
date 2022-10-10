@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sent_reset_email.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_up/sign_up_0.dart';
-import 'package:tranquil_life/features/calls/presentation/screens/call_page.dart';
+import 'package:tranquil_life/features/chat/presentation/screens/call_page.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/chat_screen.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/image_full_view.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/video_player_page.dart';

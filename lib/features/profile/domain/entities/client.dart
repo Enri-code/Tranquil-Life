@@ -13,7 +13,7 @@ class Client extends User {
     required this.phoneNumber,
     required super.displayName,
     required this.usesBitmoji,
-    required this.token,
+    required this.authToken,
     this.isVerified = false,
     this.hasAnsweredQuestions = false,
     super.avatarUrl,
@@ -32,7 +32,7 @@ class Client extends User {
   @JsonKey(name: 'phone')
   final String phoneNumber;
   final String? birthDate, gender, staffId, companyName;
-  final String token;
+  final String authToken;
 
   final bool hasAnsweredQuestions, usesBitmoji;
 

@@ -22,6 +22,6 @@ Map<String, dynamic> _$ClientToJson(Client instance) {
     'company_name': instance.companyName,
     'is_verified': instance.isVerified,
     'has_answered_questions': instance.hasAnsweredQuestions,
-    'auth_token': instance.token,
+    'auth_token': instance.authToken,
   };
 }

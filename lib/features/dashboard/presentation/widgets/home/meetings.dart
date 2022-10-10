@@ -120,7 +120,7 @@ class _MeetingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OptionsDialog([
+    return OptionsDialog(options: [
       DialogOption(
         'Re-schedule this meeting',
         onPressed: () => showModalBottomSheet(

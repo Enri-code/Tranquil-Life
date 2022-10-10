@@ -126,7 +126,7 @@ class _OrganizationSection extends StatefulWidget {
 
 class _OrganizationSectionState extends State<_OrganizationSection>
     with SingleTickerProviderStateMixin {
-  static const _noneValue = 0;
+  static const _noneValue = 1;
 
   late final AnimationController _animCnntroller;
 

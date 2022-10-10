@@ -5,7 +5,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/journal/domain/entities/saved_note.dart';
 import 'package:tranquil_life/features/journal/presentation/bloc/journal/journal_bloc.dart';
 import 'package:tranquil_life/features/journal/presentation/bloc/note/note_bloc.dart';

@@ -9,8 +9,10 @@ class SwipeableWidget extends StatefulWidget {
     this.enabled = true,
     this.resetOnRelease = false,
     this.onStateChanged,
+    this.alignment = Alignment.center,
   }) : super(key: key);
 
+  final Alignment alignment;
   final bool resetOnRelease, enabled;
   final double? maxOffset;
   final Widget? swipedWidget;
@@ -81,7 +83,7 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
   Widget build(BuildContext context) {
     final percentage = offset / maxOffset;
     return Stack(
-      alignment: Alignment.center,
+      alignment: widget.alignment,
       children: [
         if (widget.swipedWidget != null)
           Transform.scale(

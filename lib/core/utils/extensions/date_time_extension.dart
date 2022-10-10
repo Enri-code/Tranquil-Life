@@ -6,7 +6,7 @@ extension DateTimeExtension on DateTime {
 
   String get folded {
     _padded(int val) => val.toString().padLeft(2, '0');
-    return '${_padded(day)}-${_padded(month)}-${_padded(year)}';
+    return '${_padded(day)}-${_padded(month)}-$year';
   }
 
   String get formatted {

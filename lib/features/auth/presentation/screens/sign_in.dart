@@ -162,16 +162,16 @@ class _SignInScreenState extends State<SignInScreen> {
                     context.read<ProfileBloc>().add(const AddUserProfile(
                           Client(
                             id: 1,
-                            firstName: 'Chappelle',
-                            lastName: 'Eric',
-                            email: 'eric@gmail.com',
-                            displayName: 'Enrique',
+                            firstName: 'Onyewuchi',
+                            lastName: 'Ifeanyi',
+                            email: 'ifywuchi@gmail.com',
+                            displayName: 'Ify Onyewuchi',
                             phoneNumber: '09069184604',
-                            token: '',
-                            isVerified: false,
+                            companyName: '',
                             hasAnsweredQuestions: false,
                             usesBitmoji: false,
-                            companyName: '',
+                            isVerified: false,
+                            authToken: '',
                           ),
                         ));
                     SchedulerBinding.instance.addPostFrameCallback((_) {

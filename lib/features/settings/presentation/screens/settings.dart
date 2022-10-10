@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/auth/presentation/widgets/sign_out_dialog.dart';
 import 'package:tranquil_life/features/screen_lock/domain/lock.dart';
 import 'package:tranquil_life/features/settings/presentation/widgets/settings_button.dart';

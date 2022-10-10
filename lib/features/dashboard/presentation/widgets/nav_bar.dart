@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
+import 'package:tranquil_life/app/presentation/widgets/count_indicator.dart';
+import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
 import 'package:tranquil_life/features/journal/presentation/screens/journal.dart';
 import 'package:tranquil_life/features/journal/presentation/screens/note_screen.dart';
 
@@ -100,18 +103,36 @@ class _NavBarState extends State<NavBar> {
             child: GestureDetector(
               onTap: () => widget.onPageChanged(3),
               behavior: HitTestBehavior.opaque,
-              child: Container(
-                padding: const EdgeInsets.all(9),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: ColorPalette.green[800],
-                  border: Border.all(width: 7, color: Colors.white),
-                ),
-                child: const Icon(
-                  TranquilIcons.messages,
-                  color: Colors.white,
-                  size: 32,
-                ),
+              child: Stack(
+                alignment: AlignmentDirectional.topEnd,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(9),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: ColorPalette.green[800],
+                      border: Border.all(width: 7, color: Colors.white),
+                    ),
+                    child: const Icon(
+                      TranquilIcons.messages,
+                      color: Colors.white,
+                      size: 32,
+                    ),
+                  ),
+                  BlocBuilder<ChatBloc, ChatState>(
+                    builder: (context, state) {
+                      if (state.messages.isEmpty) return const SizedBox();
+                      return Positioned(
+                        top: 6,
+                        right: 4,
+                        child: SizedBox.square(
+                          dimension: 28,
+                          child: CountIndicator(state.messages.length),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),

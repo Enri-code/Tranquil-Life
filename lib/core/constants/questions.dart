@@ -1,6 +1,6 @@
 import 'package:tranquil_life/app/config.dart';
 import 'package:tranquil_life/core/constants/genders.dart';
-import 'package:tranquil_life/core/utils/services/functions.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/questionnaire/domain/entities/question.dart';
 

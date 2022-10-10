@@ -40,7 +40,7 @@ class UpdateUser extends Client implements ProfileEvent {
               isVerified ?? oldData?.isVerified ?? _profileData.isVerified,
           usesBitmoji:
               usesBitmoji ?? oldData?.usesBitmoji ?? _profileData.usesBitmoji,
-          token: token ?? oldData?.token ?? _profileData.token,
+          authToken: token ?? oldData?.authToken ?? _profileData.authToken,
           hasAnsweredQuestions: hasAnsweredQuestions ??
               oldData?.hasAnsweredQuestions ??
               _profileData.hasAnsweredQuestions,

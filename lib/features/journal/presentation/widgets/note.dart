@@ -49,7 +49,7 @@ class NoteWidget extends StatelessWidget {
               ],
             ),
           ),
-          if (note.emoji != null)
+          if (note.mood != null)
             Positioned(
               bottom: Platform.isIOS ? -8 : -4,
               right: -4,
@@ -62,11 +62,11 @@ class NoteWidget extends StatelessWidget {
                   ),
                 ),
                 child: Hero(
-                  tag: 'saved-${note.emoji!}',
+                  tag: 'saved-${note.mood!}',
                   child: Material(
                     type: MaterialType.transparency,
                     child: Text(
-                      note.emoji!,
+                      note.mood!,
                       style: Platform.isIOS
                           ? const TextStyle(fontSize: 37)
                           : const TextStyle(fontSize: 31),
