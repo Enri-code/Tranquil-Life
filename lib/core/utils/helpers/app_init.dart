@@ -23,7 +23,11 @@ import 'package:tranquil_life/features/wallet/presentation/bloc/wallet/wallet_bl
 
 class AppSetup {
   static bool _isInit = false;
+
+  static late NavigatorState _navigator;
+
   static init(NavigatorState navigator) async {
+    _navigator = navigator;
     if (_isInit) return;
     _injectInstances(navigator.context);
     chatBoxMaxWidth = MediaQuery.of(navigator.context).size.width * 0.7;
@@ -36,20 +40,20 @@ class AppSetup {
     }
     final hiveFuture = Hive.initFlutter().whenComplete(() async {
       _injectStoreInstances();
-      return AppData.init();
+      if (!AppData.isOnboardingCompleted) {
+        precacheImage(
+          const AssetImage('assets/images/onboarding/0.png'),
+          navigator.context,
+        );
+      }
+      return AppData.init().whenComplete(() {
+        return Future.delayed(const Duration(milliseconds: 300));
+      });
     });
     _isInit = true;
-    await Future.wait([
-      hiveFuture.whenComplete(() {
-        if (!AppData.isOnboardingCompleted) {
-          precacheImage(
-            const AssetImage('assets/images/onboarding/0.png'),
-            navigator.context,
-          );
-        }
-      }),
-      Future.delayed(const Duration(milliseconds: 2500)),
-    ]);
+    await Future.wait(
+      [hiveFuture, Future.delayed(const Duration(milliseconds: 2500))],
+    );
     _goToScreen(navigator);
   }
 
@@ -68,7 +72,9 @@ class AppSetup {
   }
 
   static _injectStoreInstances() {
-    GetIt.instance.registerSingleton<IUserDataStore>(UserDataStore());
+    GetIt.instance
+      ..registerSingleton<IUserDataStore>(UserDataStore())
+      ..registerSingleton<IScreenLock>(ScreenLock()..init(_navigator));
   }
 
   static _injectInstances(BuildContext context) {
@@ -76,9 +82,6 @@ class AppSetup {
       ..registerSingleton(context.read<ClientAuthBloc>())
       ..registerSingleton(context.read<ProfileBloc>())
       ..registerSingleton(context.read<WalletBloc>())
-      ..registerSingleton<IScreenLock>(
-        ScreenLock()..init(Navigator.of(context)),
-      )
       ..registerLazySingleton<CallController>(() => AgoraController());
   }
 }

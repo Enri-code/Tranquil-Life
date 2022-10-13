@@ -42,24 +42,16 @@ class _ClientSignUpScreen1State extends State<SignUp2Screen> {
           children: [
             const Padding(
               padding: EdgeInsets.only(top: 32, bottom: 20),
-              child: Text(
-                'Register Account',
-                style: TextStyle(fontSize: 36),
-              ),
+              child: Text('Register Account', style: TextStyle(fontSize: 36)),
             ),
-            const Text(
-              'Complete your profile',
-              style: TextStyle(fontSize: 18),
-            ),
+            const Text('Complete your profile', style: TextStyle(fontSize: 18)),
             const SizedBox(height: 24),
             Form(
               key: _formKey,
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     child: IntlPhoneField(
                       initialValue: params.phone,
                       dropdownTextStyle: const TextStyle(color: Colors.black),

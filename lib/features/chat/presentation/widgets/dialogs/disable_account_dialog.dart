@@ -13,7 +13,11 @@ class DisableAccountDialog extends StatelessWidget {
       infoType: InfoDialogType.warning,
       okayDialog: DialogOption(
         'I understand.',
-        onPressed: () => AppData.hasShownChatDisableDialog = true,
+        autoClose: false,
+        onPressed: () {
+          AppData.hasShownChatDisableDialog = true;
+          Navigator.of(context).pop(true);
+        },
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -33,7 +37,7 @@ class DisableAccountDialog extends StatelessWidget {
                 const TextSpan(text: 'account details', style: bold),
                 const TextSpan(
                   text:
-                      ' with a consultant, your account and that of the consultant are at risk of being  ',
+                      ' with a consultant, your account and that of the consultant are at risk of being ',
                 ),
                 TextSpan(
                   text: 'disabled',

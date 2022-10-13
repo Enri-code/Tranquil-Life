@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:tranquil_life/app/config.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
+import 'package:tranquil_life/app/presentation/widgets/dialogs.dart';
+import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/features/auth/presentation/widgets/sign_out_dialog.dart';
 import 'package:tranquil_life/features/screen_lock/domain/lock.dart';
@@ -92,76 +95,112 @@ class _LockScreenState extends State<LockScreen> {
         child: Builder(builder: (context) {
           return Scaffold(
             appBar: _appBarBuilder(context.watch<LockScreenBloc>().state),
-            body: Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-                child: ConstrainedBox(
-                  constraints:
-                      const BoxConstraints(maxWidth: 400, maxHeight: 600),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: List.generate(4, (i) => PinBox(i)),
-                      ),
-                      const SizedBox(height: 24),
-                      SizedBox(
-                        height: 24,
-                        child: BlocBuilder<LockScreenBloc, LockScreenState>(
-                          builder: (context, state) {
-                            final lockBloc = context.read<LockScreenBloc>();
-                            if (state.status == OperationStatus.customLoading) {
-                              return StreamBuilder<String>(
-                                stream: lockBloc.timeLeft,
-                                builder: (_, snap) => Text(snap.data ?? ''),
-                              );
-                            }
-
-                            if (state.status == OperationStatus.error) {
-                              if (lockType == LockType.setupPin) {
-                                return Text(
-                                  'Wrong pin. Try again.',
-                                  style: TextStyle(
-                                    color: Theme.of(context).errorColor,
-                                  ),
-                                );
-                              }
-                              int triesLeft = lockBloc.maxTries - state.tries;
-                              return Text(
-                                'Wrong pin. $triesLeft ${triesLeft > 1 ? 'tries' : 'try'} left.',
-                                style: TextStyle(
-                                  color: Theme.of(context).errorColor,
-                                ),
-                              );
-                            }
-                            return const SizedBox();
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      const Flexible(child: _KeyPadWidget()),
-                      BlocListener<LockScreenBloc, LockScreenState>(
-                        listenWhen: (prev, curr) =>
-                            curr.status == OperationStatus.success &&
-                            prev.status != curr.status,
-                        listener: (context, state) {
-                          if (lockType == LockType.resetPin) {
-                            Navigator.of(context).popAndPushNamed(
-                              LockScreen.routeName,
-                              arguments: LockType.setupPin,
-                            );
-                          } else {
-                            Navigator.of(context).pop(true);
-                          }
-                        },
-                        child: const SizedBox(height: 16),
-                      ),
-                    ],
+            body: Stack(
+              fit: StackFit.expand,
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.white, Color(0xFFE5E5E5)],
+                    ),
                   ),
                 ),
-              ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 32),
+                    child: ConstrainedBox(
+                      constraints:
+                          const BoxConstraints(maxWidth: 400, maxHeight: 600),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: List.generate(4, (i) => PinBox(i)),
+                          ),
+                          const SizedBox(height: 24),
+                          SizedBox(
+                            height: 24,
+                            child: BlocBuilder<LockScreenBloc, LockScreenState>(
+                              builder: (context, state) {
+                                final lockBloc = context.read<LockScreenBloc>();
+                                if (state.status ==
+                                    OperationStatus.customLoading) {
+                                  return StreamBuilder<String>(
+                                    stream: lockBloc.timeLeft,
+                                    builder: (_, snap) => Text(snap.data ?? ''),
+                                  );
+                                }
+
+                                if (state.status == OperationStatus.error) {
+                                  if (lockType == LockType.setupPin) {
+                                    return Text(
+                                      'Wrong pin. Try again.',
+                                      style: TextStyle(
+                                        color: Theme.of(context).errorColor,
+                                      ),
+                                    );
+                                  }
+                                  int triesLeft =
+                                      lockBloc.maxTries - state.tries;
+                                  return Text(
+                                    'Wrong pin. $triesLeft ${triesLeft > 1 ? 'tries' : 'try'} left.',
+                                    style: TextStyle(
+                                      color: Theme.of(context).errorColor,
+                                    ),
+                                  );
+                                }
+                                return const SizedBox();
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          const Flexible(child: _KeyPadWidget()),
+                          BlocListener<LockScreenBloc, LockScreenState>(
+                            listenWhen: (prev, curr) =>
+                                curr.status == OperationStatus.success &&
+                                prev.status != curr.status,
+                            listener: (context, state) async {
+                              if (lockType == LockType.resetPin) {
+                                Navigator.of(context).popAndPushNamed(
+                                  LockScreen.routeName,
+                                  arguments: LockType.setupPin,
+                                );
+                              } else {
+                                if (lockType == LockType.setupPin &&
+                                    state.isConfirmStep) {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (_) => ConfirmDialog(
+                                      title:
+                                          'Would you like to be able to unlock ${AppConfig.appName} with your device\'s authentication method?',
+                                      yesDialog: DialogOption(
+                                        'I would!',
+                                        onPressed: () => getIt<IScreenLock>()
+                                            .setDeviceAuthUnlock(true),
+                                      ),
+                                      noDialog: DialogOption(
+                                        'No',
+                                        onPressed: () => getIt<IScreenLock>()
+                                            .setDeviceAuthUnlock(false),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                Navigator.of(context).pop(true);
+                              }
+                            },
+                            child: const SizedBox(height: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         }),
@@ -216,14 +255,17 @@ class _KeyPadWidget extends StatelessWidget {
                     scale: isInactive ? 0 : 1,
                     child: InputBox(
                       onPressed: () {
-                        context
-                            .read<LockScreenBloc>()
-                            .add(const ResetLockInput());
+                        context.read<LockScreenBloc>().add(
+                              const ResetLockInput(),
+                            );
                       },
                       child: const Padding(
                         padding: EdgeInsets.only(right: 2),
-                        child:
-                            Icon(Icons.restore, color: Colors.white, size: 26),
+                        child: Icon(
+                          Icons.restore,
+                          color: Colors.white,
+                          size: 26,
+                        ),
                       ),
                     ),
                   ),

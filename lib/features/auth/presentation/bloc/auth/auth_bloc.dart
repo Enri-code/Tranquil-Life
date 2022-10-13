@@ -72,7 +72,7 @@ abstract class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(status: OperationStatus.loading));
     await signOutCase();
     emit(state.copyWith(
-      status: OperationStatus.success,
+      status: OperationStatus.initial,
       isSignedIn: false,
       error: null,
     ));

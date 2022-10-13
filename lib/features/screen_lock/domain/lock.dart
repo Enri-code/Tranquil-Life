@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 enum LockType { setupPin, authenticate, resetPin }
 
 abstract class IScreenLock {
-  void init(NavigatorState navigator);
+  Future init(NavigatorState navigator);
+  void startTimer();
   void resetTimer();
-  Future<void> clearPin();
+  void stopTimer();
+  Future<void> clear();
+  Future<void> setDeviceAuthUnlock(bool val);
   Future<bool> showLock([LockType lockType = LockType.authenticate]);
 }

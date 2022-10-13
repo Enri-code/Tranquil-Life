@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:agora_rtc_engine/rtc_remote_view.dart';
 import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/core/utils/functions.dart';
@@ -56,16 +55,15 @@ class _CallScreenState extends State<CallScreen> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Column(
+            /*  Column(
               children: controller.remoteIds
                   .map((e) => Expanded(
-                        child: SurfaceView(
-                          uid: e,
-                          channelId: controller.callRoomId,
+                        child: AgoraVideoView(
+                          controller: ,
                         ),
                       ))
                   .toList(),
-            ),
+            ), */
             Column(
               children: [
                 Expanded(

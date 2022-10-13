@@ -89,8 +89,7 @@ class ConfirmDialog extends StatelessWidget {
     this.body,
     this.yesDialog,
     this.noDialog = const DialogOption('Cancel'),
-  })  : assert(bodyText != null || body != null),
-        super(key: key);
+  }) : super(key: key);
 
   final String? title;
   final String? bodyText;
@@ -122,6 +121,8 @@ class ConfirmDialog extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Builder(builder: (context) {
+                  if (body != null) return body!;
+                  if (bodyText == null) return const SizedBox();
                   return body ??
                       Text(
                         bodyText!,

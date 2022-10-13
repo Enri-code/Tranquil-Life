@@ -76,11 +76,13 @@ class _AppState extends State<App> {
           BlocListener<ClientAuthBloc, AuthState>(
             listenWhen: (prev, curr) => prev.isSignedIn != curr.isSignedIn,
             listener: (context, state) {
+              final screenLock = getIt<IScreenLock>();
               if (state.isSignedIn) {
                 _onSignIn(context);
+                screenLock.startTimer();
                 if (state.status == OperationStatus.success) {
                   Future.delayed(const Duration(milliseconds: 500), () {
-                    getIt<IScreenLock>().showLock(LockType.setupPin);
+                    screenLock.showLock(LockType.setupPin);
                   });
                 }
                 _navigator.pushNamedAndRemoveUntil(
@@ -88,6 +90,7 @@ class _AppState extends State<App> {
                   (_) => false,
                 );
               } else {
+                screenLock.stopTimer();
                 _navigator.pushNamedAndRemoveUntil(
                   SignInScreen.routeName,
                   (_) => false,
@@ -113,22 +116,28 @@ class _AppState extends State<App> {
             },
           ),
         ],
-        child: InputListener(
-          onInput: () => getIt<IScreenLock>().resetTimer(),
-          child: MaterialApp(
-            routes: AppConfig.routes,
-            title: AppConfig.appName,
-            themeMode: ThemeMode.light,
-            navigatorKey: _navigatorKey,
-            debugShowCheckedModeBanner: false,
-            theme: LightThemeData(ColorPalette.green).theme,
-            home: Builder(builder: (_) {
-              AppSetup.init(_navigator);
-              CustomLoader.init(_navigator);
-              return const SplashScreen();
-            }),
-          ),
-        ),
+        child: Builder(builder: (context) {
+          return InputListener(
+            onInput: () {
+              if (context.read<ClientAuthBloc>().state.isSignedIn) {
+                getIt<IScreenLock>().resetTimer();
+              }
+            },
+            child: MaterialApp(
+              routes: AppConfig.routes,
+              title: AppConfig.appName,
+              themeMode: ThemeMode.light,
+              navigatorKey: _navigatorKey,
+              debugShowCheckedModeBanner: false,
+              theme: LightThemeData(ColorPalette.green).theme,
+              home: Builder(builder: (_) {
+                AppSetup.init(_navigator);
+                CustomLoader.init(_navigator);
+                return const SplashScreen();
+              }),
+            ),
+          );
+        }),
       ),
     );
   }

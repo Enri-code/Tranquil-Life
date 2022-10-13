@@ -16,19 +16,52 @@ class ScreenLock extends IScreenLock {
   Timer? _timer;
 
   @override
-  void init(NavigatorState navigator) => _navigator = navigator;
+  Future init(NavigatorState navigator) {
+    _navigator = navigator;
+    return lockController.init();
+  }
+
+  @override
+  void startTimer() {
+    _timer = Timer(const Duration(seconds: 30), () async {
+      // _timer = Timer(const Duration(minutes: 3), () async {
+      if (await lockController.hasSetupPin) {
+        bool showLock = true;
+        if (lockController.canUseDeviceAuth) {
+          showLock = !await _tryDeviceAuth();
+        }
+        if (showLock) await _showLockScreen(LockType.authenticate, false);
+      }
+      resetTimer();
+    });
+  }
+
+  @override
+  void stopTimer() {
+    _timer?.cancel();
+    _timer == null;
+  }
 
   @override
   void resetTimer() {
-    _timer?.cancel();
-    _timer = Timer(const Duration(minutes: 3), () {
-      _showLockScreen(LockType.authenticate, false);
-    });
+    stopTimer();
+    startTimer();
+  }
+
+  Future<bool> _tryDeviceAuth() {
+    const options =
+        AuthenticationOptions(biometricOnly: true, stickyAuth: true);
+    return _auth
+        .authenticate(
+          localizedReason: 'Please authenticate to access ${AppConfig.appName}',
+          options: options,
+        )
+        .catchError((_, __) => false);
   }
 
   Future<bool?> _showLockScreen(LockType lockType,
       [bool setupIfUnset = true]) async {
-    if (lockType == LockType.authenticate &&
+    if ((lockType == LockType.authenticate || lockType == LockType.resetPin) &&
         !(await lockController.hasSetupPin)) {
       if (!setupIfUnset) return true;
       lockType = LockType.setupPin;
@@ -43,23 +76,17 @@ class ScreenLock extends IScreenLock {
 
   @override
   Future<bool> showLock([LockType lockType = LockType.authenticate]) async {
-    if (lockType == LockType.authenticate && await lockController.hasSetupPin) {
-      final didAuthWithDevice = await _auth
-          .authenticate(
-            localizedReason:
-                'Please authenticate to access ${AppConfig.appName}',
-            options: const AuthenticationOptions(
-              biometricOnly: true,
-              stickyAuth: true,
-            ),
-          )
-          .catchError((_, __) => false);
-      if (didAuthWithDevice) return true;
+    if (lockType == LockType.authenticate && lockController.canUseDeviceAuth) {
+      if (await _tryDeviceAuth()) return true;
     }
 
     return await _showLockScreen(lockType) ?? false;
   }
 
   @override
-  Future<void> clearPin() => lockController.clearPin();
+  Future<void> clear() => lockController.clear();
+
+  @override
+  Future<void> setDeviceAuthUnlock(bool val) =>
+      lockController.setDeviceAuthUnlock(val);
 }

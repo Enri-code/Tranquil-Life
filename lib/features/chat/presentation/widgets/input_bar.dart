@@ -16,22 +16,39 @@ class _InputBarState extends State<_InputBar> {
 
   StreamSubscription? _isRecordingStreamSub;
 
-  Future _handleRecordingUpload() async {
-    final chatBloc = context.read<ChatBloc>();
-    final file = await recorder.stop();
-    if (file == null) return;
-    chatBloc.add(AddMessage(
-      Message(isSent: false, type: MessageType.audio, data: file.path),
-    ));
+  Future _handleRecordingUpload(File? file, bool upload) async {
+    if (file == null || !upload) return;
+    context.read<ChatBloc>().add(AddMessage(
+          Message(isSent: false, type: MessageType.audio, data: file.path),
+        ));
   }
 
-  Future _uploadText() async {
+  Future _handleTextUplod(bool upload) async {
     final text = textController.text.trim();
+    if (text.isEmpty || !upload) return;
     textController.clear();
-    if (text.isEmpty) return;
     context.read<ChatBloc>().add(
           AddMessage(Message(isSent: false, data: text)),
         );
+  }
+
+  _handleUpload() async {
+    if (showMic) return;
+    File? file;
+    bool result = true;
+    if (isRecording) file = await recorder.stop();
+    if (!AppData.hasShownChatDisableDialog) {
+      result = await showDialog(
+            context: context,
+            builder: (_) => const DisableAccountDialog(),
+          ) ??
+          false;
+    }
+    if (isRecording) {
+      _handleRecordingUpload(file, result);
+    } else {
+      _handleTextUplod(result);
+    }
   }
 
   @override
@@ -155,21 +172,7 @@ class _InputBarState extends State<_InputBar> {
                       : null,
                 ),
                 child: GestureDetector(
-                  onTap: () {
-                    if (showMic) return;
-                    if (isRecording) {
-                      _handleRecordingUpload();
-                    } else {
-                      if (AppData.hasShownChatDisableDialog) {
-                        _uploadText();
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (_) => const DisableAccountDialog(),
-                        );
-                      }
-                    }
-                  },
+                  onTap: _handleUpload,
                   child: AnimatedCrossFade(
                     duration: kThemeChangeDuration,
                     crossFadeState: showMic

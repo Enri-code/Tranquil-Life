@@ -86,7 +86,6 @@ class LockScreenBloc extends Bloc<LockScreenEvent, LockScreenState> {
   }
 
   _restoreLock(_RestoreLock event, Emitter<LockScreenState> emit) async {
-    await lockController.init();
     final timeOfLock = await lockController.timeOfLock;
     emit(state.copyWith(tries: lockController.tries));
     if (timeOfLock == null) return;

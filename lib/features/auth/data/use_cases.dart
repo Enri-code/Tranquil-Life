@@ -24,7 +24,7 @@ class SignOutCase {
     getIt<WalletBloc>().add(const ClearWallet());
     await Future.wait([
       AppData.clearUserData(),
-      getIt<IScreenLock>().clearPin(),
+      getIt<IScreenLock>().clear(),
       getIt<IUserDataStore>().deleteUser(),
     ]);
   }

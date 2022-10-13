@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:tranquil_life/core/constants/constants.dart';
 import 'package:tranquil_life/core/utils/helpers/api_client.dart';
 import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/chat/domain/repos/video_call_repo.dart';
@@ -26,29 +25,26 @@ class AgoraController extends CallController {
 
   Future _init() async {
     if (_engine != null) return;
-    _engine = await RtcEngine.create(agoraId);
-    _engine!.setEventHandler(RtcEngineEventHandler(
-      error: (errorCode) {
-        print(errorCode);
+    _engine = createAgoraRtcEngine();
+    _engine!.registerEventHandler(RtcEngineEventHandler(
+      onError: (error, _) {
+        print(error);
       },
-      warning: (warningCode) {
-        print(warningCode);
-      },
-      joinChannelSuccess: (channel, uid, elapsed) {},
-      userJoined: (uid, elapsed) {
+      onJoinChannelSuccess: (channel, uid) {},
+      onUserJoined: (connection, uid, elapsed) {
         remoteIds.add(uid);
       },
-      userOffline: (uid, reason) {
+      onUserOffline: (connection, uid, reason) {
         remoteIds.remove(uid);
       },
     ));
     await Future.wait([
-      _engine!.setChannelProfile(ChannelProfile.Communication),
-      _engine!.setClientRole(ClientRole.Broadcaster),
-      _engine!.setVideoEncoderConfiguration(
-        VideoEncoderConfiguration()
-          ..dimensions = const VideoDimensions(height: 1920, width: 1080),
-      ),
+      _engine!
+          .setChannelProfile(ChannelProfileType.channelProfileCommunication),
+      _engine!.setClientRole(role: ClientRoleType.clientRoleBroadcaster),
+      _engine!.setVideoEncoderConfiguration(const VideoEncoderConfiguration(
+        dimensions: VideoDimensions(height: 1920, width: 1080),
+      )),
     ]);
   }
 
@@ -62,7 +58,12 @@ class AgoraController extends CallController {
     }
     await _initFuture;
     if (startWithVideo) await switchVideo(true);
-    await _engine?.joinChannel(await _token, callRoomId, null, userId);
+    await _engine?.joinChannel(
+      token: await _token,
+      channelId: callRoomId,
+      uid: userId,
+      options: ChannelMediaOptions(),
+    );
   }
 
   @override

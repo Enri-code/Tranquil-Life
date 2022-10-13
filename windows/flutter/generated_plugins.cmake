@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   agora_rtc_engine
   flutter_secure_storage_windows
   geolocator_windows
+  iris_event
   local_auth_windows
   permission_handler_windows
 )

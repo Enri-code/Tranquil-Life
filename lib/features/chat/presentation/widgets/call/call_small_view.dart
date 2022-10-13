@@ -1,6 +1,5 @@
 import 'package:draggable_widget/draggable_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:agora_rtc_engine/rtc_local_view.dart' as local;
 
 class SmallView extends StatefulWidget {
   const SmallView({
@@ -22,12 +21,10 @@ class SmallView extends StatefulWidget {
 
 class _SmallViewState extends State<SmallView> {
   Widget _viewBuilder() {
-    return local.SurfaceView(
-      zOrderOnTop: true,
-      zOrderMediaOverlay: true,
-      channelId: widget.channelId,
-      onPlatformViewCreated: widget.onPlatformViewCreated,
-    );
+    return SizedBox();
+    /*  return AgoraVideoView(
+      controller: ,
+    ); */
   }
 
   @override

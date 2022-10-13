@@ -118,7 +118,7 @@ class _ClientSignUpScreen1State extends State<SignUp1Screen> {
                       ),
                       validator: (val) {
                         if (val!.isEmpty) {
-                          return 'Your display name will be shown to consultants';
+                          return 'Your display name will be displayed to consultants';
                         }
                         params.displayName = val;
                         return null;
