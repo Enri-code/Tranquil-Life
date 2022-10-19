@@ -143,8 +143,8 @@ class _Button extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          onPrimary: Colors.black,
-          primary: ColorPalette.green[200],
+          foregroundColor: Colors.black,
+          backgroundColor: ColorPalette.green[200],
           shadowColor: Colors.black.withOpacity(0.5),
           surfaceTintColor: Colors.white,
         ),

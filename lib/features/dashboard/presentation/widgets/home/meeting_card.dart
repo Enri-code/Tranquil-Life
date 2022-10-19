@@ -20,7 +20,7 @@ class MeetingCard extends StatelessWidget {
           const UserAvatar(
             imageUrl:
                 'https://media-exp1.licdn.com/dms/image/C4D03AQG9RwdZxoR3LA/profile-displayphoto-shrink_800_800/0/1641042314872?e=1664409600&v=beta&t=3i2pGW6GJaM47SVvonYStK24fA_OJO3nMbHq8JcFfZk',
-          ), //TODO
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: MyDefaultTextStyle(
@@ -38,7 +38,6 @@ class MeetingCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
-                        //TODO
                         Expanded(child: Text('Dr. Charles Richard')),
                         SizedBox(width: 4),
                         Text('09:00 pm'),
@@ -48,7 +47,6 @@ class MeetingCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      //TODO
                       const Text('60 mins'),
                       Text(
                         '19/08/2022',

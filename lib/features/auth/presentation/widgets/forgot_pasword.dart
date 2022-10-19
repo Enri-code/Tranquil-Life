@@ -69,7 +69,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
               height: 30,
               child: Text(
                 error,
-                style: TextStyle(color: Theme.of(context).errorColor),
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
             const SizedBox(height: 16),

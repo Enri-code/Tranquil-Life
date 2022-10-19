@@ -140,7 +140,8 @@ class _LockScreenState extends State<LockScreen> {
                                     return Text(
                                       'Wrong pin. Try again.',
                                       style: TextStyle(
-                                        color: Theme.of(context).errorColor,
+                                        color:
+                                            Theme.of(context).colorScheme.error,
                                       ),
                                     );
                                   }
@@ -149,7 +150,8 @@ class _LockScreenState extends State<LockScreen> {
                                   return Text(
                                     'Wrong pin. $triesLeft ${triesLeft > 1 ? 'tries' : 'try'} left.',
                                     style: TextStyle(
-                                      color: Theme.of(context).errorColor,
+                                      color:
+                                          Theme.of(context).colorScheme.error,
                                     ),
                                   );
                                 }
@@ -190,6 +192,7 @@ class _LockScreenState extends State<LockScreen> {
                                     ),
                                   );
                                 }
+                                // ignore: use_build_context_synchronously
                                 Navigator.of(context).pop(true);
                               }
                             },

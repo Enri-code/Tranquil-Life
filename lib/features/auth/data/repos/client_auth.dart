@@ -32,7 +32,6 @@ class AuthRepoImpl extends AuthRepo<Client, RegisterData> {
       }
       return Right(ClientModel.fromJson(userData));
     } catch (e) {
-      print(e);
       return const Left(ResolvedError(
         message: 'There was a problem logging you in. Try again later',
       ));
@@ -59,9 +58,8 @@ class AuthRepoImpl extends AuthRepo<Client, RegisterData> {
         ));
       }
       return Right(ClientModel.fromJson(result.data['user']));
-    } catch (e, s) {
-      print(e);
-      print(s);
+    } catch (_) {
+      print(_);
       return const Left(ResolvedError(
         message: 'There was a problem creating your account. Tray again later',
       ));
@@ -73,12 +71,8 @@ class AuthRepoImpl extends AuthRepo<Client, RegisterData> {
     try {
       var result = await ApiClient.post(AuthEndPoints.passwordReset,
           body: {'email': email});
-      print(result.data);
-      print(result.statusCode);
       return const Right(true);
-    } catch (e, s) {
-      print(e);
-      print(s);
+    } catch (e) {
       return const Left(ResolvedError(
         message: 'There was am issue sending the email. Tray again later',
       ));

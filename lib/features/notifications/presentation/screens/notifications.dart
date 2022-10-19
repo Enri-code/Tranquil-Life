@@ -21,7 +21,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           onTap: () => setState(() {}),
           child: ListView.builder(
             itemCount: 2,
-            itemBuilder: (_, index) => NotificationCard(),
+            itemBuilder: (_, index) => const NotificationCard(),
           ),
         ),
       ),

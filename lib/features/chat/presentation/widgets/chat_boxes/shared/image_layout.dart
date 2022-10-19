@@ -52,7 +52,7 @@ class ChatImageLayout extends StatelessWidget {
           tag: heroTag,
           child: Builder(
             builder: (_) {
-              Widget _frameBuilder(_, Widget child, int? frame, __) {
+              Widget frameBuilder(_, Widget child, int? frame, __) {
                 if (frame == null) {
                   return CustomLoader.widget(
                     message.fromYou ? Colors.white : null,
@@ -62,7 +62,7 @@ class ChatImageLayout extends StatelessWidget {
                 return child;
               }
 
-              Widget _errorBuilder(_, __, ___) {
+              Widget errorBuilder(_, __, ___) {
                 canOpenFullview = false;
                 return _errorWidget;
               }
@@ -71,15 +71,15 @@ class ChatImageLayout extends StatelessWidget {
                 return Image.network(
                   message.data,
                   fit: BoxFit.cover,
-                  frameBuilder: _frameBuilder,
-                  errorBuilder: _errorBuilder,
+                  frameBuilder: frameBuilder,
+                  errorBuilder: errorBuilder,
                 );
               }
               return Image.file(
                 File(message.data),
                 fit: BoxFit.cover,
-                frameBuilder: _frameBuilder,
-                errorBuilder: _errorBuilder,
+                frameBuilder: frameBuilder,
+                errorBuilder: errorBuilder,
               );
             },
           ),

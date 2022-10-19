@@ -141,7 +141,7 @@ class _PageBody extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
-                          children: [
+                          children: const [
                             _InfoCard(
                               icon: Icons.timer,
                               title: '1 hour session',

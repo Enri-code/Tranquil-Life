@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tranquil_life/app/data/repos/store.dart';
-import 'package:tranquil_life/app/domain/repos/store.dart';
+import 'package:tranquil_life/features/store/data/store.dart';
 import 'package:tranquil_life/app/presentation/bloc_helpers/state_base.dart';
 import 'package:tranquil_life/core/utils/errors/api_error.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
+import 'package:tranquil_life/features/store/domain/store.dart';
 import 'package:tranquil_life/features/wallet/data/models/card_data_model.dart';
 import 'package:tranquil_life/features/wallet/domain/entities/card_data.dart';
 

@@ -93,7 +93,7 @@ class _MeetingsState extends State<_Meetings> {
                       child: GestureDetector(
                         onTap: () => showDialog(
                           context: context,
-                          builder: (_) => _MeetingDialog(
+                          builder: (_) => const _MeetingDialog(
                             consultant: Consultant(
                               id: 0,
                               displayName: 'Dr Rique Blashq',
@@ -129,7 +129,7 @@ class _MeetingDialog extends StatelessWidget {
           builder: (_) => _RescheduleMeetingBottomSheet(consultant: consultant),
         ),
       ),
-      DialogOption('Cancel this meeting'),
+      const DialogOption('Cancel this meeting'),
     ]);
   }
 }

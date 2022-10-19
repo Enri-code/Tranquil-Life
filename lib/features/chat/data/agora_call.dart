@@ -27,9 +27,7 @@ class AgoraController extends CallController {
     if (_engine != null) return;
     _engine = createAgoraRtcEngine();
     _engine!.registerEventHandler(RtcEngineEventHandler(
-      onError: (error, _) {
-        print(error);
-      },
+      onError: (error, _) {},
       onJoinChannelSuccess: (channel, uid) {},
       onUserJoined: (connection, uid, elapsed) {
         remoteIds.add(uid);
@@ -62,7 +60,7 @@ class AgoraController extends CallController {
       token: await _token,
       channelId: callRoomId,
       uid: userId,
-      options: ChannelMediaOptions(),
+      options: const ChannelMediaOptions(),
     );
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:tranquil_life/app/presentation/theme/properties.dart';
-import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
 import 'package:tranquil_life/features/consultation/presentation/bloc/consultant/consultant_bloc.dart';
 
@@ -21,24 +20,13 @@ class MeetingDateSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 24),
-              child: MyDefaultTextStyle(
-                style: const TextStyle(fontWeight: FontWeight.w600),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Select a date', style: TextStyle(fontSize: 24)),
-                    const SizedBox(height: 24),
-                    Text(
-                      'March',
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
+            const Padding(
+              padding: EdgeInsets.only(left: 24, bottom: 24),
+              child: Text(
+                'Select a date',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
               ),
             ),
-            const SizedBox(height: 24),
             SizedBox(
               height: 80,
               child: ListView.builder(
@@ -102,7 +90,7 @@ class _DateCardState extends State<DateCard> {
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: const [
               Text('THUR', style: TextStyle(color: Colors.grey)),
               SizedBox(height: 8),
               Text('25TH'),

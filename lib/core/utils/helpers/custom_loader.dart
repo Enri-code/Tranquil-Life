@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomLoader {
+abstract class CustomLoader {
   const CustomLoader._();
 
   static bool _isDialogOpen = false;
@@ -8,24 +8,25 @@ class CustomLoader {
 
   static init(NavigatorState navigator) => _navigator = navigator;
 
-  static void display() {
+  static void display() async {
     if (_isDialogOpen) return;
-    showDialog(
+    _isDialogOpen = true;
+    await showDialog(
       context: _navigator.context,
       builder: (_) => widget(),
       barrierDismissible: false,
       useSafeArea: true,
     );
-    _isDialogOpen = true;
+    _isDialogOpen = false;
   }
 
-  static Widget widget([Color? color]) =>
-      Center(child: CircularProgressIndicator(color: color));
+  static Widget widget([Color? color]) {
+    return Center(child: CircularProgressIndicator(color: color));
+  }
 
   static void remove() {
-    if (_isDialogOpen) {
-      _navigator.pop();
-      _isDialogOpen = false;
-    }
+    if (!_isDialogOpen) return;
+    _navigator.pop();
+    _isDialogOpen = false;
   }
 }

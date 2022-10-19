@@ -58,8 +58,8 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    primary: Colors.white,
-                    onPrimary: Theme.of(context).primaryColor,
+                    backgroundColor: Colors.white,
+                    foregroundColor: Theme.of(context).primaryColor,
                     surfaceTintColor: Colors.white,
                     shadowColor: Colors.black.withOpacity(0.5),
                   ),

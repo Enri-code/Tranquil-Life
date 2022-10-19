@@ -5,7 +5,7 @@ class WidgetsThemeData {
   final Color primaryColor;
   WidgetsThemeData({required this.primaryColor})
       : textButtonTheme = TextButtonThemeData(
-          style: TextButton.styleFrom(primary: primaryColor),
+          style: TextButton.styleFrom(foregroundColor: primaryColor),
         ),
         outlinedButtonTheme = OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
@@ -24,7 +24,7 @@ class WidgetsThemeData {
   final elevatedButtonTheme = ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
     fixedSize: const Size(380, 56),
-    onPrimary: Colors.white,
+    foregroundColor: Colors.white,
     textStyle: const TextStyle(
       fontFamily: MyTextData.josefinFamily,
       fontWeight: FontWeight.normal,

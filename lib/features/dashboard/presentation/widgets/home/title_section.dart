@@ -149,7 +149,7 @@ class _TitleState extends State<_Title> {
           ],
         ),
         Text(
-          'Enrique!',
+          'Ifeanyi!',
           style: TextStyle(
             color: themeColor,
             fontSize: 30,

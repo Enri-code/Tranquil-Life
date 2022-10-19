@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:tranquil_life/app/domain/repos/store.dart';
 import 'package:tranquil_life/core/constants/constants.dart';
+import 'package:tranquil_life/features/store/domain/store.dart';
 
 class HiveStore extends IStore {
   HiveStore(this.key);

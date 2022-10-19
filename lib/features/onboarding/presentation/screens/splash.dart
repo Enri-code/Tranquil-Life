@@ -27,7 +27,7 @@ class SplashScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1!
+                    .bodyLarge!
                     .copyWith(color: Colors.white, height: 1.5),
               ),
             ),

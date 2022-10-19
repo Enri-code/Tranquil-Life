@@ -12,11 +12,8 @@ class ConsultantRepoImpl extends ConsultantRepo {
   Future<Either<ResolvedError, List<Consultant>>> getAll() async {
     try {
       var result = await ApiClient.get(ConsultantEndPoints.getAll);
-      print(result.data);
       return const Right([]);
-    } catch (e, s) {
-      print(e);
-      print(s);
+    } catch (e) {
       return const Left(ResolvedError());
     }
   }

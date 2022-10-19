@@ -69,9 +69,7 @@ class _CallScreenState extends State<CallScreen> {
                 Expanded(
                   child: SmallView(
                     channelId: controller.callRoomId,
-                    onPlatformViewCreated: (val) {
-                      print(val);
-                    },
+                    onPlatformViewCreated: (val) {},
                   ),
                 ),
                 const SafeArea(top: false, child: BottomBar()),

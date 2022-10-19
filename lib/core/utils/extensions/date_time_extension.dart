@@ -5,8 +5,8 @@ extension DateTimeExtension on DateTime {
   static final _timeFormat = DateFormat('hh:mm a');
 
   String get folded {
-    _padded(int val) => val.toString().padLeft(2, '0');
-    return '${_padded(day)}-${_padded(month)}-$year';
+    padded(int val) => val.toString().padLeft(2, '0');
+    return '${padded(day)}-${padded(month)}-$year';
   }
 
   String get formatted {

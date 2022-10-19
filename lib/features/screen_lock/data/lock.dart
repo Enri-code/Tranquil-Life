@@ -23,8 +23,7 @@ class ScreenLock extends IScreenLock {
 
   @override
   void startTimer() {
-    _timer = Timer(const Duration(seconds: 30), () async {
-      // _timer = Timer(const Duration(minutes: 3), () async {
+    _timer = Timer(const Duration(minutes: 3), () async {
       if (await lockController.hasSetupPin) {
         bool showLock = true;
         if (lockController.canUseDeviceAuth) {

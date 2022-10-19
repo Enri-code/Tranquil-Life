@@ -1,5 +1,5 @@
-import 'package:tranquil_life/app/data/repos/store.dart';
-import 'package:tranquil_life/app/domain/repos/store.dart';
+import 'package:tranquil_life/features/store/data/store.dart';
+import 'package:tranquil_life/features/store/domain/store.dart';
 import 'package:tranquil_life/core/constants/constants.dart';
 import 'package:tranquil_life/features/screen_lock/domain/screen_lock_store.dart';
 

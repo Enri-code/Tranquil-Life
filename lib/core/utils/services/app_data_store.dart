@@ -1,5 +1,5 @@
-import 'package:tranquil_life/app/data/repos/store.dart';
-import 'package:tranquil_life/app/domain/repos/store.dart';
+import 'package:tranquil_life/features/store/data/store.dart';
+import 'package:tranquil_life/features/store/domain/store.dart';
 
 abstract class _Keys {
   static const isOnboardingCompleted = 'isOnboardingCompleted';

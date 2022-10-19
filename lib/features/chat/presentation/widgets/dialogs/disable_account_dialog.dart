@@ -26,7 +26,7 @@ class DisableAccountDialog extends StatelessWidget {
             textAlign: TextAlign.center,
             text: TextSpan(
               text: 'If, for any reason, you share your ',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     fontSize: 17,
                     height: 1.3,
                   ),

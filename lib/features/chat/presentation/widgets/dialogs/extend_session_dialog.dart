@@ -47,11 +47,7 @@ class ExtendSessionDialog extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           const Text(
-            'Do you want to extend this session by one hour?',
-            style: TextStyle(fontSize: 20),
-          ),
-          const SizedBox(height: 16),
-          const Text(
+            'Do you want to extend this session by one hour?\n\n'
             'The fees will be deducted from your wallet balance.',
           ),
           const SizedBox(height: 8),

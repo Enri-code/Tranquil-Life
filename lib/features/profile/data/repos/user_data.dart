@@ -1,5 +1,5 @@
-import 'package:tranquil_life/app/data/repos/store.dart';
-import 'package:tranquil_life/app/domain/repos/store.dart';
+import 'package:tranquil_life/features/store/data/store.dart';
+import 'package:tranquil_life/features/store/domain/store.dart';
 import 'package:tranquil_life/features/profile/data/models/client_model.dart';
 import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 import 'package:tranquil_life/features/profile/domain/repos/user_data.dart';

@@ -21,7 +21,7 @@ class SmallView extends StatefulWidget {
 
 class _SmallViewState extends State<SmallView> {
   Widget _viewBuilder() {
-    return SizedBox();
+    return const SizedBox();
     /*  return AgoraVideoView(
       controller: ,
     ); */

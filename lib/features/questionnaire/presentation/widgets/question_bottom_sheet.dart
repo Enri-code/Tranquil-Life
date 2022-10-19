@@ -80,7 +80,7 @@ class OptionWidget extends StatelessWidget {
         height: 52,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary:
+            backgroundColor:
                 isSelected ? ColorPalette.blue : Theme.of(context).primaryColor,
           ),
           onPressed: () {
