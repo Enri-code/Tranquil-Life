@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tranquil_life/core/constants/constants.dart';
-import 'package:tranquil_life/core/utils/services/time_formatter.dart';
+import 'package:tranquil_life/core/utils/services/formatters.dart';
 import 'package:tranquil_life/features/chat/domain/repos/audio_recorder.dart';
 
 class AudioRecorder extends IAudioRecorder {
@@ -35,7 +35,6 @@ class AudioRecorder extends IAudioRecorder {
 
   StreamSubscription? _durationStreamSub;
   String _filePath = '${uidGenerator.v4()}.aac';
-
 
   @override
   Future init() async {

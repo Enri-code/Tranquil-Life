@@ -7,6 +7,7 @@ class SwipeableWidget extends StatefulWidget {
     this.swipedWidget,
     this.maxOffset,
     this.enabled = true,
+    this.canLongPress = false,
     this.resetOnRelease = false,
     this.onStateChanged,
     this.alignment = Alignment.center,
@@ -14,6 +15,7 @@ class SwipeableWidget extends StatefulWidget {
 
   final Alignment alignment;
   final bool resetOnRelease, enabled;
+  final bool canLongPress;
   final double? maxOffset;
   final Widget? swipedWidget;
   final Widget child;
@@ -117,8 +119,7 @@ class _SwipeableWidgetState extends State<SwipeableWidget>
                 _animateTo(false);
               }
             },
-            onDoubleTap: () => _animateTo(true),
-            onLongPress: () => _animateTo(!isOpen),
+            onLongPress: widget.canLongPress ? () => _animateTo(!isOpen) : null,
             onHorizontalDragCancel: () => _animateTo(false),
             onHorizontalDragEnd: (details) {
               if (offset > maxOffset || widget.resetOnRelease) {

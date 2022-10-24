@@ -10,7 +10,7 @@ class PartnerState extends BlocStateBase {
   @override
   PartnerState copyWith({
     OperationStatus? status,
-    ResolvedError? error,
+    ApiError? error,
     List<Partner>? partners,
   }) {
     return PartnerState(

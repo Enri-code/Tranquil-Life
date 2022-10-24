@@ -9,12 +9,12 @@ import 'package:tranquil_life/features/consultation/domain/repos/consultant_repo
 class ConsultantRepoImpl extends ConsultantRepo {
   const ConsultantRepoImpl();
   @override
-  Future<Either<ResolvedError, List<Consultant>>> getAll() async {
+  Future<Either<ApiError, List<Consultant>>> getAll() async {
     try {
       var result = await ApiClient.get(ConsultantEndPoints.getAll);
       return const Right([]);
     } catch (e) {
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     }
   }
 
@@ -30,7 +30,7 @@ class ConsultantRepoImpl extends ConsultantRepo {
   } */
 
   @override
-  Future<Either<ResolvedError, dynamic>> rate(
+  Future<Either<ApiError, dynamic>> rate(
     String consultantId,
     int rating,
   ) async {
@@ -38,9 +38,9 @@ class ConsultantRepoImpl extends ConsultantRepo {
       var body = {"consultant_id": consultantId, "rating": rating};
       var result = await ApiClient.post(ConsultantEndPoints.rate, body: body);
       if (result.data == body) return const Right(null);
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     } catch (_) {
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     }
   }
 }

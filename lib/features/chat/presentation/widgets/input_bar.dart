@@ -18,6 +18,7 @@ class _InputBarState extends State<_InputBar> {
 
   Future _handleRecordingUpload(File? file, bool upload) async {
     if (file == null || !upload) return;
+
     context.read<ChatBloc>().add(AddMessage(
           Message(isSent: false, type: MessageType.audio, data: file.path),
         ));
@@ -35,19 +36,19 @@ class _InputBarState extends State<_InputBar> {
   _handleUpload() async {
     if (showMic) return;
     File? file;
-    bool result = true;
+    bool upload = true;
     if (isRecording) file = await recorder.stop();
     if (!AppData.hasShownChatDisableDialog) {
-      result = await showDialog(
+      upload = await showDialog(
             context: context,
             builder: (_) => const DisableAccountDialog(),
           ) ??
           false;
     }
     if (isRecording) {
-      _handleRecordingUpload(file, result);
+      _handleRecordingUpload(file, upload);
     } else {
-      _handleTextUplod(result);
+      _handleTextUplod(upload);
     }
   }
 
@@ -155,6 +156,7 @@ class _InputBarState extends State<_InputBar> {
             SwipeableWidget(
               maxOffset: 32,
               enabled: showMic,
+              canLongPress: true,
               resetOnRelease: true,
               swipedWidget: const Icon(Icons.mic, color: ColorPalette.red),
               onStateChanged: (isActive) {

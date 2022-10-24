@@ -31,6 +31,7 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwipeableWidget(
+      canLongPress: true,
       swipedWidget: Align(
         alignment: Alignment.centerRight,
         child: _DeleteIcon(

@@ -13,7 +13,7 @@ class EditCardState extends BlocStateBase {
   EditCardState copyWith({
     CardData? data,
     OperationStatus? status,
-    ResolvedError? error,
+    ApiError? error,
   }) =>
       EditCardState(
         data: data ?? this.data,

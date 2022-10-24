@@ -44,10 +44,14 @@ class _RescheduleMeetingBottomSheetState
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: () => Navigator.of(context).popAndPushNamed(
-                ScheduleMeetingScreen.routeName,
-                arguments: widget.consultant,
-              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                showModalBottomSheet(
+                  context: context,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) => MeetingDateSheet(widget.consultant),
+                );
+              },
               child: const Text('Reschedule Meeting'),
             ),
           ],

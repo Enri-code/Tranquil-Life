@@ -11,7 +11,6 @@ import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/profile/data/repos/user_data.dart';
 import 'package:tranquil_life/features/profile/domain/repos/user_data.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
 import 'package:tranquil_life/features/chat/data/agora_call.dart';
 import 'package:tranquil_life/features/chat/domain/repos/video_call_repo.dart';
@@ -59,9 +58,9 @@ class AppSetup {
 
   static _goToScreen(NavigatorState navigator) async {
     late final String nextRoute;
-    if (getIt<IUserDataStore>().isSignedIn) {
+    if (getIt<IUserDataStore>().user != null) {
       final didAuthenticate = await getIt<IScreenLock>().showLock();
-      if (didAuthenticate) getIt<ClientAuthBloc>().add(const RestoreSignIn());
+      if (didAuthenticate) getIt<AuthBloc>().add(const RestoreSignIn());
       return;
     } else if (AppData.isOnboardingCompleted) {
       nextRoute = SignInScreen.routeName;
@@ -79,7 +78,7 @@ class AppSetup {
 
   static _injectInstances(BuildContext context) {
     GetIt.instance
-      ..registerSingleton(context.read<ClientAuthBloc>())
+      ..registerSingleton(context.read<AuthBloc>())
       ..registerSingleton(context.read<ProfileBloc>())
       ..registerSingleton(context.read<WalletBloc>())
       ..registerLazySingleton<CallController>(() => AgoraController());

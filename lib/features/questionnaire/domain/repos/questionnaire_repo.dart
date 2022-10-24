@@ -6,5 +6,5 @@ abstract class QuestionnaireRepo {
   const QuestionnaireRepo();
 
   //Future<Either<ResolvedError, bool>> hasSubmitted();
-  Future<Either<ResolvedError, dynamic>> submit(List<Question> questions);
+  Future<Either<ApiError, dynamic>> submit(List<Question> questions);
 }

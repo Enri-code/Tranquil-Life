@@ -13,16 +13,16 @@ import 'package:tranquil_life/features/wallet/presentation/bloc/edit_card/edit_c
 import 'package:tranquil_life/features/wallet/presentation/bloc/wallet/wallet_bloc.dart';
 import 'package:tranquil_life/features/wallet/presentation/widgets/card_widget.dart';
 
-class AddCardScreen extends StatefulWidget {
+class CustomizeCardScreen extends StatefulWidget {
   ///argument is [CardData]
   static const routeName = 'add_card_screen';
-  const AddCardScreen({Key? key}) : super(key: key);
+  const CustomizeCardScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddCardScreen> createState() => _AddCardScreenState();
+  State<CustomizeCardScreen> createState() => _CustomizeCardScreenState();
 }
 
-class _AddCardScreenState extends State<AddCardScreen> {
+class _CustomizeCardScreenState extends State<CustomizeCardScreen> {
   static final _networks = <CardType, Widget>{
     CardType.mastercard: const Image(
         image: AssetImage('assets/images/wallet/networks/mastercard_dark.png')),
@@ -42,12 +42,13 @@ class _AddCardScreenState extends State<AddCardScreen> {
   late EditCardBloc cardBloc;
 
   bool isCardTypePicked = false;
+  late bool isEditMode;
 
   @override
   void didChangeDependencies() {
     cardBloc = context.read<EditCardBloc>();
     final cardArg = ModalRoute.of(context)!.settings.arguments as CardData?;
-    if (cardArg != null) cardBloc.add(SetCardData(cardArg));
+    if (isEditMode = cardArg != null) cardBloc.add(SetCardData(cardArg));
     super.didChangeDependencies();
   }
 
@@ -55,7 +56,10 @@ class _AddCardScreenState extends State<AddCardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      appBar: _AppBar(onValidateForm: () => _formKey.currentState!.validate()),
+      appBar: _AppBar(
+        isEditMode: isEditMode,
+        onValidateForm: () => _formKey.currentState!.validate(),
+      ),
       body: UnfocusWidget(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -216,24 +220,35 @@ class _AddCardScreenState extends State<AddCardScreen> {
 }
 
 class _AppBar extends CustomAppBar {
-  const _AppBar({Key? key, required this.onValidateForm}) : super(key: key);
+  const _AppBar({
+    Key? key,
+    required this.isEditMode,
+    required this.onValidateForm,
+  }) : super(key: key);
+
+  final bool isEditMode;
   final bool Function() onValidateForm;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EditCardBloc, EditCardState>(
       builder: (context, state) {
-        final isComplete =
-            state.data.props.every((e) => e is String ? e.isNotEmpty : true);
+        final isComplete = state.data.props.every(
+          (e) => e is String ? e.isNotEmpty : true,
+        );
         return CustomAppBar(
-          title: 'Customize Your Card',
+          title: '${isEditMode ? 'Edit Your' : 'Add A'} Card',
           actions: [
             if (isComplete)
               AppBarAction(
                 child: const Icon(Icons.check),
                 onPressed: () {
                   if (!onValidateForm()) return;
-                  context.read<WalletBloc>().add(AddCard(state.data));
+                  if (isEditMode) {
+                    context.read<WalletBloc>().add(UpdateCard(state.data));
+                  } else {
+                    context.read<WalletBloc>().add(AddCard(state.data));
+                  }
                   context.read<EditCardBloc>().add(const SetCardData(null));
                 },
               ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -31,10 +32,17 @@ class _VoiceNoteLayoutState extends State<VoiceNoteLayout>
   Future _preparePlayer() async {
     late final String path;
     if (widget.message.isSent) {
-      var file = await DefaultCacheManager().getSingleFile(widget.message.data);
+      final file =
+          await DefaultCacheManager().getSingleFile(widget.message.data);
       path = file.path;
     } else {
-      path = widget.message.data;
+      final file = File(widget.message.data);
+      await DefaultCacheManager().putFile(
+        path = file.path,
+        await file.readAsBytes(),
+        key: file.path,
+        maxAge: const Duration(hours: 5),
+      );
     }
     await audioPlayer.init(path);
     setState(() => loadingAudio = false);

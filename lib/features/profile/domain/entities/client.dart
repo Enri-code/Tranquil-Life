@@ -6,14 +6,13 @@ part 'client.g.dart';
 @JsonSerializable(createToJson: true)
 class Client extends User {
   const Client({
-    required super.id,
+    required this.id,
     required this.email,
     required this.firstName,
     required this.lastName,
     required this.phoneNumber,
     required super.displayName,
     required this.usesBitmoji,
-    required this.authToken,
     this.isVerified = false,
     this.hasAnsweredQuestions = false,
     super.avatarUrl,
@@ -23,6 +22,7 @@ class Client extends User {
     this.companyName,
   });
 
+  final int id;
   @JsonKey(name: 'f_name')
   final String firstName;
   @JsonKey(name: 'l_name')
@@ -32,7 +32,6 @@ class Client extends User {
   @JsonKey(name: 'phone')
   final String phoneNumber;
   final String? birthDate, gender, staffId, companyName;
-  final String authToken;
 
   final bool hasAnsweredQuestions, usesBitmoji;
 

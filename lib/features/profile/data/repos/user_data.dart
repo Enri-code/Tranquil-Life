@@ -6,6 +6,7 @@ import 'package:tranquil_life/features/profile/domain/repos/user_data.dart';
 
 abstract class _Keys {
   static const user = 'user';
+  static const token = 'token';
   static const usingAvatar = 'usingAvatar';
 }
 
@@ -25,6 +26,12 @@ class UserDataStore extends IUserDataStore {
 
   @override
   set user(Client? val) => _store.set(_Keys.user, val?.toJson());
+
+  @override
+  String get token => _store.get(_Keys.token);
+
+  @override
+  set token(String? val) => _store.set(_Keys.token, val);
 
   @override
   bool get isUsingAvatar => _store.get(_Keys.usingAvatar) ?? false;

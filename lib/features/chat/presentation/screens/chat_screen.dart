@@ -13,7 +13,7 @@ import 'package:tranquil_life/app/presentation/widgets/unfocus_bg.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/core/utils/services/app_data_store.dart';
 import 'package:tranquil_life/core/utils/functions.dart';
-import 'package:tranquil_life/core/utils/services/time_formatter.dart';
+import 'package:tranquil_life/core/utils/services/formatters.dart';
 import 'package:tranquil_life/features/chat/presentation/screens/call_page.dart';
 import 'package:tranquil_life/features/chat/data/audio_recorder.dart';
 import 'package:tranquil_life/features/chat/domain/entities/message.dart';

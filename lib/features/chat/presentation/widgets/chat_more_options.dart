@@ -26,7 +26,7 @@ class MoreOptions extends StatelessWidget {
       itemBuilder: (_) => [
         const PopupMenuItem(value: 0, child: Text('Invite participant')),
         const PopupMenuItem(value: 1, child: Text('View participants')),
-        const PopupMenuItem(value: 2, child: Text('Health questionnaire')),
+        const PopupMenuItem(value: 2, child: Text('Questionnaire')),
         const PopupMenuItem(value: 3, child: Text('End session')),
       ],
       onSelected: (int val) {

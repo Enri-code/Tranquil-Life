@@ -21,3 +21,24 @@ abstract class TimeFormatter {
     }
   }
 }
+
+abstract class CardNumberFormatter {
+  static String formatNumber(String number, {String? obscureChar}) {
+    return _spaceChars(_hideChars(number, obscureChar));
+  }
+
+  static String _hideChars(String value, String? obscureChar) {
+    if (value.length < 8) return value;
+    const startIndex = 4;
+    final endIndex = value.length - 4;
+    final hiddenChars = value
+        .substring(startIndex, endIndex)
+        .replaceAll(RegExp('[0-9]'), obscureChar ?? '_');
+    return '${value.substring(0, startIndex)}$hiddenChars${value.substring(endIndex)}';
+  }
+
+  static String _spaceChars(String value) {
+    final result = RegExp('.{1,4}').allMatches(value).map((e) => e[0]);
+    return result.join(' ');
+  }
+}

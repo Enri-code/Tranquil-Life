@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
+import 'package:tranquil_life/core/utils/services/formatters.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/wallet/domain/entities/card_data.dart';
 import 'package:tranquil_life/features/wallet/presentation/bloc/wallet/wallet_bloc.dart';
@@ -27,20 +28,6 @@ class CardWidget extends StatelessWidget {
       case CardType.virtual:
         return const Icon(TranquilIcons.logo, color: Colors.white, size: 33);
     }
-  }
-
-  String _hideChars(String value) {
-    if (value.length < 8) return value;
-    const startIndex = 4;
-    final endIndex = value.length - 4;
-    final hiddenChars =
-        value.substring(startIndex, endIndex).replaceAll(RegExp('[0-9]'), '_');
-    return '${value.substring(0, startIndex)}$hiddenChars${value.substring(endIndex)}';
-  }
-
-  String _spaceChars(String value) {
-    final result = RegExp('.{1,4}').allMatches(value).map((e) => e[0]);
-    return result.join(' ');
   }
 
   @override
@@ -83,10 +70,8 @@ class CardWidget extends StatelessWidget {
                         width: double.infinity,
                         child: FittedBox(
                           fit: BoxFit.contain,
-                          child: Text(_spaceChars(
-                            _hideChars(
-                              cardData.cardNumber ?? '0000000000000000',
-                            ),
+                          child: Text(CardNumberFormatter.formatNumber(
+                            cardData.cardNumber ?? '0000000000000000',
                           )),
                         ),
                       ),
@@ -94,8 +79,10 @@ class CardWidget extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Text('Valid Till:  ',
-                                style: TextStyle(fontSize: 14)),
+                            const Text(
+                              'Valid Till:  ',
+                              style: TextStyle(fontSize: 14),
+                            ),
                             Text(
                               cardData.expiryDate ?? 'Forever',
                               style: const TextStyle(fontSize: 20),

@@ -4,10 +4,10 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/text.dart';
+import 'package:tranquil_life/core/utils/errors/api_error.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/core/utils/services/validators.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/partner/partner_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_up/sign_up_1.dart';
 import 'package:tranquil_life/features/auth/presentation/styles.dart';
@@ -46,7 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var params = context.read<ClientAuthBloc>().params;
+    var params = context.read<AuthBloc>().params;
     return CustomBGWidget(
       title: 'Sign Up',
       child: CustomScrollView(
@@ -73,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: BlocListener<ClientAuthBloc, AuthState>(
+                        child: BlocListener<AuthBloc, AuthState>(
                           listener: (context, state) {
                             if (state.status == OperationStatus.error) {
                               _formKey.currentState!.validate();
@@ -87,7 +87,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               errorStyle: authScreensErrorStyle,
                             ),
                             validator: (val) {
-                              var state = context.read<ClientAuthBloc>().state;
+                              var state = context.read<AuthBloc>().state;
                               if (val!.isEmpty) {
                                 return 'Please input your email';
                               }
@@ -163,7 +163,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 32),
                 ElevatedButton(
                   onPressed: () {
-                    context.read<ClientAuthBloc>().add(const RemoveError());
+                    context.read<AuthBloc>().add(const RemoveError());
                     SchedulerBinding.instance.addPostFrameCallback((_) {
                       if (_formKey.currentState!.validate()) {
                         //TODO: check email first

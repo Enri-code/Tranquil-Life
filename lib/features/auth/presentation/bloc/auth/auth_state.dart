@@ -1,6 +1,5 @@
 part of 'auth_bloc.dart';
 
-@immutable
 class AuthState extends BlocStateBase {
   const AuthState({
     super.error,
@@ -13,7 +12,7 @@ class AuthState extends BlocStateBase {
   @override
   AuthState copyWith({
     OperationStatus? status,
-    ResolvedError? error,
+    ApiError? error,
     bool? isSignedIn,
   }) {
     return AuthState(
@@ -25,8 +24,4 @@ class AuthState extends BlocStateBase {
 
   @override
   List<Object?> get props => [isSignedIn, ...super.props];
-}
-
-class EmailError extends ErrorCause {
-  const EmailError();
 }

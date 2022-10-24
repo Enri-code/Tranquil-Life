@@ -3,15 +3,14 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
+import 'package:tranquil_life/core/utils/errors/api_error.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/core/utils/services/validators.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_up/sign_up_0.dart';
 import 'package:tranquil_life/features/auth/presentation/styles.dart';
 import 'package:tranquil_life/app/presentation/widgets/mountain_bg.dart';
 import 'package:tranquil_life/features/auth/presentation/widgets/forgot_pasword.dart';
-import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -58,7 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: BlocListener<ClientAuthBloc, AuthState>(
+                        child: BlocListener<AuthBloc, AuthState>(
                           listenWhen: (_, __) => !isModalOpen,
                           listener: (context, state) {
                             if (state.status == OperationStatus.error) {
@@ -73,7 +72,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               errorStyle: authScreensErrorStyle,
                             ),
                             validator: (val) {
-                              var state = context.read<ClientAuthBloc>().state;
+                              var state = context.read<AuthBloc>().state;
                               if (val!.isEmpty) {
                                 return 'Please input your email';
                               }
@@ -151,7 +150,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(height: 32),
                 ElevatedButton(
                   onPressed: () {
-                    /*context.read<ClientAuthBloc>().add(const RemoveError());
+                    /* context.read<ClientAuthBloc>().add(const RemoveError());
                     SchedulerBinding.instance.addPostFrameCallback((_) {
                       if (_formKey.currentState!.validate()) {
                         context.read<ClientAuthBloc>().add(
@@ -159,23 +158,20 @@ class _SignInScreenState extends State<SignInScreen> {
                             );
                       }
                     }); */
-                    context.read<ProfileBloc>().add(const AddUserProfile(
-                          Client(
-                            id: 1,
-                            firstName: 'Onyewuchi',
-                            lastName: 'Ifeanyi',
-                            email: 'ifywuchi@gmail.com',
-                            displayName: 'Ify Onyewuchi',
-                            phoneNumber: '09069184604',
-                            companyName: '',
-                            hasAnsweredQuestions: false,
-                            usesBitmoji: false,
-                            isVerified: false,
-                            authToken: '',
-                          ),
+                    context.read<ProfileBloc>().add(UpdateUser(
+                          id: 1,
+                          firstName: 'Onyewuchi',
+                          lastName: 'Ifeanyi',
+                          email: 'ifywuchi@gmail.com',
+                          displayName: 'Ify Onyewuchi',
+                          phoneNumber: '09069184604',
+                          companyName: '',
+                          hasAnsweredQuestions: false,
+                          usesBitmoji: false,
+                          isVerified: false,
                         ));
                     SchedulerBinding.instance.addPostFrameCallback((_) {
-                      context.read<ClientAuthBloc>().add(
+                      context.read<AuthBloc>().add(
                             const RestoreSignIn(),
                           );
                     });

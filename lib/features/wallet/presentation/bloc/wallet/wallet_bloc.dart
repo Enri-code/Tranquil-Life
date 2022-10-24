@@ -21,6 +21,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<InitWallet>(_initWallet);
     on<SetDefaultCard>(_setDefaultCard);
     on<AddCard>(_addCard);
+    on<UpdateCard>(_updateCard);
     on<RemoveCard>(_removeCard);
     on<ClearWallet>(_clearWallet);
   }
@@ -50,6 +51,21 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   _addCard(AddCard event, Emitter<WalletState> emit) async {
     emit(state.copyWith(status: OperationStatus.loading));
     final cards = [...?state.cards, event.data];
+    final map = cards.map((e) => e.toJson()).toList();
+    await _cardsStore?.set(_Keys.cardsKey, map);
+    emit(state.copyWith(cards: cards, status: OperationStatus.success));
+  }
+
+  _updateCard(UpdateCard event, Emitter<WalletState> emit) async {
+    emit(state.copyWith(status: OperationStatus.loading));
+    final cards = List<CardData>.from(state.cards!);
+    final cardIndex = cards.indexWhere((e) => e.cardId == event.data.cardId);
+    if (cardIndex == -1) {
+      emit(state.copyWith(status: OperationStatus.error));
+      return;
+    }
+
+    cards[cardIndex] = event.data;
     final map = cards.map((e) => e.toJson()).toList();
     await _cardsStore?.set(_Keys.cardsKey, map);
     emit(state.copyWith(cards: cards, status: OperationStatus.success));

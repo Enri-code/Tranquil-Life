@@ -9,15 +9,10 @@ part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(const ProfileState()) {
-    on<AddUserProfile>(_addUser);
     on<UpdateUser>(_updateUser);
     on<RemoveUserProfile>(_removeUser);
     on<RestoreUserProfile>(_restoreUser);
     on<UpdateProfileLocation>(_updateLocation);
-  }
-
-  _addUser(AddUserProfile event, Emitter<ProfileState> emit) {
-    emit(state.copyWith(user: getIt<IUserDataStore>().user = event.user));
   }
 
   _updateUser(UpdateUser event, Emitter<ProfileState> emit) {

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/app_bar_button.dart';
@@ -6,7 +6,7 @@ import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dar
 import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
-import 'package:tranquil_life/features/consultation/presentation/screens/schedule_meeting_screen.dart';
+import 'package:tranquil_life/features/consultation/presentation/widgets/meeting_date_sheet.dart';
 
 ///argument is [Consultant]
 class ConsultantDetailScreen extends StatefulWidget {
@@ -165,26 +165,26 @@ class _PageBody extends StatelessWidget {
                     SizedBox(
                       height: 48,
                       child: ElevatedButton(
-                        onPressed: () => Navigator.of(context)
-                            .pushNamed(
-                              ScheduleMeetingScreen.routeName,
-                              arguments: consultant,
-                            )
-                            .whenComplete(() => setStatusBarBrightness(false)),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Icon(TranquilIcons.calendar_tick,
-                                color: Colors.white),
-                            SizedBox(width: 18),
-                            Text(
-                              'Schedule a meeting',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ],
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            builder: (_) => MeetingDateSheet(consultant),
+                          ).whenComplete(() => setStatusBarBrightness(false));
+                          /*   Navigator.of(context)
+                              .pushNamed(
+                                ScheduleMeetingScreen.routeName,
+                                arguments: consultant,
+                              )
+                              .whenComplete(
+                                  () => setStatusBarBrightness(false)); */
+                        },
+                        child: const Text(
+                          'Schedule a meeting',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                       ),
                     ),
@@ -212,12 +212,14 @@ class _InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Neumorphic(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       margin: const EdgeInsets.symmetric(vertical: 6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: ColorPalette.green[800]!),
+      style: NeumorphicStyle(
+        depth: -2,
+        intensity: 0.8,
+        color: Colors.white,
+        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(12)),
       ),
       child: Row(
         children: [
@@ -241,16 +243,18 @@ class _InfoCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 17,
+                  color: ColorPalette.green[800],
                 ),
               ),
               Text(
                 subTitle,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 15,
+                  color: ColorPalette.green[800],
                 ),
               ),
             ],

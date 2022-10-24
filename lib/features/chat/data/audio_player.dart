@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:tranquil_life/core/utils/services/time_formatter.dart';
+import 'package:tranquil_life/core/utils/services/formatters.dart';
 import 'package:tranquil_life/features/chat/domain/repos/audio_player.dart';
 
 class AudioWavePlayer extends AudioPlayer {

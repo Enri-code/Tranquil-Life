@@ -33,7 +33,7 @@ abstract class AppConfig {
         const SentPasswordResetEmailScreen(),
     LockScreen.routeName: (_) => const LockScreen(),
     DashboardScreen.routeName: (_) => const DashboardScreen(),
-    AddCardScreen.routeName: (_) => const AddCardScreen(),
+    CustomizeCardScreen.routeName: (_) => const CustomizeCardScreen(),
     QuestionsScreen.routeName: (_) => const QuestionsScreen(),
     SpeakWithConsultantScreen.routeName: (_) =>
         const SpeakWithConsultantScreen(),

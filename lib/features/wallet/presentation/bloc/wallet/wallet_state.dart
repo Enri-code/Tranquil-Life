@@ -19,7 +19,7 @@ class WalletState extends BlocStateBase {
   @override
   WalletState copyWith({
     OperationStatus? status,
-    ResolvedError? error,
+    ApiError? error,
     List<CardData>? cards,
     int? defaultIndex,
   }) {

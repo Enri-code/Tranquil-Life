@@ -5,9 +5,7 @@ import 'package:tranquil_life/app/domain/entities/query_params.dart';
 abstract class AuthRepo<T, F extends QueryParams> {
   const AuthRepo();
 
-  Future<Either<ResolvedError, T>> register(F params);
-  Future<Either<ResolvedError, T>> signIn(String email, String password);
-  Future<Either<ResolvedError, dynamic>> resetPassword(String email);
-  //Future<Either<ResolvedError, bool>> isAuthenticated();
-  //Future<Either<ResolvedError, dynamic>> updateData();
+  Future<Either<ApiError, T>> register(F params);
+  Future<Either<ApiError, T>> signIn(String email, String password);
+  Future<Either<ApiError, dynamic>> resetPassword(String email);
 }

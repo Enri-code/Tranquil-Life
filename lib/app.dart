@@ -9,9 +9,9 @@ import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/core/utils/services/location_service.dart';
+import 'package:tranquil_life/features/auth/data/repos/client_auth.dart';
 import 'package:tranquil_life/features/auth/data/repos/partners.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/partner/partner_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_in.dart';
 import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
@@ -22,6 +22,7 @@ import 'package:tranquil_life/features/journal/data/repos/journal_repo.dart';
 import 'package:tranquil_life/features/journal/presentation/bloc/journal/journal_bloc.dart';
 import 'package:tranquil_life/features/journal/presentation/bloc/note/note_bloc.dart';
 import 'package:tranquil_life/features/onboarding/presentation/screens/splash.dart';
+import 'package:tranquil_life/features/profile/data/repos/profile_repo.dart';
 import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/questionnaire/data/repos/questionnaire_repo.dart';
 import 'package:tranquil_life/features/questionnaire/presentation/bloc/questionnaire_bloc.dart';
@@ -44,9 +45,7 @@ class _AppState extends State<App> {
   _onSignIn(BuildContext context) async {
     context.read<ProfileBloc>().add(const RestoreUserProfile());
     context.read<JournalBloc>().add(GetNotes(notes));
-    context.read<ProfileBloc>().add(const UpdateProfileLocation(
-          'Getting location...',
-        ));
+    context.read<ProfileBloc>().add(const UpdateProfileLocation());
     LocationService.requestLocation().then((value) {
       context.read<ProfileBloc>().add(UpdateProfileLocation(value));
     });
@@ -58,7 +57,13 @@ class _AppState extends State<App> {
     precacheImage(const AssetImage('assets/images/mountains_bg.png'), context);
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => ClientAuthBloc(), lazy: false),
+        BlocProvider(
+          create: (_) => AuthBloc(
+            authRepo: const AuthRepoImpl(),
+            profileRepo: const ProfileRepoImpl(),
+          ),
+          lazy: false,
+        ),
         BlocProvider(create: (_) => ProfileBloc(), lazy: false),
         BlocProvider(create: (_) => PartnerBloc(const PartnersRepoImpl())),
         BlocProvider(create: (_) => ConsultantBloc(const ConsultantRepoImpl())),
@@ -73,7 +78,7 @@ class _AppState extends State<App> {
       ],
       child: MultiBlocListener(
         listeners: [
-          BlocListener<ClientAuthBloc, AuthState>(
+          BlocListener<AuthBloc, AuthState>(
             listenWhen: (prev, curr) => prev.isSignedIn != curr.isSignedIn,
             listener: (context, state) {
               final screenLock = getIt<IScreenLock>();
@@ -98,7 +103,7 @@ class _AppState extends State<App> {
               }
             },
           ),
-          BlocListener<ClientAuthBloc, AuthState>(
+          BlocListener<AuthBloc, AuthState>(
             listenWhen: (prev, curr) => prev.status != curr.status,
             listener: (context, state) {
               if (state.status == OperationStatus.loading) {
@@ -119,7 +124,7 @@ class _AppState extends State<App> {
         child: Builder(builder: (context) {
           return InputListener(
             onInput: () {
-              if (context.read<ClientAuthBloc>().state.isSignedIn) {
+              if (context.read<AuthBloc>().state.isSignedIn) {
                 getIt<IScreenLock>().resetTimer();
               }
             },

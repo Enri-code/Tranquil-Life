@@ -16,7 +16,7 @@ class ConsultantState extends BlocStateBase {
   @override
   ConsultantState copyWith({
     OperationStatus? status,
-    ResolvedError? error,
+    ApiError? error,
     int? consultantId,
     DateTime? date,
   }) {

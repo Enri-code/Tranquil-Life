@@ -9,6 +9,7 @@ import 'package:tranquil_life/features/wallet/presentation/bloc/wallet/wallet_bl
 import 'package:tranquil_life/features/wallet/presentation/screens/add_card_screen.dart';
 import 'package:tranquil_life/features/wallet/presentation/widgets/card_dialog.dart';
 import 'package:tranquil_life/features/wallet/presentation/widgets/card_widget.dart';
+import 'package:tranquil_life/features/wallet/presentation/widgets/max_cards_sheet.dart';
 import 'package:tranquil_life/features/wallet/presentation/widgets/transaction_sheet.dart';
 
 class WalletTab extends StatefulWidget {
@@ -19,8 +20,6 @@ class WalletTab extends StatefulWidget {
 }
 
 class _WalletTabState extends State<WalletTab> {
-  int cardCount = 2;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,7 +56,7 @@ class _WalletTabState extends State<WalletTab> {
                   ],
                 ),
                 const Spacer(),
-                if (cardCount < 3) const _AddCardButton()
+                const _AddCardButton()
               ],
             ),
           ),
@@ -112,7 +111,17 @@ class _AddCardButton extends StatelessWidget {
         type: MaterialType.transparency,
         child: InkResponse(
           radius: 16,
-          onTap: () => Navigator.of(context).pushNamed(AddCardScreen.routeName),
+          onTap: () {
+            if (context.read<WalletBloc>().state.cards!.length < 3 && false) {
+              Navigator.of(context).pushNamed(CustomizeCardScreen.routeName);
+            } else {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                builder: (_) => const MaxCardsSheet(),
+              );
+            }
+          },
           child: const Center(
             child: Icon(Icons.add, color: Colors.white, size: 26),
           ),

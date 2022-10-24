@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
-import 'package:tranquil_life/core/utils/services/time_formatter.dart';
+import 'package:tranquil_life/core/utils/services/formatters.dart';
 import 'package:tranquil_life/features/chat/domain/entities/message.dart';
 import 'package:tranquil_life/features/chat/domain/entities/reply.dart';
 import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
-import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/shared/chat_box.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/shared/chat_box_base.dart';
 import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/shared/video_layout.dart';
 
 class RepliedChatBox extends StatelessWidget {

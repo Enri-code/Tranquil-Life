@@ -8,7 +8,7 @@ abstract class ProfileEvent extends Equatable {
 }
 
 class UpdateUser extends Client implements ProfileEvent {
-  static Client get _profileData => getIt<ProfileBloc>().state.user!;
+  static Client? get _profileData => getIt<ProfileBloc>().state.user;
 
   UpdateUser({
     Client? oldData,
@@ -22,31 +22,31 @@ class UpdateUser extends Client implements ProfileEvent {
     String? avatarUrl,
     bool? isVerified,
     bool? usesBitmoji,
-    String? token,
     bool? hasAnsweredQuestions,
     String? gender,
+    String? companyName,
   }) : super(
-          id: id ?? oldData?.id ?? _profileData.id,
-          email: email ?? oldData?.email ?? _profileData.email,
-          firstName: firstName ?? oldData?.firstName ?? _profileData.firstName,
-          lastName: lastName ?? oldData?.lastName ?? _profileData.lastName,
+          id: id ?? oldData?.id ?? _profileData!.id,
+          email: email ?? oldData?.email ?? _profileData!.email,
+          firstName: firstName ?? oldData?.firstName ?? _profileData!.firstName,
+          lastName: lastName ?? oldData?.lastName ?? _profileData!.lastName,
           displayName:
-              displayName ?? oldData?.displayName ?? _profileData.displayName,
+              displayName ?? oldData?.displayName ?? _profileData!.displayName,
           phoneNumber:
-              phoneNumber ?? oldData?.phoneNumber ?? _profileData.phoneNumber,
-          birthDate: birthDate ?? oldData?.birthDate ?? _profileData.birthDate,
-          avatarUrl: avatarUrl ?? oldData?.avatarUrl ?? _profileData.avatarUrl,
+              phoneNumber ?? oldData?.phoneNumber ?? _profileData!.phoneNumber,
+          birthDate: birthDate ?? oldData?.birthDate ?? _profileData?.birthDate,
+          avatarUrl: avatarUrl ?? oldData?.avatarUrl ?? _profileData!.avatarUrl,
           isVerified:
-              isVerified ?? oldData?.isVerified ?? _profileData.isVerified,
+              isVerified ?? oldData?.isVerified ?? _profileData!.isVerified,
           usesBitmoji:
-              usesBitmoji ?? oldData?.usesBitmoji ?? _profileData.usesBitmoji,
-          authToken: token ?? oldData?.authToken ?? _profileData.authToken,
+              usesBitmoji ?? oldData?.usesBitmoji ?? _profileData!.usesBitmoji,
           hasAnsweredQuestions: hasAnsweredQuestions ??
               oldData?.hasAnsweredQuestions ??
-              _profileData.hasAnsweredQuestions,
-          gender: gender ?? oldData?.gender ?? _profileData.gender,
-          staffId: oldData?.staffId ?? _profileData.staffId,
-          companyName: oldData?.companyName ?? _profileData.companyName,
+              _profileData!.hasAnsweredQuestions,
+          gender: gender ?? oldData?.gender ?? _profileData?.gender,
+          staffId: oldData?.staffId ?? _profileData?.staffId,
+          companyName:
+              companyName ?? oldData?.companyName ?? _profileData?.companyName,
         );
 
   @override
@@ -70,6 +70,6 @@ class RemoveUserProfile extends ProfileEvent {
 }
 
 class UpdateProfileLocation extends ProfileEvent {
-  const UpdateProfileLocation(this.location);
+  const UpdateProfileLocation([this.location]);
   final String? location;
 }

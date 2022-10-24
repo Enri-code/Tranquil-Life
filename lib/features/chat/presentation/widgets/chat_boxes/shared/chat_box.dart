@@ -1,42 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:tranquil_life/app/presentation/widgets/my_default_text_theme.dart';
-import 'package:tranquil_life/core/constants/constants.dart';
+import 'package:tranquil_life/app/presentation/widgets/swipeable.dart';
+import 'package:tranquil_life/features/chat/presentation/widgets/chat_boxes/shared/chat_box_base.dart';
 
-class ChatBoxBase extends StatelessWidget {
-  const ChatBoxBase({
+class ChatBox extends StatelessWidget {
+  const ChatBox({
     Key? key,
     required this.child,
+    required this.time,
     required this.color,
-    this.heightScale = 1,
-    this.padding = 12,
+    required this.axisAlignment,
+    this.padding = 5,
   }) : super(key: key);
 
-  final double heightScale;
-  final double padding;
+  final String time;
   final Color color;
   final Widget child;
+  final double padding;
+  final CrossAxisAlignment axisAlignment;
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: chatBoxMaxWidth),
-      child: Container(
-        clipBehavior: Clip.hardEdge,
-        padding: EdgeInsets.all(padding),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(10 * heightScale),
-        ),
-        child: MyDefaultTextStyle(
-          style: TextStyle(
-            height: 1.3 * heightScale,
-            fontSize: 16 * heightScale,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: axisAlignment,
+        children: [
+          Flexible(
+            child: SwipeableWidget(
+              resetOnRelease: true,
+              alignment: Alignment.centerRight,
+              swipedWidget: const Icon(Icons.reply, color: Colors.white),
+              child: GestureDetector(
+                onLongPress: () {},
+                child: ChatBoxBase(
+                  color: color,
+                  padding: padding,
+                  child: child,
+                ),
+              ),
+            ),
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10 * heightScale),
-            child: child,
-          ),
-        ),
+          const SizedBox(height: 4),
+          Text(time, style: const TextStyle(color: Colors.white, fontSize: 12)),
+        ],
       ),
     );
   }

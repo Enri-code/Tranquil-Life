@@ -8,6 +8,10 @@ abstract class AuthEndPoints {
   static const passwordReset = 'client/reset-password';
 }
 
+abstract class ProfileEndPoints {
+  static const getProfile = 'client/login';
+}
+
 abstract class ConsultantEndPoints {
   static const getAll = 'client/listConsultants';
   static const rate = 'client/rateConsultant';

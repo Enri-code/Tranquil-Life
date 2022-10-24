@@ -5,5 +5,5 @@ abstract class ItemsRepo<T> {
   const ItemsRepo();
 
   //Future<Either<ResolvedError, T>> get();
-  Future<Either<ResolvedError, List<T>>> getAll();
+  Future<Either<ApiError, List<T>>> getAll();
 }

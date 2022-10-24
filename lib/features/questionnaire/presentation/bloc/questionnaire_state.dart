@@ -9,7 +9,7 @@ class QuestionnaireState extends BlocStateBase {
   @override
   QuestionnaireState copyWith({
     OperationStatus? status,
-    ResolvedError? error,
+    ApiError? error,
   }) {
     return QuestionnaireState(
       status: status ?? this.status,

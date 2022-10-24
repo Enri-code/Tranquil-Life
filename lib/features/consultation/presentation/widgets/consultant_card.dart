@@ -4,7 +4,6 @@ import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
 import 'package:tranquil_life/features/consultation/presentation/screens/consultant_details.dart';
-import 'package:tranquil_life/features/consultation/presentation/screens/schedule_meeting_screen.dart';
 import 'package:tranquil_life/features/consultation/presentation/widgets/meeting_date_sheet.dart';
 
 class ConsultantCard extends StatelessWidget {
@@ -104,16 +103,7 @@ class ConsultantCard extends StatelessWidget {
                     showModalBottomSheet(
                       context: context,
                       backgroundColor: Colors.transparent,
-                      builder: (_) => MeetingDateSheet(
-                        consultant,
-                        onChosen: () => Future.delayed(
-                          kThemeChangeDuration,
-                          () => Navigator.of(context).popAndPushNamed(
-                            ScheduleMeetingScreen.routeName,
-                            arguments: consultant,
-                          ),
-                        ),
-                      ),
+                      builder: (_) => MeetingDateSheet(consultant),
                     );
                   },
                 ),

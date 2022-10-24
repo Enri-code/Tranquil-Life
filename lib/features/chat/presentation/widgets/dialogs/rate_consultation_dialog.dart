@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/widgets/user_avatar.dart';
 import 'package:tranquil_life/features/chat/presentation/blocs/chat_bloc/chat_bloc.dart';
 
@@ -25,7 +24,7 @@ class _RateConsultationDialogState extends State<RateConsultationDialog> {
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.only(top: 24, bottom: 16),
-        color: ColorPalette.green[100],
+        color: Colors.grey[100],
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

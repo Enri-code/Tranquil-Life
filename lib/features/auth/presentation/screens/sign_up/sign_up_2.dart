@@ -8,7 +8,6 @@ import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/features/auth/domain/entities/partner.dart';
 import 'package:tranquil_life/features/auth/domain/entities/register_data.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/partner/partner_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/styles.dart';
 import 'package:tranquil_life/app/presentation/widgets/mountain_bg.dart';
@@ -28,7 +27,7 @@ class _ClientSignUpScreen1State extends State<SignUp2Screen> {
 
   @override
   void didChangeDependencies() {
-    params = context.read<ClientAuthBloc>().params;
+    params = context.read<AuthBloc>().params;
     super.didChangeDependencies();
   }
 
@@ -80,11 +79,11 @@ class _ClientSignUpScreen1State extends State<SignUp2Screen> {
               ),
             ),
             const SizedBox(height: 20),
-            BlocBuilder<ClientAuthBloc, AuthState>(
+            BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 return Text(
                   state.status == OperationStatus.error
-                      ? state.error!.message
+                      ? state.error!.message ?? ''
                       : '',
                   style: TextStyle(color: Colors.red[100]),
                 );
@@ -94,7 +93,7 @@ class _ClientSignUpScreen1State extends State<SignUp2Screen> {
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  context.read<ClientAuthBloc>().add(const SignUp());
+                  context.read<AuthBloc>().add(const SignUp());
                 }
               },
               child: const Text('Sign Up'),
@@ -124,10 +123,10 @@ class _OrganizationSectionState extends State<_OrganizationSection>
 
   @override
   void initState() {
-    final partnersState = context.read<PartnerBloc>().state;
-    if (partnersState.partners == null &&
-        partnersState.status != OperationStatus.loading) {
-      context.read<PartnerBloc>().add(const GetPartnersEvent());
+    final partnerBloc = context.read<PartnerBloc>();
+    if (partnerBloc.state.partners == null &&
+        partnerBloc.state.status != OperationStatus.loading) {
+      partnerBloc.add(const GetPartnersEvent());
     }
     super.initState();
   }

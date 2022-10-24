@@ -8,10 +8,10 @@ import 'package:tranquil_life/features/journal/domain/entities/saved_note.dart';
 abstract class JournalRepo extends ItemsRepo<SavedNote> {
   const JournalRepo();
 
-  Future<Either<ResolvedError, SavedNote>> add(Note note);
-  Future<Either<ResolvedError, SavedNote>> update(SavedNote note);
-  Future<Either<ResolvedError, bool>> delete(List<SavedNote> notes);
-  Future<Either<ResolvedError, bool>> share(
+  Future<Either<ApiError, SavedNote>> add(Note note);
+  Future<Either<ApiError, SavedNote>> update(SavedNote note);
+  Future<Either<ApiError, bool>> delete(List<SavedNote> notes);
+  Future<Either<ApiError, bool>> share(
     Consultant consultant,
     List<SavedNote> notes,
   );

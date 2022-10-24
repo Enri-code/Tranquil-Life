@@ -63,9 +63,7 @@ class _MeetingsState extends State<_Meetings> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Expanded(
-                        child: Image.asset(
-                          'assets/images/no_meeting.png',
-                        ),
+                        child: Image.asset('assets/images/no_meeting.png'),
                       ),
                       const SizedBox(height: 12),
                       const Text(
@@ -88,27 +86,36 @@ class _MeetingsState extends State<_Meetings> {
                   child: ListView.builder(
                     itemCount: meetingsCount,
                     padding: EdgeInsets.zero,
-                    itemBuilder: (_, index) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      child: GestureDetector(
-                        onTap: () => showDialog(
-                          context: context,
-                          builder: (_) => const _MeetingDialog(
-                            consultant: Consultant(
-                              id: 0,
-                              displayName: 'Dr Rique Blashq',
-                            ),
-                          ),
-                        ),
-                        child: const MeetingCard(),
-                      ),
-                    ),
+                    itemBuilder: (_, index) => _MeetingTile(),
                   ),
                 ),
               );
             }),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _MeetingTile extends StatelessWidget {
+  const _MeetingTile();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: GestureDetector(
+        onTap: () => showDialog(
+          context: context,
+          builder: (_) => const _MeetingDialog(
+            consultant: Consultant(
+              id: 0,
+              displayName: 'Dr Rique Blashq',
+            ),
+          ),
+        ),
+        child: const MeetingCard(),
       ),
     );
   }

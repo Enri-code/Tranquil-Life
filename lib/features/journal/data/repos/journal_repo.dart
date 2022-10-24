@@ -11,7 +11,7 @@ import 'package:tranquil_life/features/journal/domain/repos/journal_repo.dart';
 class JournalRepoImpl extends JournalRepo {
   const JournalRepoImpl();
   @override
-  Future<Either<ResolvedError, List<SavedNote>>> getAll() async {
+  Future<Either<ApiError, List<SavedNote>>> getAll() async {
     try {
       var result = await ApiClient.get(JournalEndPoints.getAll);
       var data = result.data as Map<String, dynamic>;
@@ -20,14 +20,14 @@ class JournalRepoImpl extends JournalRepo {
             .map((e) => SavedNoteModel.fromJson(e));
         return Right(notes.toList());
       }
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     } catch (_) {
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     }
   }
 
   @override
-  Future<Either<ResolvedError, SavedNote>> add(Note note) async {
+  Future<Either<ApiError, SavedNote>> add(Note note) async {
     try {
       var result = await ApiClient.post(
         JournalEndPoints.add,
@@ -37,14 +37,14 @@ class JournalRepoImpl extends JournalRepo {
       if (data.containsKey('note')) {
         return Right(SavedNoteModel.fromJson(data['note']));
       }
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     } catch (_) {
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     }
   }
 
   @override
-  Future<Either<ResolvedError, SavedNote>> update(SavedNote note) async {
+  Future<Either<ApiError, SavedNote>> update(SavedNote note) async {
     try {
       var result = await ApiClient.post(
         JournalEndPoints.edit,
@@ -54,19 +54,19 @@ class JournalRepoImpl extends JournalRepo {
       if (data.containsKey('note')) {
         return Right(SavedNoteModel.fromJson(data['note']));
       }
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     } catch (_) {
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     }
   }
 
   @override
-  Future<Either<ResolvedError, bool>> delete(List<SavedNote> notes) async {
+  Future<Either<ApiError, bool>> delete(List<SavedNote> notes) async {
     return const Right(true);
   }
 
   @override
-  Future<Either<ResolvedError, bool>> share(
+  Future<Either<ApiError, bool>> share(
     Consultant consultant,
     List<SavedNote> notes,
   ) async {
@@ -78,9 +78,9 @@ class JournalRepoImpl extends JournalRepo {
       var data = result.data as Map<String, dynamic>;
       if (data.containsKey('success')) return const Right(true);
 
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     } catch (_) {
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     }
   }
 }

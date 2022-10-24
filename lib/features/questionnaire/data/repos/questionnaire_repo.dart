@@ -14,7 +14,7 @@ class QuestionnaireRepoImpl extends QuestionnaireRepo {
   } */
 
   @override
-  Future<Either<ResolvedError, dynamic>> submit(
+  Future<Either<ApiError, dynamic>> submit(
     List<Question> questions,
   ) async {
     try {
@@ -26,7 +26,7 @@ class QuestionnaireRepoImpl extends QuestionnaireRepo {
       if (result.data is List) return const Right(null);
       throw Exception();
     } catch (_) {
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     }
   }
 }

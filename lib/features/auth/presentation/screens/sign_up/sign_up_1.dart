@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tranquil_life/core/utils/extensions/date_time_extension.dart';
 import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/auth/domain/entities/register_data.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
+import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sign_up/sign_up_2.dart';
 import 'package:tranquil_life/features/auth/presentation/styles.dart';
 import 'package:tranquil_life/app/presentation/widgets/mountain_bg.dart';
@@ -19,12 +19,11 @@ class _ClientSignUpScreen1State extends State<SignUp1Screen> {
   final _formKey = GlobalKey<FormState>();
   final _dateTextController = TextEditingController();
 
-  String date = '';
   late RegisterData params;
 
   @override
   void didChangeDependencies() {
-    params = context.read<ClientAuthBloc>().params;
+    params = context.read<AuthBloc>().params;
     _dateTextController.text = params.birthDate;
     super.didChangeDependencies();
   }
@@ -101,7 +100,7 @@ class _ClientSignUpScreen1State extends State<SignUp1Screen> {
                       autocorrect: false,
                       initialValue: params.displayName,
                       keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
                         hintText: 'Display name',
                         errorStyle: authScreensErrorStyle,
@@ -140,15 +139,16 @@ class _ClientSignUpScreen1State extends State<SignUp1Screen> {
                         Positioned.fill(
                           child: GestureDetector(
                             onTap: () async {
-                              var date = await showCustomDatePicker(
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              final date = await showCustomDatePicker(
                                 context,
                                 minDateFromNow: DateTime(-100, 0, 0),
                                 maxDateFromNow: DateTime(-16, 0, 0),
                               );
-                              _dateTextController.text =
-                                  date?.formatted ?? _dateTextController.text;
-                              params.birthDate =
-                                  date?.folded ?? params.birthDate;
+                              if (date != null) {
+                                _dateTextController.text = date.formatted;
+                                params.birthDate = date.folded;
+                              }
                             },
                           ),
                         ),

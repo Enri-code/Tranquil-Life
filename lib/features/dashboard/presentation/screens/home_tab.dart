@@ -11,7 +11,7 @@ import 'package:tranquil_life/core/constants/moods.dart';
 import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/core/utils/functions.dart';
 import 'package:tranquil_life/features/consultation/domain/entities/consultant.dart';
-import 'package:tranquil_life/features/consultation/presentation/screens/schedule_meeting_screen.dart';
+import 'package:tranquil_life/features/consultation/presentation/widgets/meeting_date_sheet.dart';
 import 'package:tranquil_life/features/dashboard/presentation/widgets/home/meeting_card.dart';
 import 'package:tranquil_life/features/journal/domain/entities/note.dart';
 import 'package:tranquil_life/features/journal/presentation/screens/note_screen.dart';

@@ -5,7 +5,6 @@ import 'package:tranquil_life/core/utils/helpers/custom_loader.dart';
 import 'package:tranquil_life/core/utils/helpers/operation_status.dart';
 import 'package:tranquil_life/core/utils/services/validators.dart';
 import 'package:tranquil_life/features/auth/presentation/bloc/auth/auth_bloc.dart';
-import 'package:tranquil_life/features/auth/presentation/bloc/client_auth.dart';
 import 'package:tranquil_life/features/auth/presentation/screens/sent_reset_email.dart';
 
 class ForgotPasswordBottomSheet extends StatefulWidget {
@@ -23,7 +22,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
   void _continue() {
     if (Validator.isEmail(email)) {
       setState(() => error = '');
-      context.read<ClientAuthBloc>().add(ResetPassword(email));
+      context.read<AuthBloc>().add(ResetPassword(email));
     } else {
       setState(() => error = 'Please input a valid email address');
     }
@@ -76,7 +75,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
             SizedBox(
               height: 56,
               child: Center(
-                child: BlocConsumer<ClientAuthBloc, AuthState>(
+                child: BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state.status == OperationStatus.success) {
                       Navigator.of(context).popAndPushNamed(
@@ -84,7 +83,7 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
                         arguments: email,
                       );
                     } else if (state.status == OperationStatus.error) {
-                      setState(() => error = state.error!.message);
+                      setState(() => error = state.error!.message ?? '');
                     }
                   },
                   builder: (context, state) {

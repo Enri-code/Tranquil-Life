@@ -1,15 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
 class User {
-  const User({
-    required this.displayName,
-    required this.id,
-    this.avatarUrl = '',
-  });
+  const User({required this.displayName, this.avatarUrl = '', this.authToken});
 
-  final int id;
-  @JsonKey(name: 'username')
+  @JsonKey(name: 'display_name')
   final String displayName;
-  @JsonKey()
   final String avatarUrl;
+  final String? authToken;
 }

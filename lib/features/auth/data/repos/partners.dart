@@ -10,16 +10,16 @@ class PartnersRepoImpl extends PartnersRepo {
   const PartnersRepoImpl();
 
   @override
-  Future<Either<ResolvedError, List<Partner>>> getAll() async {
+  Future<Either<ApiError, List<Partner>>> getAll() async {
     try {
       var result = await ApiClient.get(AuthEndPoints.listPartners);
       if (result.data is List && result.statusCode == 200) {
         var data = (result.data as List).map((e) => PartnerModel.fromJson(e));
         return Right(data.toList());
       }
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     } catch (_) {
-      return const Left(ResolvedError());
+      return const Left(ApiError());
     }
   }
 }

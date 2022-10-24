@@ -22,6 +22,11 @@ class AddCard extends WalletEvent {
   final CardData data;
 }
 
+class UpdateCard extends WalletEvent {
+  const UpdateCard(this.data);
+  final CardData data;
+}
+
 class RemoveCard extends WalletEvent {
   const RemoveCard(this.data);
   final CardData data;

@@ -51,7 +51,7 @@ class _VideoLayoutState extends State<VideoLayout> {
         thumbFile!.path,
         await thumbFile!.readAsBytes(),
         key: widget.message.data,
-        maxAge: const Duration(hours: 6),
+        maxAge: const Duration(hours: 5),
         fileExtension: 'jpg',
       );
     }

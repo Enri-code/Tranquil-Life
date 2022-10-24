@@ -22,6 +22,5 @@ ClientModel _$ClientModelFromJson(Map<String, dynamic> json) {
     companyName: json['company_name'] as String?,
     isVerified: json['is_verified'] as bool,
     hasAnsweredQuestions: json['has_answered_questions'] as bool,
-    authToken: json['auth_token'] as String,
   );
 }

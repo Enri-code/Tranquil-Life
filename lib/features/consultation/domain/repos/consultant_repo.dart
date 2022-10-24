@@ -6,5 +6,5 @@ import 'package:tranquil_life/features/consultation/domain/entities/consultant.d
 abstract class ConsultantRepo extends ItemsRepo<Consultant> {
   const ConsultantRepo();
 
-  Future<Either<ResolvedError, dynamic>> rate(String consultantId, int rating);
+  Future<Either<ApiError, dynamic>> rate(String consultantId, int rating);
 }

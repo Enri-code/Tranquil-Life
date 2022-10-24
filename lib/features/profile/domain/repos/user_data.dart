@@ -4,10 +4,11 @@ abstract class IUserDataStore {
   Client? get user;
   set user(Client? val);
 
+  String get token;
+  set token(String val);
+
   bool get isUsingAvatar;
   set isUsingAvatar(bool val);
-
-  bool get isSignedIn => user != null;
 
   Future<void> init();
   Future<void> deleteUser();

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:tranquil_life/app/presentation/theme/colors.dart';
 import 'package:tranquil_life/app/presentation/theme/tranquil_icons.dart';
 import 'package:tranquil_life/app/presentation/widgets/custom_app_bar.dart';
@@ -37,15 +37,15 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
     return Scaffold(
       appBar: CustomAppBar(title: consultant.displayName),
       backgroundColor: Colors.grey[100],
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-        child: SingleChildScrollView(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
           child: Column(
             children: [
               const _DayTimePicker(),
-              const SizedBox(height: 32),
+              const SizedBox(height: 48),
               Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: _TimePickerWidget(
                   onTimeChosen: (newTime) => setState(() => time = newTime),
                 ),
@@ -73,7 +73,7 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
                   child: BlocBuilder<ConsultantBloc, ConsultantState>(
                     builder: (context, state) {
                       return _CardInfo(
-                        icon: Icons.calendar_today,
+                        icon: TranquilIcons.calendar_tick,
                         title: 'Date',
                         info: state.date?.folded ?? 'Select a date',
                       );
@@ -81,7 +81,7 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+              /*   const SizedBox(height: 32),
               Container(
                 height: 80,
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -94,7 +94,8 @@ class _ScheduleMeetingScreenState extends State<ScheduleMeetingScreen> {
                   title: 'Fee',
                   info: r'$35.00',
                 ),
-              ),
+              ), */
+              const Spacer(),
               const SizedBox(height: 40),
               BlocBuilder<ConsultantBloc, ConsultantState>(
                 builder: (context, state) {
@@ -150,9 +151,9 @@ class _TimePickerWidgetState extends State<_TimePickerWidget> {
       child: MyDefaultTextStyle(
         style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 32),
+          padding: const EdgeInsets.only(bottom: 48),
           child: Wrap(
-            spacing: 20,
+            spacing: 4,
             runSpacing: 20,
             children: List.generate(
               12,
