@@ -20,6 +20,7 @@ class SignInCase {
 
 class SignOutCase {
   Future call() async {
+    getIt<IUserDataStore>().token = null;
     getIt<ProfileBloc>().add(const RemoveUserProfile());
     getIt<WalletBloc>().add(const ClearWallet());
     await Future.wait([

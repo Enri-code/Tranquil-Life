@@ -9,7 +9,7 @@ abstract class AuthEndPoints {
 }
 
 abstract class ProfileEndPoints {
-  static const getProfile = 'client/login';
+  static const getProfile = 'client/getProfile';
 }
 
 abstract class ConsultantEndPoints {

@@ -13,7 +13,14 @@ class ProfileRepoImpl extends ProfileRepo {
   Future<Either<ApiError, Client>> getProfile() async {
     try {
       final result = await ApiClient.get(ProfileEndPoints.getProfile);
-      return Right(ClientModel.fromJson(result.data['user']));
+
+      final Map<String, dynamic>? data = result.data['profile'];
+
+      if (data != null) return Right(ClientModel.fromJson(data));
+
+      return const Left(ApiError(
+        message: 'There was a problem fetching your info. Try again later',
+      ));
     } catch (e) {
       return const Left(ApiError(
         message: 'There was a problem fetching your info. Try again later',

@@ -4,8 +4,8 @@ abstract class IUserDataStore {
   Client? get user;
   set user(Client? val);
 
-  String get token;
-  set token(String val);
+  String? get token;
+  set token(String? val);
 
   bool get isUsingAvatar;
   set isUsingAvatar(bool val);
