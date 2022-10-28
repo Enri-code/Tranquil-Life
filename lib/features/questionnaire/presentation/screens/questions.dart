@@ -79,7 +79,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   ),
                   onPressed: () {
                     final bloc = context.read<QuestionnaireBloc>();
-                    if (bloc.state.status == OperationStatus.loading) return;
+                    if (bloc.state.status == EventStatus.loading) return;
                     bloc.add(Submit(questions));
                   },
                 ),
@@ -97,16 +97,18 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           const SizedBox(height: 8),
           BlocListener<QuestionnaireBloc, QuestionnaireState>(
             listener: (context, state) {
-              if (state.status == OperationStatus.loading) {
+              if (state.status == EventStatus.loading) {
                 CustomLoader.display();
               } else {
-                CustomLoader.remove();
-                if (state.status == OperationStatus.success) {
+                if (state.status == EventStatus.success) {
+                  CustomLoader.remove();
                   //TODO: hasAnsweredQuestions = true
                   Navigator.of(context).popAndPushNamed(
                     SpeakWithConsultantScreen.routeName,
                   );
-                } else if (state.status == OperationStatus.error) {}
+                } else if (state.status == EventStatus.error) {
+                  CustomLoader.remove();
+                }
               }
             },
             child: Align(

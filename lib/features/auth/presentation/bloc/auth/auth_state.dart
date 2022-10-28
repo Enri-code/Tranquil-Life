@@ -3,7 +3,7 @@ part of 'auth_bloc.dart';
 class AuthState extends BlocStateBase {
   const AuthState({
     super.error,
-    super.status = OperationStatus.initial,
+    super.status = EventStatus.initial,
     this.isSignedIn = false,
   });
 
@@ -11,7 +11,7 @@ class AuthState extends BlocStateBase {
 
   @override
   AuthState copyWith({
-    OperationStatus? status,
+    EventStatus? status,
     ApiError? error,
     bool? isSignedIn,
   }) {

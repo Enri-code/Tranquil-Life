@@ -5,4 +5,5 @@ import 'package:tranquil_life/features/profile/domain/entities/client.dart';
 abstract class ProfileRepo {
   const ProfileRepo();
   Future<Either<ApiError, Client>> getProfile();
+  Future<Either<ApiError, Client>> updateProfile(Client user);
 }

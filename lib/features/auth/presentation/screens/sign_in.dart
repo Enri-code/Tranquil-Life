@@ -60,7 +60,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: BlocListener<AuthBloc, AuthState>(
                           listenWhen: (_, __) => !isModalOpen,
                           listener: (context, state) {
-                            if (state.status == OperationStatus.error) {
+                            if (state.status == EventStatus.error) {
                               _formKey.currentState!.validate();
                             }
                           },
@@ -79,7 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               if (!Validator.isEmail(val)) {
                                 return 'Please input a valid email address';
                               }
-                              if (state.status == OperationStatus.error &&
+                              if (state.status == EventStatus.error &&
                                   state.error?.cause is EmailError) {
                                 return state.error!.message;
                               }
@@ -158,7 +158,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             );
                       }
                     }); */
-                    context.read<ProfileBloc>().add(UpdateUser(
+                    context.read<ProfileBloc>().add(EditUser(
                           id: 1,
                           firstName: 'Onyewuchi',
                           lastName: 'Ifeanyi',

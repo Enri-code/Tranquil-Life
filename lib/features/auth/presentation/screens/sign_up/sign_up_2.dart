@@ -82,7 +82,7 @@ class _ClientSignUpScreen1State extends State<SignUp2Screen> {
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 return Text(
-                  state.status == OperationStatus.error
+                  state.status == EventStatus.error
                       ? state.error!.message ?? ''
                       : '',
                   style: TextStyle(color: Colors.red[100]),
@@ -125,7 +125,7 @@ class _OrganizationSectionState extends State<_OrganizationSection>
   void initState() {
     final partnerBloc = context.read<PartnerBloc>();
     if (partnerBloc.state.partners == null &&
-        partnerBloc.state.status != OperationStatus.loading) {
+        partnerBloc.state.status != EventStatus.loading) {
       partnerBloc.add(const GetPartnersEvent());
     }
     super.initState();

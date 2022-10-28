@@ -77,17 +77,17 @@ class _ForgotPasswordBottomSheetState extends State<ForgotPasswordBottomSheet> {
               child: Center(
                 child: BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
-                    if (state.status == OperationStatus.success) {
+                    if (state.status == EventStatus.success) {
                       Navigator.of(context).popAndPushNamed(
                         SentPasswordResetEmailScreen.routeName,
                         arguments: email,
                       );
-                    } else if (state.status == OperationStatus.error) {
+                    } else if (state.status == EventStatus.error) {
                       setState(() => error = state.error!.message ?? '');
                     }
                   },
                   builder: (context, state) {
-                    if (state.status == OperationStatus.customLoading) {
+                    if (state.status == EventStatus.customLoading) {
                       return CustomLoader.widget();
                     }
                     return ElevatedButton(

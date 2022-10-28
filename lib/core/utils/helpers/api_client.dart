@@ -29,8 +29,8 @@ abstract class ApiClient {
   }
 
   static Future<ApiData> post(String subPath, {dynamic body}) {
-    return _client.post(subPath, data: body, options: _options).then((result) {
-      return ApiData(result.data, result.statusCode);
-    });
+    return _client
+        .post(subPath, data: body, options: _options)
+        .then((result) => ApiData(result.data, result.statusCode));
   }
 }

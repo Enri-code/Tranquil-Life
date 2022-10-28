@@ -9,6 +9,6 @@ part of 'note.dart';
 Map<String, dynamic> _$NoteToJson(Note instance) => <String, dynamic>{
       'heading': instance.title,
       'body': instance.description,
-      'mood': instance.mood,
+      if (instance.mood != null) 'mood': instance.mood,
       'hex_color': instance.hexColor,
     };

@@ -4,14 +4,14 @@ class JournalState extends BlocStateBase {
   const JournalState({
     super.error,
     this.notes = const [],
-    super.status = OperationStatus.initial,
+    super.status = EventStatus.initial,
   });
 
   final List<SavedNote> notes;
 
   @override
   JournalState copyWith({
-    OperationStatus? status,
+    EventStatus? status,
     ApiError? error,
     List<SavedNote>? notes,
   }) {

@@ -17,13 +17,13 @@ class PartnerBloc extends Bloc<PartnerEvent, PartnerState> {
   final PartnersRepo _repo;
 
   _getPartners(GetPartnersEvent event, Emitter<PartnerState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: EventStatus.loading));
     var result = await _repo.getAll();
     result.fold(
-      (l) => emit(state.copyWith(status: OperationStatus.error, error: l)),
+      (l) => emit(state.copyWith(status: EventStatus.error, error: l)),
       (r) {
         emit(state.copyWith(
-          status: OperationStatus.success,
+          status: EventStatus.success,
           partners: r,
           error: null,
         ));

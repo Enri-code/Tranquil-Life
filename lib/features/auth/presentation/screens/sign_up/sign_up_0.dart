@@ -75,7 +75,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: BlocListener<AuthBloc, AuthState>(
                           listener: (context, state) {
-                            if (state.status == OperationStatus.error) {
+                            if (state.status == EventStatus.error) {
                               _formKey.currentState!.validate();
                             }
                           },
@@ -94,7 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               if (!Validator.isEmail(val)) {
                                 return 'Please input a valid email address';
                               }
-                              if (state.status == OperationStatus.error &&
+                              if (state.status == EventStatus.error &&
                                   state.error?.cause is EmailError) {
                                 return state.error!.message;
                               }

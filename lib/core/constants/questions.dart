@@ -1,7 +1,5 @@
 import 'package:tranquil_life/app/config.dart';
 import 'package:tranquil_life/core/constants/genders.dart';
-import 'package:tranquil_life/core/utils/functions.dart';
-import 'package:tranquil_life/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tranquil_life/features/questionnaire/domain/entities/question.dart';
 
 final questions = <Question>[
@@ -9,10 +7,12 @@ final questions = <Question>[
     0,
     title: 'What is your gender?',
     options: const [...genders, Option('Choose not to say')],
-    onAnswer: (answer) {
+    /*  onAnswer: (answer) {
       if (answer.title == 'Choose not to say') return;
-      getIt<ProfileBloc>().add(UpdateUser(gender: answer.title));
-    },
+      if (getIt<ProfileBloc>().state.user?.gender == null) {
+        getIt<ProfileBloc>().add(EditUser(gender: answer.title));
+      }
+    }, */
   ),
   Question(
     1,

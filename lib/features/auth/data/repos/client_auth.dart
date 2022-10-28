@@ -64,7 +64,8 @@ class AuthRepoImpl extends AuthRepo<User, RegisterData> {
 
   @override
   Future<Either<ApiError, bool>> resetPassword(String email) async {
-    try {
+    throw UnimplementedError();
+    /*  try {
       final result = await ApiClient.post(
         AuthEndPoints.passwordReset,
         body: {'email': email},
@@ -75,6 +76,6 @@ class AuthRepoImpl extends AuthRepo<User, RegisterData> {
       return const Left(ApiError(
         message: 'There was am issue sending the email. Tray again later',
       ));
-    }
+    } */
   }
 }

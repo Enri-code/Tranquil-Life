@@ -14,8 +14,8 @@ class SavedNote extends Note {
     super.hexColor,
   });
 
-  final String id;
-  @JsonKey(fromJson: dateTimeFromString, name: 'updated_at')
+  final int id;
+  // @JsonKey(fromJson: dateTimeFromString, name: 'updated_at')
   final DateTime? dateUpdated;
 
   @override
@@ -29,4 +29,4 @@ class SavedNote extends Note {
   int get hashCode => super.hashCode & id.hashCode;
 }
 
-DateTime? dateTimeFromString(String time) => DateTime.tryParse(time);
+// DateTime? dateTimeFromString(String time) => DateTime.tryParse(time);

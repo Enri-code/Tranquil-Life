@@ -6,7 +6,7 @@ class ConsultantState extends BlocStateBase {
     this.date,
     this.consultantId,
     this.consultants = const [],
-    super.status = OperationStatus.initial,
+    super.status = EventStatus.initial,
   });
 
   final int? consultantId;
@@ -15,7 +15,7 @@ class ConsultantState extends BlocStateBase {
 
   @override
   ConsultantState copyWith({
-    OperationStatus? status,
+    EventStatus? status,
     ApiError? error,
     int? consultantId,
     DateTime? date,

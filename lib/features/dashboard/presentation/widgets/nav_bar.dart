@@ -75,12 +75,12 @@ class _NavBarState extends State<NavBar> {
                       ),
                     ],
                     activeChild: const _Item(
-                      label: 'Notes',
+                      label: 'Journal',
                       iconData: TranquilIcons.book_saved,
                       isSelected: true,
                     ),
                     child: const _Item(
-                      label: 'Notes',
+                      label: 'Journal',
                       iconData: TranquilIcons.book_saved,
                       isSelected: false,
                     ),

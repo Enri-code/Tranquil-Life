@@ -10,14 +10,16 @@ import 'package:tranquil_life/features/journal/domain/repos/journal_repo.dart';
 
 class JournalRepoImpl extends JournalRepo {
   const JournalRepoImpl();
+
   @override
   Future<Either<ApiError, List<SavedNote>>> getAll() async {
     try {
-      var result = await ApiClient.get(JournalEndPoints.getAll);
-      var data = result.data as Map<String, dynamic>;
-      if (data.containsKey('data')) {
-        var notes = (result.data['data'] as List)
-            .map((e) => SavedNoteModel.fromJson(e));
+      final result = await ApiClient.get(JournalEndPoints.getAll);
+      final data = result.data as Map<String, dynamic>;
+      if (data.containsKey('journal')) {
+        final notes = (data['journal'] as List).map((e) {
+          return SavedNoteModel.fromJson(e);
+        });
         return Right(notes.toList());
       }
       return const Left(ApiError());
@@ -33,6 +35,7 @@ class JournalRepoImpl extends JournalRepo {
         JournalEndPoints.add,
         body: note.toJson(),
       );
+
       var data = result.data as Map<String, dynamic>;
       if (data.containsKey('note')) {
         return Right(SavedNoteModel.fromJson(data['note']));
@@ -43,26 +46,15 @@ class JournalRepoImpl extends JournalRepo {
     }
   }
 
+/* 
   @override
   Future<Either<ApiError, SavedNote>> update(SavedNote note) async {
-    try {
-      var result = await ApiClient.post(
-        JournalEndPoints.edit,
-        body: note.toJson(),
-      );
-      var data = result.data as Map<String, dynamic>;
-      if (data.containsKey('note')) {
-        return Right(SavedNoteModel.fromJson(data['note']));
-      }
-      return const Left(ApiError());
-    } catch (_) {
-      return const Left(ApiError());
-    }
+    throw UnimplementedError();
   }
-
+ */
   @override
   Future<Either<ApiError, bool>> delete(List<SavedNote> notes) async {
-    return const Right(true);
+    throw UnimplementedError();
   }
 
   @override
@@ -71,14 +63,19 @@ class JournalRepoImpl extends JournalRepo {
     List<SavedNote> notes,
   ) async {
     try {
-      var result = await ApiClient.post(
+      final result = await ApiClient.post(
         JournalEndPoints.share,
-        // body: {"id": notes.id, "consultant_id": consultant.id},
+        body: {
+          "id": notes.map((e) => e.id).toList(),
+          "consultant_id": consultant.id,
+        },
       );
-      var data = result.data as Map<String, dynamic>;
-      if (data.containsKey('success')) return const Right(true);
+      final data = result.data as Map<String, dynamic>;
+      if (data['error'] as bool) {
+        return const Left(ApiError());
+      }
 
-      return const Left(ApiError());
+      return const Right(true);
     } catch (_) {
       return const Left(ApiError());
     }

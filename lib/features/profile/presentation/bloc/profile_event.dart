@@ -7,11 +7,12 @@ abstract class ProfileEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class UpdateUser extends Client implements ProfileEvent {
-  static Client? get _profileData => getIt<ProfileBloc>().state.user;
+class EditUser extends Client implements ProfileEvent {
+  static Client? get _profileData => getIt<IUserDataStore>().user;
 
-  UpdateUser({
-    Client? oldData,
+  EditUser({
+    ///The user model that fills in the default or null values
+    Client? baseUser,
     int? id,
     String? email,
     String? firstName,
@@ -26,27 +27,30 @@ class UpdateUser extends Client implements ProfileEvent {
     String? gender,
     String? companyName,
   }) : super(
-          id: id ?? oldData?.id ?? _profileData!.id,
-          email: email ?? oldData?.email ?? _profileData!.email,
-          firstName: firstName ?? oldData?.firstName ?? _profileData!.firstName,
-          lastName: lastName ?? oldData?.lastName ?? _profileData!.lastName,
+          id: id ?? baseUser?.id ?? _profileData!.id,
+          email: email ?? baseUser?.email ?? _profileData!.email,
+          firstName:
+              firstName ?? baseUser?.firstName ?? _profileData!.firstName,
+          lastName: lastName ?? baseUser?.lastName ?? _profileData!.lastName,
           displayName:
-              displayName ?? oldData?.displayName ?? _profileData!.displayName,
+              displayName ?? baseUser?.displayName ?? _profileData!.displayName,
           phoneNumber:
-              phoneNumber ?? oldData?.phoneNumber ?? _profileData!.phoneNumber,
-          birthDate: birthDate ?? oldData?.birthDate ?? _profileData?.birthDate,
-          avatarUrl: avatarUrl ?? oldData?.avatarUrl ?? _profileData!.avatarUrl,
+              phoneNumber ?? baseUser?.phoneNumber ?? _profileData!.phoneNumber,
+          birthDate:
+              birthDate ?? baseUser?.birthDate ?? _profileData?.birthDate,
+          avatarUrl:
+              avatarUrl ?? baseUser?.avatarUrl ?? _profileData!.avatarUrl,
           isVerified:
-              isVerified ?? oldData?.isVerified ?? _profileData!.isVerified,
+              isVerified ?? baseUser?.isVerified ?? _profileData!.isVerified,
           usesBitmoji:
-              usesBitmoji ?? oldData?.usesBitmoji ?? _profileData!.usesBitmoji,
+              usesBitmoji ?? baseUser?.usesBitmoji ?? _profileData!.usesBitmoji,
           hasAnsweredQuestions: hasAnsweredQuestions ??
-              oldData?.hasAnsweredQuestions ??
+              baseUser?.hasAnsweredQuestions ??
               _profileData!.hasAnsweredQuestions,
-          gender: gender ?? oldData?.gender ?? _profileData?.gender,
-          staffId: oldData?.staffId ?? _profileData?.staffId,
+          gender: gender ?? baseUser?.gender ?? _profileData?.gender,
+          staffId: baseUser?.staffId ?? _profileData?.staffId,
           companyName:
-              companyName ?? oldData?.companyName ?? _profileData?.companyName,
+              companyName ?? baseUser?.companyName ?? _profileData?.companyName,
         );
 
   @override
@@ -56,9 +60,10 @@ class UpdateUser extends Client implements ProfileEvent {
   bool? get stringify => false;
 }
 
-class AddUserProfile extends ProfileEvent {
+class UpdateUser extends ProfileEvent {
   final Client user;
-  const AddUserProfile(this.user);
+
+  const UpdateUser(this.user);
 }
 
 class RestoreUserProfile extends ProfileEvent {
@@ -69,7 +74,7 @@ class RemoveUserProfile extends ProfileEvent {
   const RemoveUserProfile();
 }
 
-class UpdateProfileLocation extends ProfileEvent {
+/* class UpdateProfileLocation extends ProfileEvent {
   const UpdateProfileLocation([this.location]);
   final String? location;
-}
+} */

@@ -40,7 +40,6 @@ class _NoteBottomSheetState extends State<NoteBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isSaved = widget.note is SavedNote;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
       decoration: bottomSheetDecoration,
@@ -95,18 +94,21 @@ class _NoteBottomSheetState extends State<NoteBottomSheet> {
                     builder: (_) => ShareNotesBottomSheet([widget.note]),
                   ),
                 ),
-                const SizedBox(height: 4),
-                _Option(
-                  label: 'Delete note',
-                  icon: const Icon(CupertinoIcons.delete),
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (_) => DeleteNotesDialog(
-                      notes: isSaved ? [widget.note as SavedNote] : null,
-                      onNoteDeleted: widget.onNoteDeleted,
+                if (widget.note is SavedNote)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: _Option(
+                      label: 'Delete note',
+                      icon: const Icon(CupertinoIcons.delete),
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (_) => DeleteNotesDialog(
+                          notes: [widget.note as SavedNote],
+                          onNoteDeleted: widget.onNoteDeleted,
+                        ),
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),

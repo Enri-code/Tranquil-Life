@@ -38,8 +38,8 @@ class InputBox extends StatelessWidget {
     return BlocBuilder<LockScreenBloc, LockScreenState>(
       buildWhen: (prev, curr) => prev.status != curr.status,
       builder: (context, state) {
-        bool cantType = state.status == OperationStatus.loading ||
-            state.status == OperationStatus.customLoading;
+        bool cantType = state.status == EventStatus.loading ||
+            state.status == EventStatus.customLoading;
         return Opacity(
           opacity: cantType ? 0.8 : 1,
           child: IgnorePointer(

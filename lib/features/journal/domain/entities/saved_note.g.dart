@@ -7,10 +7,10 @@ part of 'saved_note.dart';
 // **************************************************************************
 
 Map<String, dynamic> _$SavedNoteToJson(SavedNote instance) => <String, dynamic>{
+      'id': instance.id,
       'heading': instance.title,
       'body': instance.description,
       'mood': instance.mood,
       'hex_color': instance.hexColor,
-      'id': instance.id,
       'updated_at': instance.dateUpdated?.toIso8601String(),
     };

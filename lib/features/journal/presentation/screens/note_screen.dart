@@ -148,7 +148,7 @@ class _NoteScreenState extends State<NoteScreen> {
                           style: const TextStyle(fontSize: 18, height: 1.35),
                           decoration: const InputDecoration(
                             filled: false,
-                            hintText: "What's on your mind today?",
+                            hintText: "What's on your mind?",
                             hintStyle: TextStyle(fontSize: 19),
                             border: InputBorder.none,
                             enabledBorder: InputBorder.none,

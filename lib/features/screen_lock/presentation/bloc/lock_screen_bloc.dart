@@ -42,23 +42,23 @@ class LockScreenBloc extends Bloc<LockScreenEvent, LockScreenState> {
     if (_lockType == LockType.setupPin) {
       if (state.isConfirmStep) {
         emit(state.copyWith(
-          status: correct ? OperationStatus.success : OperationStatus.error,
+          status: correct ? EventStatus.success : EventStatus.error,
         ));
         if (correct) lockController.setPin(_pin);
       } else {
         _correctPin = _pin;
         emit(state.copyWith(
           isConfirmStep: true,
-          status: OperationStatus.initial,
+          status: EventStatus.initial,
         ));
       }
     } else if (correct) {
       lockController.tries = null;
-      emit(state.copyWith(status: OperationStatus.success, tries: 0));
+      emit(state.copyWith(status: EventStatus.success, tries: 0));
     } else if (state.tries < maxTries - 1) {
       emit(state.copyWith(
         tries: lockController.tries = state.tries + 1,
-        status: OperationStatus.error,
+        status: EventStatus.error,
       ));
     } else {
       _startTimer(emit);
@@ -70,7 +70,7 @@ class LockScreenBloc extends Bloc<LockScreenEvent, LockScreenState> {
   _startTimer(Emitter<LockScreenState> emit) {
     _timeStream?.close();
     _timeStream = StreamController();
-    emit(state.copyWith(status: OperationStatus.customLoading));
+    emit(state.copyWith(status: EventStatus.customLoading));
     _timeStream!.add('Try again in 60 seconds.');
     Timer.periodic(
       const Duration(seconds: 1),
@@ -97,7 +97,7 @@ class LockScreenBloc extends Bloc<LockScreenEvent, LockScreenState> {
     if (state.pin.length > 3) return;
     emit(state.copyWith(pin: [...state.pin, event.pin]));
     if (state.pin.length > 3) {
-      emit(state.copyWith(status: OperationStatus.loading));
+      emit(state.copyWith(status: EventStatus.loading));
       await _onPinComplete(emit);
     }
   }

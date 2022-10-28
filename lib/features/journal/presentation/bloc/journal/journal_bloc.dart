@@ -15,22 +15,22 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
   JournalBloc(this._repo) : super(const JournalState()) {
     on(_getNotes);
     on(_addNote);
-    on(_updateNote);
+    // on(_updateNote);
     on(_removeNotes);
     on(_shareNotes);
   }
   final JournalRepo _repo;
 
   JournalState _onError(l) {
-    return state.copyWith(error: l, status: OperationStatus.error);
+    return state.copyWith(error: l, status: EventStatus.error);
   }
 
   _getNotes(GetNotes event, Emitter<JournalState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: EventStatus.loading));
     if (event.notes != null) {
       //TODO
       emit(state.copyWith(
-        status: OperationStatus.success,
+        status: EventStatus.success,
         notes: event.notes,
         error: null,
       ));
@@ -40,7 +40,7 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
     emit(res.fold(
       _onError,
       (r) => state.copyWith(
-        status: OperationStatus.success,
+        status: EventStatus.success,
         notes: r,
         error: null,
       ),
@@ -48,32 +48,32 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
   }
 
   _addNote(AddNote event, Emitter<JournalState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: EventStatus.loading));
     var res = await _repo.add(event.note);
     emit(res.fold(
       _onError,
       (r) => state.copyWith(
-        status: OperationStatus.success,
+        status: EventStatus.success,
         notes: [...state.notes, r],
         error: null,
       ),
     ));
   }
 
-  _updateNote(UpdateNote event, Emitter<JournalState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+/*   _updateNote(UpdateNote event, Emitter<JournalState> emit) async {
+    emit(state.copyWith(status: EventStatus.loading));
     var res = await _repo.update(event.note);
     emit(res.fold(
       _onError,
       (r) {
         // state.notes[state.notes.indexOf(r)] = r;
-        return state.copyWith(status: OperationStatus.success, error: null);
+        return state.copyWith(status: EventStatus.success, error: null);
       },
     ));
-  }
+  }*/
 
   _removeNotes(RemoveNotes event, Emitter<JournalState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: EventStatus.loading));
     var res = await _repo.delete(event.notes);
     emit(res.fold(
       _onError,
@@ -81,7 +81,7 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
         for (final e in event.notes) {
           state.notes.remove(e);
         }
-        return state.copyWith(status: OperationStatus.success, error: null);
+        return state.copyWith(status: EventStatus.success, error: null);
       },
     ));
   }
@@ -90,7 +90,7 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
     var res = await _repo.share(event.consultant, event.notes);
     emit(res.fold(
       _onError,
-      (r) => state.copyWith(status: OperationStatus.success, error: null),
+      (r) => state.copyWith(status: EventStatus.success, error: null),
     ));
   }
 }

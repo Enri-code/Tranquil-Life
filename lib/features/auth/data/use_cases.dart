@@ -12,7 +12,7 @@ final signOutCase = SignOutCase();
 
 class SignInCase {
   void call(Client user) async {
-    getIt<ProfileBloc>().add(AddUserProfile(user));
+    getIt<ProfileBloc>().add(EditUser(baseUser: user));
     await Future.delayed(kThemeChangeDuration);
     getIt<IScreenLock>().showLock(LockType.setupPin);
   }

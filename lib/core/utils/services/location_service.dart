@@ -1,4 +1,4 @@
-import 'package:geocoding/geocoding.dart';
+// import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
@@ -13,7 +13,7 @@ class LocationService {
     return true;
   }
 
-  static Future<String> _getAddressFromCords(Position position) async {
+  /* static Future<String> _getAddressFromCords(Position position) async {
     final placeMarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     final place = placeMarks[0];
@@ -24,7 +24,7 @@ class LocationService {
         ? place.administrativeArea
         : place.subAdministrativeArea!;
     return '$locality, $area';
-  }
+  } */
 
   static Future<Position?> requestPosition() async {
     try {
@@ -35,9 +35,9 @@ class LocationService {
     }
   }
 
-  static Future<String?> requestLocation() async {
+  /* static Future<String?> requestLocation() async {
     final position = await requestPosition();
     if (position == null) return null;
     return _getAddressFromCords(position);
-  }
+  } */
 }

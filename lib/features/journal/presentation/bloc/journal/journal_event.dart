@@ -17,10 +17,10 @@ class AddNote extends JournalEvent {
   const AddNote(this.note);
 }
 
-class UpdateNote extends JournalEvent {
+/* class UpdateNote extends JournalEvent {
   final SavedNote note;
   const UpdateNote(this.note);
-}
+} */
 
 class RemoveNotes extends JournalEvent {
   final List<SavedNote> notes;

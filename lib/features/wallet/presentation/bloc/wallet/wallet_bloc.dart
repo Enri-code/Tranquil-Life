@@ -49,34 +49,34 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   _addCard(AddCard event, Emitter<WalletState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: EventStatus.loading));
     final cards = [...?state.cards, event.data];
     final map = cards.map((e) => e.toJson()).toList();
     await _cardsStore?.set(_Keys.cardsKey, map);
-    emit(state.copyWith(cards: cards, status: OperationStatus.success));
+    emit(state.copyWith(cards: cards, status: EventStatus.success));
   }
 
   _updateCard(UpdateCard event, Emitter<WalletState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: EventStatus.loading));
     final cards = List<CardData>.from(state.cards!);
     final cardIndex = cards.indexWhere((e) => e.cardId == event.data.cardId);
     if (cardIndex == -1) {
-      emit(state.copyWith(status: OperationStatus.error));
+      emit(state.copyWith(status: EventStatus.error));
       return;
     }
 
     cards[cardIndex] = event.data;
     final map = cards.map((e) => e.toJson()).toList();
     await _cardsStore?.set(_Keys.cardsKey, map);
-    emit(state.copyWith(cards: cards, status: OperationStatus.success));
+    emit(state.copyWith(cards: cards, status: EventStatus.success));
   }
 
   _removeCard(RemoveCard event, Emitter<WalletState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: EventStatus.loading));
     final newCards = List<CardData>.from(state.cards!)..remove(event.data);
     final map = newCards.map((e) => e.toJson()).toList();
     await _cardsStore?.set(_Keys.cardsKey, map);
-    emit(state.copyWith(status: OperationStatus.success, cards: newCards));
+    emit(state.copyWith(status: EventStatus.success, cards: newCards));
   }
 
   _clearWallet(ClearWallet event, Emitter<WalletState> emit) async {
@@ -84,9 +84,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
     ///TODO: user chooses to clear cards
     {
-      emit(state.copyWith(status: OperationStatus.loading));
+      emit(state.copyWith(status: EventStatus.loading));
       await _cardsStore?.deleteAll(closeBox: true);
-      emit(state.copyWith(status: OperationStatus.success, cards: null));
+      emit(state.copyWith(status: EventStatus.success, cards: null));
     } else {
       await _cardsStore?.deleteAll(keys: [], closeBox: true);
       emit(state.copyWith(cards: null));

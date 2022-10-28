@@ -127,15 +127,14 @@ class _LockScreenState extends State<LockScreen> {
                             child: BlocBuilder<LockScreenBloc, LockScreenState>(
                               builder: (context, state) {
                                 final lockBloc = context.read<LockScreenBloc>();
-                                if (state.status ==
-                                    OperationStatus.customLoading) {
+                                if (state.status == EventStatus.customLoading) {
                                   return StreamBuilder<String>(
                                     stream: lockBloc.timeLeft,
                                     builder: (_, snap) => Text(snap.data ?? ''),
                                   );
                                 }
 
-                                if (state.status == OperationStatus.error) {
+                                if (state.status == EventStatus.error) {
                                   if (lockType == LockType.setupPin) {
                                     return Text(
                                       'Wrong pin. Try again.',
@@ -163,7 +162,7 @@ class _LockScreenState extends State<LockScreen> {
                           const Flexible(child: _KeyPadWidget()),
                           BlocListener<LockScreenBloc, LockScreenState>(
                             listenWhen: (prev, curr) =>
-                                curr.status == OperationStatus.success &&
+                                curr.status == EventStatus.success &&
                                 prev.status != curr.status,
                             listener: (context, state) async {
                               if (lockType == LockType.resetPin) {

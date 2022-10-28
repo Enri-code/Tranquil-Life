@@ -40,11 +40,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     getIt<IUserDataStore>().token = user.authToken!;
     final result = await _profileRepo.getProfile();
     emit(result.fold(
-      (l) => state.copyWith(status: OperationStatus.error, error: l),
+      (l) => state.copyWith(status: EventStatus.error, error: l),
       (r) {
         signInCase(r);
         return state.copyWith(
-          status: OperationStatus.success,
+          status: EventStatus.success,
           isSignedIn: true,
           error: null,
         );
@@ -53,51 +53,51 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _resetError(RemoveError event, Emitter<AuthState> emit) {
-    emit(state.copyWith(status: OperationStatus.initial, error: null));
+    emit(state.copyWith(status: EventStatus.initial, error: null));
   }
 
   _restoreSignIn(RestoreSignIn event, Emitter<AuthState> emit) {
     emit(state.copyWith(
       error: null,
-      status: OperationStatus.initial,
+      status: EventStatus.initial,
       isSignedIn: true,
     ));
   }
 
   _signUp(SignUp event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: EventStatus.loading));
     var res = await _authRepo.register(params);
     res.fold(
-      (l) => emit(state.copyWith(status: OperationStatus.error, error: l)),
+      (l) => emit(state.copyWith(status: EventStatus.error, error: l)),
       (r) => _onSignIn(r, emit),
     );
   }
 
   _signIn(SignIn event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: EventStatus.loading));
     var res = await _authRepo.signIn(event.email, event.password);
     emit(res.fold(
-      (l) => state.copyWith(status: OperationStatus.error, error: l),
+      (l) => state.copyWith(status: EventStatus.error, error: l),
       (r) => _onSignIn(r, emit),
     ));
   }
 
   _signOut(SignOut event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: EventStatus.loading));
     await signOutCase();
     emit(state.copyWith(
-      status: OperationStatus.initial,
+      status: EventStatus.initial,
       isSignedIn: false,
       error: null,
     ));
   }
 
   _resetPassword(ResetPassword event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(status: OperationStatus.customLoading));
+    emit(state.copyWith(status: EventStatus.customLoading));
     var res = await _authRepo.resetPassword(event.email);
     emit(res.fold(
-      (l) => state.copyWith(status: OperationStatus.error, error: l),
-      (r) => state.copyWith(status: OperationStatus.success, error: null),
+      (l) => state.copyWith(status: EventStatus.error, error: l),
+      (r) => state.copyWith(status: EventStatus.success, error: null),
     ));
   }
 }

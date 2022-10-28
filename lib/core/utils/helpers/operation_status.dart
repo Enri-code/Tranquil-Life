@@ -1,1 +1,1 @@
-enum OperationStatus { initial, loading, customLoading, error, success }
+enum EventStatus { initial, loading, customLoading, error, success }

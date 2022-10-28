@@ -7,16 +7,16 @@ import 'package:tranquil_life/features/journal/presentation/bloc/journal/journal
 class DeleteNotesDialog extends StatelessWidget {
   const DeleteNotesDialog({
     Key? key,
-    this.notes,
+    required this.notes,
     this.onNoteDeleted,
   }) : super(key: key);
 
-  final List<SavedNote>? notes;
+  final List<SavedNote> notes;
   final Function()? onNoteDeleted;
 
   @override
   Widget build(BuildContext context) {
-    bool isMultiple = (notes?.length ?? 0) > 1;
+    bool isMultiple = (notes.length) > 1;
     return ConfirmDialog(
       title: 'Delete Note${isMultiple ? 's' : ''}?',
       bodyText:
@@ -24,9 +24,7 @@ class DeleteNotesDialog extends StatelessWidget {
       yesDialog: DialogOption(
         'Delete',
         onPressed: () {
-          if (notes != null) {
-            context.read<JournalBloc>().add(RemoveNotes(notes!));
-          }
+          context.read<JournalBloc>().add(RemoveNotes(notes));
           onNoteDeleted?.call();
         },
       ),

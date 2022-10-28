@@ -16,7 +16,7 @@ class LockScreenState extends BlocStateBase {
   LockScreenState copyWith({
     int? tries,
     bool? isConfirmStep,
-    OperationStatus? status,
+    EventStatus? status,
     List<String>? pin,
   }) {
     return LockScreenState(

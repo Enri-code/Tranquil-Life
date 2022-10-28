@@ -132,13 +132,13 @@ class _CustomizeCardScreenState extends State<CustomizeCardScreen> {
                           ),
                           BlocListener<WalletBloc, WalletState>(
                             listenWhen: (previous, current) =>
-                                current.status != OperationStatus.initial,
+                                current.status != EventStatus.initial,
                             listener: (context, state) {
-                              if (state.status == OperationStatus.loading) {
+                              if (state.status == EventStatus.loading) {
                                 CustomLoader.display();
                               } else {
                                 CustomLoader.remove();
-                                if (state.status == OperationStatus.success) {
+                                if (state.status == EventStatus.success) {
                                   Navigator.of(context).pop();
                                 }
                               }

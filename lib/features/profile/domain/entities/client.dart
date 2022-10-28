@@ -37,5 +37,7 @@ class Client extends User {
 
   final bool isVerified;
 
+  String get name => '$firstName $lastName';
+
   Map<String, dynamic> toJson() => _$ClientToJson(this);
 }

@@ -26,13 +26,11 @@ class AvatarEditorScreen extends StatelessWidget {
               child: Icon(Icons.done, color: Colors.white, size: 20),
             ),
             onPressed: () async {
-              context.read<ProfileBloc>().add(UpdateUser(
+              context.read<ProfileBloc>().add(EditUser(
                     usesBitmoji: true,
                     avatarUrl: await fluttermojiFunctions.encodeMySVGtoString(),
                   ));
-              if (ModalRoute.of(context)?.settings.name == routeName) {
-                Navigator.of(context).pop();
-              }
+              Navigator.of(context).pop();
             },
           ),
         ],

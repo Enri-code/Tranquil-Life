@@ -3,7 +3,7 @@ import 'package:tranquil_life/features/journal/domain/entities/saved_note.dart';
 
 final notes = [
   SavedNote(
-    id: '7',
+    id: 7,
     title: 'I never liked therapy, so I was jittery, but my first',
     description: 'Description',
     mood: moods[0],
@@ -11,7 +11,7 @@ final notes = [
     dateUpdated: DateTime.now(),
   ),
   SavedNote(
-    id: '6',
+    id: 6,
     title:
         'I never liked therapy, so I was jittery, but my first session. This is how I felt before, during, and after my first session.',
     description: 'Long description',
@@ -19,13 +19,13 @@ final notes = [
     dateUpdated: DateTime.now().add(const Duration(days: 1)),
   ),
   SavedNote(
-    id: '0',
+    id: 0,
     title: 'Short note',
     description: 'Description',
     dateUpdated: DateTime.now(),
   ),
   SavedNote(
-    id: '1',
+    id: 1,
     title:
         'I never liked therapy, so I was jittery, but my first session changed everything. This is how I felt before, during, and after my first session.',
     description: 'Long description',
@@ -33,7 +33,7 @@ final notes = [
     dateUpdated: DateTime.now(),
   ),
   SavedNote(
-    id: '2',
+    id: 3,
     title: 'Short note',
     description: 'Description',
     dateUpdated: DateTime.now().subtract(const Duration(days: 2)),
@@ -41,13 +41,13 @@ final notes = [
     hexColor: '#ffC0E2C9',
   ),
   SavedNote(
-    id: '3',
+    id: 2,
     title: 'Short note',
     description: 'Description',
     dateUpdated: DateTime.now().subtract(const Duration(days: 2)),
   ),
   SavedNote(
-    id: '4',
+    id: 4,
     title:
         'I never liked therapy, so I was jittery, but my first session changed everything. This is how I felt before, during, and after my first session.',
     description: 'Long description',

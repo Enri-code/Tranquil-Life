@@ -17,11 +17,11 @@ class QuestionnaireBloc extends Bloc<QuestionnaireEvent, QuestionnaireState> {
   final QuestionnaireRepo _repo;
 
   _submit(Submit event, Emitter<QuestionnaireState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: EventStatus.loading));
     var result = await _repo.submit(event.questions);
     result.fold(
-      (l) => emit(state.copyWith(status: OperationStatus.error, error: l)),
-      (r) => emit(state.copyWith(status: OperationStatus.success)),
+      (l) => emit(state.copyWith(status: EventStatus.error, error: l)),
+      (r) => emit(state.copyWith(status: EventStatus.success)),
     );
   }
 }

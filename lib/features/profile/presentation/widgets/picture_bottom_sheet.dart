@@ -93,7 +93,7 @@ class _RemoveDialog extends StatelessWidget {
       yesDialog: DialogOption(
         'Remove',
         onPressed: () => context.read<ProfileBloc>().add(
-              UpdateUser(usesBitmoji: false, avatarUrl: null),
+              EditUser(usesBitmoji: false, avatarUrl: null),
             ),
       ),
     );

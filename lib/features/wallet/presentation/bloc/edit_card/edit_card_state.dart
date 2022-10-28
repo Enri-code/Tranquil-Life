@@ -12,7 +12,7 @@ class EditCardState extends BlocStateBase {
   @override
   EditCardState copyWith({
     CardData? data,
-    OperationStatus? status,
+    EventStatus? status,
     ApiError? error,
   }) =>
       EditCardState(

@@ -3,12 +3,12 @@ part of 'questionnaire_bloc.dart';
 class QuestionnaireState extends BlocStateBase {
   const QuestionnaireState({
     super.error,
-    super.status = OperationStatus.initial,
+    super.status = EventStatus.initial,
   });
 
   @override
   QuestionnaireState copyWith({
-    OperationStatus? status,
+    EventStatus? status,
     ApiError? error,
   }) {
     return QuestionnaireState(

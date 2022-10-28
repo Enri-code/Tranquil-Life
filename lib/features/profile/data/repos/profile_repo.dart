@@ -12,7 +12,7 @@ class ProfileRepoImpl extends ProfileRepo {
   @override
   Future<Either<ApiError, Client>> getProfile() async {
     try {
-      final result = await ApiClient.get(ProfileEndPoints.getProfile);
+      final result = await ApiClient.get(ProfileEndPoints.get);
 
       final Map<String, dynamic>? data = result.data['profile'];
 
@@ -24,6 +24,28 @@ class ProfileRepoImpl extends ProfileRepo {
     } catch (e) {
       return const Left(ApiError(
         message: 'There was a problem fetching your info. Try again later',
+      ));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, Client>> updateProfile(Client user) async {
+    try {
+      final result = await ApiClient.post(
+        ProfileEndPoints.edit,
+        body: user.toJson(),
+      );
+
+      final Map<String, dynamic>? data = result.data['profile'];
+
+      if (data != null) return Right(ClientModel.fromJson(data));
+
+      return const Left(ApiError(
+        message: 'There was a problem updating your info. Try again later',
+      ));
+    } catch (e) {
+      return const Left(ApiError(
+        message: 'There was a problem updating your info. Try again later',
       ));
     }
   }
